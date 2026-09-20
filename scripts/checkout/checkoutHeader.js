@@ -8,17 +8,17 @@ export function renderCheckoutHeader() {
   checkoutHeaderHTML += `
     <div class="checkout-header-left-section">
       <a href="index.html">
-        <img class="amazon-logo" src="images/amazon-logo.png">
-        <img class="amazon-mobile-logo" src="images/amazon-mobile-logo.png">
+        <img class="rogontra-logo" src="images/rogontra-logo-dark.svg" alt="Rogontra Wholesale">
+        <img class="rogontra-mobile-logo" src="images/rogontra-mark.svg" alt="Rogontra">
       </a>
     </div>
 
     <div class="checkout-header-middle-section">
-      Checkout (<a class="return-to-home-link" href="amazon.html">${cartQuantity} items</a>)
+      Secure review (<a class="return-to-home-link" href="index.html">${cartQuantity} items</a>)
     </div>
 
     <div class="checkout-header-right-section">
-      <img src="images/icons/checkout-lock-icon.png">
+      <img src="images/icons/rogontra-secure.svg" alt="Secure order">
     </div>
   `;
 

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Cart</title>
+  <path d="M7 10h8l5 29h29l7-21H20" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+  <circle cx="25" cy="52" r="4" fill="#F5B942"/><circle cx="47" cy="52" r="4" fill="#F5B942"/>
+</svg>

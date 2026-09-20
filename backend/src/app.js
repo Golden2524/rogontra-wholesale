@@ -3,6 +3,7 @@ import express from 'express';
 
 import { findProductById, listProducts } from './catalogue.js';
 import { getAllowedOrigins } from './config.js';
+import { createOrderFromCart } from './orders.js';
 
 const API_PREFIX = '/api/v1';
 
@@ -85,6 +86,15 @@ export function createApp({ allowedOrigins = getAllowedOrigins() } = {}) {
     }
   });
 
+  app.post(`${API_PREFIX}/orders`, (request, response, next) => {
+    try {
+      const order = createOrderFromCart(request.body?.cart);
+      response.status(201).json({ data: order });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.use((_request, response) => {
     response.status(404).json({
       error: {
@@ -100,7 +110,7 @@ export function createApp({ allowedOrigins = getAllowedOrigins() } = {}) {
 
     response.status(statusCode).json({
       error: {
-        code: statusCode === 500 ? 'INTERNAL_SERVER_ERROR' : 'BAD_REQUEST',
+        code: statusCode === 500 ? 'INTERNAL_SERVER_ERROR' : (error.code ?? 'BAD_REQUEST'),
         message
       }
     });

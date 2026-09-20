@@ -1,4 +1,5 @@
 import formatCurrency from '../scripts/utils/money.js';
+import { API_BASE_URL } from '../scripts/config.js';
 
 export function getProduct(productId) {
   let matchingProduct;
@@ -88,25 +89,26 @@ class Appliance extends Product {
 export let products = [];
 
 export async function loadProductsFetch() {
-  const promise = fetch('https://supersimplebackend.dev/products')
-    .then((response) => {
-      return response.json();
-    })
-    .then((productsData) => {
-      products = productsData.map((productDetails) => {
-        if (productDetails.type === 'clothing') {
-          return new Clothing(productDetails);
-        } else if (productDetails.type === 'appliance') {
-          return new Appliance(productDetails);
-        }
-        return new Product(productDetails);
-      });
-    })
-    .catch((_error) => {
-      console.error('Unexpected error. Please try again later.');
-    });
+  const response = await fetch(`${API_BASE_URL}/products`);
 
-  return promise;
+  if (!response.ok) {
+    throw new Error('Unable to load the product catalogue.');
+  }
+
+  const payload = await response.json();
+
+  if (!Array.isArray(payload.data)) {
+    throw new Error('The product catalogue response is invalid.');
+  }
+
+  products = payload.data.map((productDetails) => {
+    if (productDetails.type === 'clothing') {
+      return new Clothing(productDetails);
+    } else if (productDetails.type === 'appliance') {
+      return new Appliance(productDetails);
+    }
+    return new Product(productDetails);
+  });
 }
 
 /*

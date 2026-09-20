@@ -3,6 +3,7 @@ import { getProduct } from '../../data/products.js';
 import { getDeliveryOption } from '../../data/deliveryOption.js';
 import formatCurrency from '../utils/money.js';
 import { addOrder } from '../../data/order.js';
+import { API_BASE_URL } from '../config.js';
 
 export function renderPaymentSummary() {
   let productPriceCent = 0;
@@ -54,8 +55,9 @@ export function renderPaymentSummary() {
 
     <button class="place-order-button button-primary
     js-place-order">
-      Place your order
+      Submit test order
     </button>
+    <p class="js-payment-message" role="status"></p>
   `;
 
   document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
@@ -69,21 +71,35 @@ export function renderPaymentSummary() {
   }
 
   document.querySelector('.js-place-order').addEventListener('click', async () => {
-    const response = await fetch('https://supersimplebackend.dev/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        cart: cart.cartItems
-      })
-    });
+    const paymentMessage = document.querySelector('.js-payment-message');
+    placeOrderButton.disabled = true;
+    placeOrderButton.textContent = 'Submitting…';
+    paymentMessage.textContent = '';
 
-    const order = await response.json();
-    addOrder(order);
+    try {
+      const response = await fetch(`${API_BASE_URL}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          cart: cart.cartItems
+        })
+      });
+      const payload = await response.json();
 
-    cart.resetCart();
+      if (!response.ok) {
+        throw new Error(payload.error?.message ?? 'Unable to submit the test order.');
+      }
 
-    window.location.href = 'orders.html';
+      addOrder(payload.data);
+      cart.resetCart();
+      window.location.href = 'orders.html';
+    } catch (error) {
+      paymentMessage.textContent =
+        error instanceof Error ? error.message : 'Unable to submit the test order.';
+      placeOrderButton.disabled = false;
+      placeOrderButton.textContent = 'Submit test order';
+    }
   });
 }

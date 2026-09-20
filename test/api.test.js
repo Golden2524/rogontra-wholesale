@@ -57,3 +57,51 @@ test('returns consistent errors for invalid or missing resources', async () => {
     assert.equal((await invalidQueryResponse.json()).error.code, 'BAD_REQUEST');
   });
 });
+
+test('creates a server-priced test order from a valid cart', async () => {
+  await withApi(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/v1/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        cart: [
+          {
+            productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+            quantity: 2,
+            deliveryOptionId: '2'
+          }
+        ]
+      })
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 201);
+    assert.equal(body.data.currency, 'USD');
+    assert.equal(body.data.paymentStatus, 'not_collected');
+    assert.equal(body.data.productPriceCents, 4190);
+    assert.equal(body.data.shippingPriceCents, 499);
+    assert.equal(body.data.taxCents, 469);
+    assert.equal(body.data.totalCostCents, 5158);
+  });
+});
+
+test('rejects carts containing unknown products', async () => {
+  await withApi(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/v1/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        cart: [
+          {
+            productId: 'missing-product',
+            quantity: 1,
+            deliveryOptionId: '1'
+          }
+        ]
+      })
+    });
+
+    assert.equal(response.status, 400);
+    assert.equal((await response.json()).error.code, 'CART_PRODUCT_NOT_FOUND');
+  });
+});

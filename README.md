@@ -47,7 +47,9 @@ npm run lint
 npm test
 ```
 
-Application server setup instructions will be added with the owned backend in the next implementation milestone. Until then, use a local static server to preview the legacy front end; it currently relies on an external tutorial API and is not a production environment.
+Start the owned API with `npm run api:dev`, then serve the project root with a static server at `http://localhost:5500`. The storefront uses `http://localhost:3000/api/v1` locally. Set `window.ROGONTRA_API_BASE_URL` before page scripts load when using another API deployment URL.
+
+The temporary catalogue and submitted test orders are not production data. Database setup instructions will be added with the PostgreSQL milestone.
 
 ## Portfolio notes
 

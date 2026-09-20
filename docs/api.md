@@ -13,14 +13,17 @@ The API listens on `http://localhost:3000` by default. Copy `.env.example` to `.
 
 ## Endpoints
 
-| Method | Path                          | Description                                       |
-| ------ | ----------------------------- | ------------------------------------------------- |
-| `GET`  | `/api/v1/health`              | Service health and timestamp                      |
-| `GET`  | `/api/v1/products`            | Local catalogue; accepts optional `q` search text |
-| `GET`  | `/api/v1/products/:productId` | One product by ID                                 |
+| Method | Path                          | Description                                                 |
+| ------ | ----------------------------- | ----------------------------------------------------------- |
+| `GET`  | `/api/v1/health`              | Service health and timestamp                                |
+| `GET`  | `/api/v1/products`            | Local catalogue; accepts optional `q` search text           |
+| `GET`  | `/api/v1/products/:productId` | One product by ID                                           |
+| `POST` | `/api/v1/orders`              | Validates a cart and creates an awaiting-payment test order |
 
 Successful responses use a `data` envelope. List responses add `meta`; errors use an `error` object with a stable code and a safe message.
 
 ## Current limits
 
-This API is intentionally read-only. Authentication, product administration, persistent carts, orders, payments, database migrations, and rate limiting arrive in later milestones. The temporary product content is inherited learning data and will be replaced with an original/licensed Rogontra catalogue before public launch.
+`POST /orders` trusts only a product ID, quantity, and delivery-option ID. It calculates all USD prices, shipping, tax, and delivery dates server-side. The response is explicitly an `awaiting_payment` test order; it does not collect payment and does not make an order eligible for fulfilment.
+
+Authentication, product administration, persistent carts, payments, database migrations, and rate limiting arrive in later milestones. The temporary product content is inherited learning data and will be replaced with an original/licensed Rogontra catalogue before public launch.

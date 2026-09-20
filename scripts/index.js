@@ -51,17 +51,23 @@ function renderProductsGrid() {
           ${product.name}
         </div>
 
-        <div class="product-rating-container">
-          <img class="product-rating-stars" src="${product.getStarsURL()}">
-          <div class="product-rating-count link-primary">
-            ${product.rating.count}
-          </div>
+        <div class="product-category">
+          ${product.category} · ${product.condition}
         </div>
 
         <div class="product-price">
           ${product.getPrice()}
         </div>
 
+        <div class="product-wholesale-details">
+          <span>SKU: ${product.sku}</span>
+          <span>MOQ: ${product.minimumOrderQuantity}</span>
+          <span>${product.stockStatus.replaceAll('_', ' ')}</span>
+        </div>
+
+        ${
+          product.purchaseMode === 'checkout'
+            ? `
         <div class="product-quantity-container">
           <select class="js-product-quantity-${product.id}">
             <option selected value="1">1</option>
@@ -76,11 +82,21 @@ function renderProductsGrid() {
             <option value="10">10</option>
           </select>
         </div>
+        `
+            : `
+        <div class="quote-required-message">
+          Sales-assisted quote required
+        </div>
+        `
+        }
 
         ${product.extraInfoHTML()}
 
         <div class="product-spacer"></div>
 
+        ${
+          product.purchaseMode === 'checkout'
+            ? `
         <div class="added-to-cart js-added-to-cart-${product.id}">
           <img src="images/icons/checkmark.png">
           Added
@@ -91,6 +107,9 @@ function renderProductsGrid() {
         data-product-id="${product.id}">
           Add to Cart
         </button>
+        `
+            : `<button class="quote-button button-secondary" disabled>Quote required</button>`
+        }
       </div>
     `;
   });

@@ -1,4 +1,4 @@
-export const orders = JSON.parse(localStorage.getItem('orders')) || [];
+export const orders = JSON.parse(localStorage.getItem('rogontra-orders-v1')) || [];
 
 export function addOrder(order) {
   orders.unshift(order);
@@ -7,7 +7,7 @@ export function addOrder(order) {
 }
 
 function saveToStorage() {
-  localStorage.setItem('orders', JSON.stringify(orders));
+  localStorage.setItem('rogontra-orders-v1', JSON.stringify(orders));
 }
 
 export function getOrder(orderId) {

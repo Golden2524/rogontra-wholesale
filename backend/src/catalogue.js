@@ -1,4 +1,4 @@
-import products from '../products.json' with { type: 'json' };
+import products from '../rogontra-catalogue.json' with { type: 'json' };
 
 function matchesSearch(product, query) {
   const normalizedQuery = query.toLowerCase();
@@ -11,10 +11,14 @@ export function findProductById(productId) {
   return products.find((product) => product.id === productId);
 }
 
-export function listProducts({ query } = {}) {
-  if (!query) {
-    return products;
-  }
+export function listProducts({ query, category } = {}) {
+  return products.filter((product) => {
+    const matchesQuery = !query || matchesSearch(product, query);
+    const matchesCategory = !category || product.category === category;
+    return matchesQuery && matchesCategory;
+  });
+}
 
-  return products.filter((product) => matchesSearch(product, query));
+export function listCategories() {
+  return [...new Set(products.map((product) => product.category))].sort();
 }

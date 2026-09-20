@@ -35,14 +35,14 @@ test('lists and searches the local Rogontra catalogue', async () => {
   await withApi(async (baseUrl) => {
     const allResponse = await fetch(`${baseUrl}/api/v1/products`);
     const allProducts = await allResponse.json();
-    const searchResponse = await fetch(`${baseUrl}/api/v1/products?q=basketball`);
+    const searchResponse = await fetch(`${baseUrl}/api/v1/products?q=excavator`);
     const searchProducts = await searchResponse.json();
 
     assert.equal(allResponse.status, 200);
     assert.ok(allProducts.meta.count > 0);
     assert.equal(searchResponse.status, 200);
-    assert.equal(searchProducts.meta.count, 1);
-    assert.match(searchProducts.data[0].name, /basketball/i);
+    assert.ok(searchProducts.meta.count >= 1);
+    assert.ok(searchProducts.data.some((product) => /excavator/i.test(product.name)));
   });
 });
 
@@ -66,7 +66,7 @@ test('creates a server-priced test order from a valid cart', async () => {
       body: JSON.stringify({
         cart: [
           {
-            productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+            productId: 'rgw-cargo-straps-001',
             quantity: 2,
             deliveryOptionId: '2'
           }
@@ -78,10 +78,10 @@ test('creates a server-priced test order from a valid cart', async () => {
     assert.equal(response.status, 201);
     assert.equal(body.data.currency, 'USD');
     assert.equal(body.data.paymentStatus, 'not_collected');
-    assert.equal(body.data.productPriceCents, 4190);
+    assert.equal(body.data.productPriceCents, 42400);
     assert.equal(body.data.shippingPriceCents, 499);
-    assert.equal(body.data.taxCents, 469);
-    assert.equal(body.data.totalCostCents, 5158);
+    assert.equal(body.data.taxCents, 4290);
+    assert.equal(body.data.totalCostCents, 47189);
   });
 });
 

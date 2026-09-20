@@ -100,4 +100,4 @@ class Cart {
   }
 }
 
-export const cart = new Cart('carts');
+export const cart = new Cart('rogontra-cart-v1');

@@ -20,6 +20,12 @@ class Product {
   rating;
   priceCents;
   keywords;
+  sku;
+  category;
+  condition;
+  minimumOrderQuantity;
+  purchaseMode;
+  stockStatus;
 
   constructor(productDetails) {
     this.id = productDetails.id;
@@ -28,6 +34,12 @@ class Product {
     this.rating = productDetails.rating;
     this.priceCents = productDetails.priceCents;
     this.keywords = productDetails.keywords;
+    this.sku = productDetails.sku;
+    this.category = productDetails.category;
+    this.condition = productDetails.condition;
+    this.minimumOrderQuantity = productDetails.minimumOrderQuantity;
+    this.purchaseMode = productDetails.purchaseMode;
+    this.stockStatus = productDetails.stockStatus;
   }
 
   getStarsURL() {
@@ -37,6 +49,10 @@ class Product {
   }
 
   getPrice() {
+    if (this.purchaseMode === 'quote' || this.priceCents === null) {
+      return 'Request a quote';
+    }
+
     return `
       $${formatCurrency(this.priceCents)}
     `;

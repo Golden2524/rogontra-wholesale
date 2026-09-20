@@ -60,6 +60,13 @@ export function createOrderFromCart(cart) {
       throw createClientError('CART_PRODUCT_NOT_FOUND', 'A product in the cart no longer exists.');
     }
 
+    if (product.purchaseMode !== 'checkout' || product.priceCents === null) {
+      throw createClientError(
+        'QUOTE_REQUIRED',
+        'This product requires a sales-assisted quote and cannot be ordered online.'
+      );
+    }
+
     const deliveryOption = getDeliveryOption(item.deliveryOptionId);
     if (!deliveryOption) {
       throw createClientError(

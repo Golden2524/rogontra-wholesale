@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 
-import { findProductById, listProducts } from './catalogue.js';
+import { findProductById, listCategories, listProducts } from './catalogue.js';
 import { getAllowedOrigins } from './config.js';
 import { createOrderFromCart } from './orders.js';
 
@@ -55,7 +55,7 @@ export function createApp({ allowedOrigins = getAllowedOrigins() } = {}) {
 
   app.get(`${API_PREFIX}/products`, (request, response) => {
     const query = validateSearchQuery(request.query.q);
-    const products = listProducts({ query });
+    const products = listProducts({ query, category: request.query.category });
 
     response.status(200).json({
       data: products,
@@ -64,6 +64,10 @@ export function createApp({ allowedOrigins = getAllowedOrigins() } = {}) {
         query: query ?? null
       }
     });
+  });
+
+  app.get(`${API_PREFIX}/categories`, (_request, response) => {
+    response.status(200).json({ data: listCategories() });
   });
 
   app.get(`${API_PREFIX}/products/:productId`, (request, response, next) => {

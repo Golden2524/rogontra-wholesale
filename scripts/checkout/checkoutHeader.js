@@ -1,4 +1,4 @@
-import { cart } from "../../data/cart-class.js";
+import { cart } from '../../data/cart-class.js';
 
 export function renderCheckoutHeader() {
   let checkoutHeaderHTML = '';
@@ -20,8 +20,7 @@ export function renderCheckoutHeader() {
     <div class="checkout-header-right-section">
       <img src="images/icons/checkout-lock-icon.png">
     </div>
-  `
+  `;
 
-  document.querySelector('.js-header-content')
-    .innerHTML = checkoutHeaderHTML;
+  document.querySelector('.js-header-content').innerHTML = checkoutHeaderHTML;
 }

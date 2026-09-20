@@ -1,5 +1,4 @@
-import formatCurrency from "../scripts/utils/money.js";
-
+import formatCurrency from '../scripts/utils/money.js';
 
 export function getProduct(productId) {
   let matchingProduct;
@@ -8,11 +7,10 @@ export function getProduct(productId) {
     if (product.id === productId) {
       matchingProduct = product;
     }
-  })
+  });
 
   return matchingProduct;
 }
-
 
 class Product {
   id;
@@ -83,31 +81,30 @@ class Appliance extends Product {
       <a href="${this.warrantyLink}" target="_blank">
         Warranty
       </a>
-    `
+    `;
   }
 }
 
-
 export let products = [];
 
-
 export async function loadProductsFetch() {
-  const promise = fetch(
-    'https://supersimplebackend.dev/products'
-  ).then((response) => {
-    return response.json();
-  }).then((productsData) => {
-    products = productsData.map((productDetails) => {
-      if (productDetails.type === 'clothing') {
-        return new Clothing(productDetails);
-      } else if (productDetails.type === 'appliance') {
-        return new Appliance(productDetails);
-      }
-      return new Product(productDetails);
+  const promise = fetch('https://supersimplebackend.dev/products')
+    .then((response) => {
+      return response.json();
+    })
+    .then((productsData) => {
+      products = productsData.map((productDetails) => {
+        if (productDetails.type === 'clothing') {
+          return new Clothing(productDetails);
+        } else if (productDetails.type === 'appliance') {
+          return new Appliance(productDetails);
+        }
+        return new Product(productDetails);
+      });
+    })
+    .catch((_error) => {
+      console.error('Unexpected error. Please try again later.');
     });
-  }).catch((error) => {
-    console.log('Unexpected error. Please try again later.');
-  })
 
   return promise;
 }

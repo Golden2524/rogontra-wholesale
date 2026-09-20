@@ -1,12 +1,12 @@
-import { cart } from "../../data/cart-class.js";
-import { getProduct } from "../../data/products.js";
-import { getDeliveryOption } from "../../data/deliveryOption.js";
-import formatCurrency from "../utils/money.js";
-import { addOrder } from "../../data/order.js";
+import { cart } from '../../data/cart-class.js';
+import { getProduct } from '../../data/products.js';
+import { getDeliveryOption } from '../../data/deliveryOption.js';
+import formatCurrency from '../utils/money.js';
+import { addOrder } from '../../data/order.js';
 
 export function renderPaymentSummary() {
-  let productPriceCent = 0
-  let shippingPriceCent = 0
+  let productPriceCent = 0;
+  let shippingPriceCent = 0;
 
   const cartQuantity = cart.calculateCartQuantity();
 
@@ -15,11 +15,11 @@ export function renderPaymentSummary() {
     productPriceCent += product.priceCents * cartItem.quantity;
 
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
-    shippingPriceCent += deliveryOption.shippingPriceCents
-  })
+    shippingPriceCent += deliveryOption.shippingPriceCents;
+  });
 
   const totalBeforeTax = productPriceCent + shippingPriceCent;
-  const estimatedTax = totalBeforeTax * 0.1
+  const estimatedTax = totalBeforeTax * 0.1;
   const orderTotal = totalBeforeTax + estimatedTax;
 
   const paymentSummaryHTML = `
@@ -56,38 +56,34 @@ export function renderPaymentSummary() {
     js-place-order">
       Place your order
     </button>
-  `
+  `;
 
-  document.querySelector('.js-payment-summary')
-    .innerHTML = paymentSummaryHTML;
+  document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
 
   //if cart is empty button should be disabled
-  const cartIsEmpty = cart.cartItems.length === 0
+  const cartIsEmpty = cart.cartItems.length === 0;
   const placeOrderButton = document.querySelector('.js-place-order');
 
   if (cartIsEmpty) {
     placeOrderButton.disabled = true;
   }
 
+  document.querySelector('.js-place-order').addEventListener('click', async () => {
+    const response = await fetch('https://supersimplebackend.dev/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        cart: cart.cartItems
+      })
+    });
 
-  document.querySelector('.js-place-order')
-    .addEventListener('click', async () => {
-      const response = await fetch('https://supersimplebackend.dev/orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          cart: cart.cartItems
-        })
-      });
+    const order = await response.json();
+    addOrder(order);
 
-      const order = await response.json();
-      console.log(order);
-      addOrder(order);
+    cart.resetCart();
 
-      cart.resetCart();
-
-      window.location.href = 'orders.html';
-    })
+    window.location.href = 'orders.html';
+  });
 }

@@ -38,7 +38,16 @@ Detailed scope and architecture decisions are in [`docs/product-brief.md`](docs/
 
 ## Local setup
 
-Application setup instructions will be added with the owned backend in the next implementation milestone. Until then, use a local static server to preview the legacy front end; it currently relies on an external tutorial API and is not a production environment.
+Install the project's development tooling and run the current checks:
+
+```bash
+npm ci
+npm run format:check
+npm run lint
+npm test
+```
+
+Application server setup instructions will be added with the owned backend in the next implementation milestone. Until then, use a local static server to preview the legacy front end; it currently relies on an external tutorial API and is not a production environment.
 
 ## Portfolio notes
 

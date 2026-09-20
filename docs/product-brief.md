@@ -8,12 +8,12 @@ Rogontra Wholesale helps business buyers discover, compare, request quotes for, 
 
 The catalogue will support distinct purchase paths rather than pretending every item can be shipped or paid for identically.
 
-| Catalogue area | Examples | Purchase path |
-| --- | --- | --- |
-| General wholesale | apparel, home goods, consumables | cart and checkout |
-| Commercial vehicles | trucks, trailers | enquiry or request for quote, then sales-assisted order |
-| Heavy equipment | excavators, loaders, Caterpillar-compatible equipment | enquiry or request for quote, shipping review |
-| Parts and accessories | filters, tyres, components | cart or quote, depending on stock and value |
+| Catalogue area        | Examples                                              | Purchase path                                           |
+| --------------------- | ----------------------------------------------------- | ------------------------------------------------------- |
+| General wholesale     | apparel, home goods, consumables                      | cart and checkout                                       |
+| Commercial vehicles   | trucks, trailers                                      | enquiry or request for quote, then sales-assisted order |
+| Heavy equipment       | excavators, loaders, Caterpillar-compatible equipment | enquiry or request for quote, shipping review           |
+| Parts and accessories | filters, tyres, components                            | cart or quote, depending on stock and value             |
 
 Product records will include SKU, brand, category, base USD price, stock status, minimum order quantity, product condition, specifications, media, shipping constraints, and quote eligibility.
 

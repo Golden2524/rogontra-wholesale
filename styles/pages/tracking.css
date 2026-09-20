@@ -96,7 +96,7 @@
   font-size: 22px;
   transform: translateX(-50%);
   transition: left 0.6s ease;
-  animation: truckBounce 0.5s infinite cubic-bezier(.4, 0, .2, 1);
+  animation: truckBounce 0.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes truckBounce {

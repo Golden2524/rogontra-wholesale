@@ -1,12 +1,11 @@
-import { orders } from "../data/order.js"
-import { loadProductsFetch, getProduct } from "../data/products.js";
-import formatCurrency from "./utils/money.js";
-import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
-import { cart } from "../data/cart-class.js";
-import setUpSearch from "./utils/search.js";
+import { orders } from '../data/order.js';
+import { loadProductsFetch, getProduct } from '../data/products.js';
+import formatCurrency from './utils/money.js';
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
+import { cart } from '../data/cart-class.js';
+import setUpSearch from './utils/search.js';
 
 async function loadPage() {
-
   await loadProductsFetch();
 
   let ordersHTML = '';
@@ -40,7 +39,6 @@ async function loadPage() {
       </div>
     `;
   });
-
 
   function productsListHTML(order) {
     let productsListHTML = '';
@@ -86,38 +84,32 @@ orderId=${order.id}&productId=${product.id}">
     return productsListHTML;
   }
 
+  document.querySelector('.js-order-grid').innerHTML = ordersHTML;
 
-  document.querySelector('.js-order-grid')
-    .innerHTML = ordersHTML;
+  document.querySelectorAll('.js-buy-again-button').forEach((button) => {
+    button.addEventListener('click', () => {
+      const productId = button.dataset.productId;
+      const quantity = Number((button.dataset.quantity = 1));
 
+      cart.addToCart(productId, quantity);
 
-  document.querySelectorAll('.js-buy-again-button')
-    .forEach((button) => {
-      button.addEventListener('click', () => {
-        const productId = button.dataset.productId;
-        const quantity = Number(button.dataset.quantity = 1);
+      button.innerHTML = 'Added';
 
-        cart.addToCart(productId, quantity);
-
-        button.innerHTML = 'Added';
-
-        setTimeout(() => {
-          button.innerHTML = `
+      setTimeout(() => {
+        button.innerHTML = `
             <img class="buy-again-icon" src="images/icons/buy-again.png">
             <span class="buy-again-message">Buy it again</span>
-          `
-        }, 1000);
+          `;
+      }, 1000);
 
-        updateOrderQuantity();
-      });
+      updateOrderQuantity();
     });
-
+  });
 
   function updateOrderQuantity() {
     const cartQuantity = cart.calculateCartQuantity();
 
-    document.querySelector('.js-quantity-count')
-      .innerHTML = cartQuantity;
+    document.querySelector('.js-quantity-count').innerHTML = cartQuantity;
   }
 
   setUpSearch();

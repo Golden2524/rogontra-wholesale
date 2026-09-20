@@ -1,7 +1,6 @@
-import { products, loadProductsFetch } from "../data/products.js";
-import { cart } from "../data/cart-class.js";
-import setUpSearch from "./utils/search.js";
-
+import { products, loadProductsFetch } from '../data/products.js';
+import { cart } from '../data/cart-class.js';
+import setUpSearch from './utils/search.js';
 
 //loadProducts(renderProductsGrid);
 loadProductsFetch().then(renderProductsGrid);
@@ -24,28 +23,24 @@ function renderProductsGrid() {
 
       product.keywords.forEach((keyword) => {
         if (keyword.toLowerCase().includes(search.toLowerCase())) {
-          matchingKeyword = true
+          matchingKeyword = true;
         }
       });
 
-      return matchingKeyword ||
-        product.name.toLowerCase().includes(search.toLowerCase());
-    })
+      return matchingKeyword || product.name.toLowerCase().includes(search.toLowerCase());
+    });
   }
 
   const messageElement = document.querySelector('.js-empty-message');
   if (search && featuredProducts.length === 0) {
-    messageElement.textContent = 'No products matched your search.'
+    messageElement.textContent = 'No products matched your search.';
   } else {
     messageElement.textContent = '';
   }
 
-
-
   let productsHTML = '';
 
   featuredProducts.forEach((product) => {
-
     productsHTML += `
       <div class="product-container">
         <div class="product-image-container">
@@ -97,55 +92,43 @@ function renderProductsGrid() {
           Add to Cart
         </button>
       </div>
-    `
-  })
+    `;
+  });
 
-
-  document.querySelector('.js-products-grid')
-    .innerHTML = productsHTML;
-
+  document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
   function updateCartQuantity() {
     const cartQuantity = cart.calculateCartQuantity();
 
-    document.querySelector('.js-cart-quantity')
-      .innerHTML = cartQuantity;
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
   }
 
+  document.querySelectorAll('.js-add-to-cart-button').forEach((button) => {
+    let addedMessageTimeoutId;
 
-  document.querySelectorAll('.js-add-to-cart-button')
-    .forEach((button) => {
-      let addedMessageTimeoutId;
+    button.addEventListener('click', () => {
+      const productId = button.dataset.productId;
 
-      button.addEventListener('click', () => {
-        const productId = button.dataset.productId;
+      const quantitySelector = document.querySelector(`.js-product-quantity-${productId}`);
+      const quantity = Number(quantitySelector.value);
 
-        const quantitySelector = document.querySelector(
-          `.js-product-quantity-${productId}`
-        );
-        const quantity = Number(quantitySelector.value);
+      const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+      addedMessage.classList.add('added-to-cart-visible');
 
-        const addedMessage = document.querySelector(
-          `.js-added-to-cart-${productId}`
-        );
-        addedMessage.classList.add('added-to-cart-visible');
+      if (addedMessageTimeoutId) {
+        clearTimeout(addedMessageTimeoutId);
+      }
+      const timeoutId = setTimeout(() => {
+        addedMessage.classList.remove('added-to-cart-visible');
+      }, 2000);
+      addedMessageTimeoutId = timeoutId;
 
-        if (addedMessageTimeoutId) {
-          clearTimeout(addedMessageTimeoutId);
-        }
-        const timeoutId = setTimeout(() => {
-          addedMessage.classList.remove('added-to-cart-visible');
-        }, 2000)
-        addedMessageTimeoutId = timeoutId;
-
-        cart.addToCart(productId, quantity);
-        updateCartQuantity();
-      })
-    })
-
+      cart.addToCart(productId, quantity);
+      updateCartQuantity();
+    });
+  });
 
   setUpSearch();
-
 
   return updateCartQuantity();
 }

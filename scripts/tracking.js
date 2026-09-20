@@ -1,11 +1,9 @@
-import { getOrder } from "../data/order.js";
-import { loadProductsFetch, getProduct } from "../data/products.js";
-import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
-import setUpSearch from "./utils/search.js";
-
+import { getOrder } from '../data/order.js';
+import { loadProductsFetch, getProduct } from '../data/products.js';
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
+import setUpSearch from './utils/search.js';
 
 async function loadPage() {
-
   await loadProductsFetch();
 
   const url = new URL(window.location.href);
@@ -14,7 +12,6 @@ async function loadPage() {
 
   const order = getOrder(orderId);
   const product = getProduct(productId);
-
 
   let productDetails;
 
@@ -33,7 +30,6 @@ async function loadPage() {
 
   //add || calculate truck positioning
   const truckPosition = Math.min(percentProgress, 95);
-
 
   const trackingHTML = `
     <a class="back-to-orders-link link-primary" href="orders.html">
@@ -68,15 +64,13 @@ async function loadPage() {
 
     <div class="progress-bar-container">
       <div class="progress-bar js-progress-bar" style="width: ${percentProgress}%;"></div>
-      <div class="truck-icon js-truck" style="left: ${percentProgress, truckPosition}%;">🚚</div>
+      <div class="truck-icon js-truck" style="left: ${(percentProgress, truckPosition)}%;">🚚</div>
     </div>
 
     <div class="delivery-countdown js-delivery-countdown"></div>
   `;
 
-  document.querySelector('.js-order-tracking')
-    .innerHTML = trackingHTML;
-
+  document.querySelector('.js-order-tracking').innerHTML = trackingHTML;
 
   //recalculating tracking progress every few secs while page is open
   /*
@@ -91,7 +85,7 @@ async function loadPage() {
   }
   */
 
-  //change emoji to suit current position  
+  //change emoji to suit current position
   function updateDeliveryEmoji() {
     const deliveryTruck = document.querySelector('.js-truck');
 
@@ -103,33 +97,23 @@ async function loadPage() {
     }
   }
 
-  //Add time countdown below the progress bar  
+  //Add time countdown below the progress bar
   function updateCountdown() {
     const now = new Date();
     const timeRemaining = deliveryTime - now;
 
     if (timeRemaining <= 0) {
-      document.querySelector('.js-delivery-countdown')
-        .innerText = "Package delivered 🎉";
+      document.querySelector('.js-delivery-countdown').innerText = 'Package delivered 🎉';
       return;
     }
 
     const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (timeRemaining % (1000 * 60 * 60 * 24)) /
-      (1000 * 60 * 60)
-    );
-    const minutes = Math.floor(
-      (timeRemaining % (1000 * 60 * 60)) /
-      (1000 * 60)
-    );
-    const seconds = Math.floor(
-      (timeRemaining % (1000 * 60)) /
-      1000
-    );
+    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-    document.querySelector('.js-delivery-countdown')
-      .innerText = `Arriving in ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    document.querySelector('.js-delivery-countdown').innerText =
+      `Arriving in ${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
   //update countdown after every 1sec
   setInterval(updateCountdown, 1000);
@@ -143,7 +127,7 @@ async function loadPage() {
   */
   setUpSearch();
 
-  return updateCountdown(), updateDeliveryEmoji() /*updateTrackingProgress()*/;
+  return (updateCountdown(), updateDeliveryEmoji()); /*updateTrackingProgress()*/
 }
 
 loadPage();

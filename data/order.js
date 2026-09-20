@@ -10,7 +10,6 @@ function saveToStorage() {
   localStorage.setItem('orders', JSON.stringify(orders));
 }
 
-
 export function getOrder(orderId) {
   let matchingOrder;
 
@@ -18,7 +17,7 @@ export function getOrder(orderId) {
     if (order.id === orderId) {
       matchingOrder = order;
     }
-  })
+  });
 
   return matchingOrder;
 }

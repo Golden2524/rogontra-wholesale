@@ -6,12 +6,12 @@ The project will evolve in place using a static JavaScript storefront and an own
 
 ## Service boundaries
 
-| Layer | Responsibility | Must not do |
-| --- | --- | --- |
-| Storefront | rendering, interaction, accessible forms, API requests | calculate authoritative totals or handle payment secrets |
-| API | authentication, validation, pricing, stock checks, orders, quotes, payment initiation and verification | trust a browser-supplied price or payment status |
-| Database | durable users, products, inventory, carts, orders, quotes, payment attempts | contain application secrets |
-| Payment service | collect and settle payment | decide whether Rogontra fulfils an order |
+| Layer           | Responsibility                                                                                         | Must not do                                              |
+| --------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| Storefront      | rendering, interaction, accessible forms, API requests                                                 | calculate authoritative totals or handle payment secrets |
+| API             | authentication, validation, pricing, stock checks, orders, quotes, payment initiation and verification | trust a browser-supplied price or payment status         |
+| Database        | durable users, products, inventory, carts, orders, quotes, payment attempts                            | contain application secrets                              |
+| Payment service | collect and settle payment                                                                             | decide whether Rogontra fulfils an order                 |
 
 ## Core entities
 

@@ -105,3 +105,25 @@ test('rejects carts containing unknown products', async () => {
     assert.equal((await response.json()).error.code, 'CART_PRODUCT_NOT_FOUND');
   });
 });
+
+test('accepts a valid quote request for heavy equipment', async () => {
+  await withApi(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/v1/quotes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        productId: 'rgw-excavator-001',
+        quantity: 1,
+        companyName: 'Example Procurement Ltd',
+        contactName: 'Ada Buyer',
+        email: 'ada@example.com',
+        destinationCountry: 'Nigeria',
+        notes: 'Need delivery estimate.'
+      })
+    });
+    const body = await response.json();
+    assert.equal(response.status, 201);
+    assert.equal(body.data.status, 'received');
+    assert.equal(body.data.productId, 'rgw-excavator-001');
+  });
+});

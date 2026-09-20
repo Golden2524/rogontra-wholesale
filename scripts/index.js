@@ -108,7 +108,7 @@ function renderProductsGrid() {
           Add to Cart
         </button>
         `
-            : `<button class="quote-button button-secondary" disabled>Quote required</button>`
+            : `<button class="quote-button button-secondary js-request-quote" data-product-id="${product.id}" data-product-name="${product.name}">Request a quote</button>`
         }
       </div>
     `;

@@ -178,8 +178,70 @@
 .quote-button {
   width: 100%;
   padding: 8px;
-  cursor: not-allowed;
-  opacity: 0.75;
+  color: #087f78;
+  font-weight: 700;
+}
+
+.quote-dialog {
+  width: min(92vw, 550px);
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(16, 42, 67, 0.35);
+}
+.quote-dialog::backdrop {
+  background: rgba(16, 42, 67, 0.65);
+}
+.quote-form {
+  display: grid;
+  gap: 14px;
+  padding: 28px;
+}
+.quote-form-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+.quote-eyebrow {
+  color: #087f78;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.quote-form h2 {
+  margin: 4px 0 0;
+  color: #102a43;
+}
+.quote-close {
+  border: 0;
+  background: none;
+  color: #52677a;
+  font-size: 30px;
+  line-height: 1;
+}
+.quote-form label {
+  display: grid;
+  gap: 6px;
+  color: #102a43;
+  font-size: 14px;
+  font-weight: 700;
+}
+.quote-form input,
+.quote-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #a9b8c7;
+  border-radius: 6px;
+}
+.quote-form button[type='submit'] {
+  padding: 11px;
+  font-weight: 700;
+}
+.quote-status {
+  min-height: 20px;
+  color: #087f78;
+  font-weight: 700;
 }
 
 .empty-message {

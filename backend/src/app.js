@@ -4,6 +4,7 @@ import express from 'express';
 import { findProductById, listCategories, listProducts } from './catalogue.js';
 import { getAllowedOrigins } from './config.js';
 import { createOrderFromCart } from './orders.js';
+import { createQuoteRequest } from './quotes.js';
 
 const API_PREFIX = '/api/v1';
 
@@ -94,6 +95,14 @@ export function createApp({ allowedOrigins = getAllowedOrigins() } = {}) {
     try {
       const order = createOrderFromCart(request.body?.cart);
       response.status(201).json({ data: order });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post(`${API_PREFIX}/quotes`, (request, response, next) => {
+    try {
+      response.status(201).json({ data: createQuoteRequest(request.body) });
     } catch (error) {
       next(error);
     }

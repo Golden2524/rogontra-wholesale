@@ -11,6 +11,7 @@
   "scripts": {
     "api:start": "node backend/src/server.js",
     "api:dev": "node --watch backend/src/server.js",
+    "db:migrate": "node backend/scripts/migrate.js",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
@@ -26,6 +27,7 @@
   },
   "dependencies": {
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.23.0"
   }
 }

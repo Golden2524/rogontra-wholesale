@@ -4,9 +4,9 @@ Rogontra stores money in integer USD cents. Local-currency figures are display o
 
 ## Apply the initial schema
 
-1. Create a PostgreSQL database and copy its connection string into your uncommitted `.env` file as `DATABASE_URL`.
+1. Create a PostgreSQL database and copy its connection string into your uncommitted `.env.local` file as `DATABASE_URL`.
 2. Run `npm run db:migrate` from the project root.
-3. Confirm that the `schema_migrations` table contains `001_initial_schema`.
+3. Run `npm run db:status` to confirm that the `schema_migrations` table contains `001_initial_schema`.
 
 The migration is idempotent, so it can be safely rerun. Do not use a production database to experiment with sample data.
 

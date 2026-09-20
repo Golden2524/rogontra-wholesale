@@ -7,8 +7,11 @@ export function createDatabasePool(connectionString = process.env.DATABASE_URL) 
     throw new Error('DATABASE_URL is required to connect to PostgreSQL.');
   }
 
+  const hostname = new URL(connectionString).hostname;
+  const usesRemoteDatabase = hostname !== 'localhost' && hostname !== '127.0.0.1';
+
   return new Pool({
     connectionString,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined
+    ssl: usesRemoteDatabase ? { rejectUnauthorized: false } : undefined
   });
 }

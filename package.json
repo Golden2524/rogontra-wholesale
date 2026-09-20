@@ -11,7 +11,8 @@
   "scripts": {
     "api:start": "node backend/src/server.js",
     "api:dev": "node --watch backend/src/server.js",
-    "db:migrate": "node backend/scripts/migrate.js",
+    "db:migrate": "node --env-file-if-exists=.env.local backend/scripts/migrate.js",
+    "db:status": "node --env-file-if-exists=.env.local backend/scripts/status.js",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",

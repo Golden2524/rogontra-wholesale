@@ -26,7 +26,7 @@ try {
         ]
       );
 
-      await client.query(
+      const savedProduct = await client.query(
         `INSERT INTO products (
           external_id, sku, category_id, name, price_cents, currency, condition,
           minimum_order_quantity, purchase_mode, stock_status, specifications
@@ -41,7 +41,8 @@ try {
           purchase_mode = EXCLUDED.purchase_mode,
           stock_status = EXCLUDED.stock_status,
           specifications = EXCLUDED.specifications,
-          updated_at = NOW()`,
+          updated_at = NOW()
+        RETURNING id`,
         [
           product.id,
           product.sku,
@@ -53,8 +54,15 @@ try {
           product.minimumOrderQuantity,
           product.purchaseMode,
           product.stockStatus,
-          product.specifications
+          { ...product.specifications, keywords: product.keywords }
         ]
+      );
+
+      const productId = savedProduct.rows[0]?.id;
+      await client.query('DELETE FROM product_media WHERE product_id = $1', [productId]);
+      await client.query(
+        'INSERT INTO product_media (product_id, url, alt_text) VALUES ($1, $2, $3)',
+        [productId, product.image, product.name]
       );
     }
 

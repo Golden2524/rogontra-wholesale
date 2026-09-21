@@ -1,6 +1,6 @@
 # Rogontra API (initial contract)
 
-The owned API is versioned under `/api/v1`. Its current catalogue is seeded from `backend/products.json`; PostgreSQL will replace this temporary seed in the database milestone.
+The owned API is versioned under `/api/v1`. In normal server operation, its catalogue is read from PostgreSQL. `backend/rogontra-catalogue.json` is only an idempotent illustrative seed source for development.
 
 ## Running locally
 
@@ -29,4 +29,4 @@ Successful responses use a `data` envelope. List responses add `meta`; errors us
 
 `POST /quotes` accepts requests only for quote-only catalogue items. The current implementation validates and returns a received request but does not persist it or notify sales; PostgreSQL and operational notifications are required before production use.
 
-Authentication, product administration, persistent carts, payments, database migrations, and rate limiting arrive in later milestones. The temporary product content is inherited learning data and will be replaced with an original/licensed Rogontra catalogue before public launch.
+Authentication, product administration, persistent carts, payments, and rate limiting arrive in later milestones. The temporary product content is illustrative and must be replaced with approved Rogontra catalogue records and licensed media before public launch.

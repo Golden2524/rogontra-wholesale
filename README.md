@@ -49,7 +49,7 @@ npm test
 
 Start the owned API with `npm run api:dev`, then serve the project root with a static server at `http://localhost:5500`. The storefront uses `http://localhost:3000/api/v1` locally. Set `window.ROGONTRA_API_BASE_URL` before page scripts load when using another API deployment URL.
 
-The temporary catalogue and submitted test orders are not production data. Database setup instructions will be added with the PostgreSQL milestone.
+The API reads its catalogue from PostgreSQL. Run `npm run db:migrate` and `npm run db:seed` before starting the API; the current catalogue and submitted test orders are not production data.
 
 ## Portfolio notes
 

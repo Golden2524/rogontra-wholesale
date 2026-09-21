@@ -37,8 +37,9 @@ function validateSearchQuery(query) {
   return query.trim();
 }
 
-export function createApp({ allowedOrigins = getAllowedOrigins() } = {}) {
+export function createApp({ allowedOrigins = getAllowedOrigins(), catalogue } = {}) {
   const app = express();
+  const productCatalogue = catalogue ?? { findProductById, listCategories, listProducts };
 
   app.disable('x-powered-by');
   app.use(createCorsMiddleware(allowedOrigins));
@@ -54,26 +55,37 @@ export function createApp({ allowedOrigins = getAllowedOrigins() } = {}) {
     });
   });
 
-  app.get(`${API_PREFIX}/products`, (request, response) => {
-    const query = validateSearchQuery(request.query.q);
-    const products = listProducts({ query, category: request.query.category });
-
-    response.status(200).json({
-      data: products,
-      meta: {
-        count: products.length,
-        query: query ?? null
-      }
-    });
-  });
-
-  app.get(`${API_PREFIX}/categories`, (_request, response) => {
-    response.status(200).json({ data: listCategories() });
-  });
-
-  app.get(`${API_PREFIX}/products/:productId`, (request, response, next) => {
+  app.get(`${API_PREFIX}/products`, async (request, response, next) => {
     try {
-      const product = findProductById(request.params.productId);
+      const query = validateSearchQuery(request.query.q);
+      const products = await productCatalogue.listProducts({
+        query,
+        category: request.query.category
+      });
+
+      response.status(200).json({
+        data: products,
+        meta: {
+          count: products.length,
+          query: query ?? null
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get(`${API_PREFIX}/categories`, async (_request, response, next) => {
+    try {
+      response.status(200).json({ data: await productCatalogue.listCategories() });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get(`${API_PREFIX}/products/:productId`, async (request, response, next) => {
+    try {
+      const product = await productCatalogue.findProductById(request.params.productId);
 
       if (!product) {
         response.status(404).json({

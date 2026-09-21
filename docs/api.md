@@ -25,8 +25,8 @@ Successful responses use a `data` envelope. List responses add `meta`; errors us
 
 ## Current limits
 
-`POST /orders` trusts only a product ID, quantity, and delivery-option ID. It calculates all USD prices, shipping, tax, and delivery dates server-side. The response is explicitly an `awaiting_payment` test order; it does not collect payment and does not make an order eligible for fulfilment.
+`POST /orders` trusts only a product ID, quantity, and delivery-option ID. It calculates all USD prices, shipping, tax, and delivery dates server-side, then records the `awaiting_payment` test order and its item snapshots in PostgreSQL. It does not collect payment and does not make an order eligible for fulfilment.
 
-`POST /quotes` accepts requests only for quote-only catalogue items. The current implementation validates and returns a received request but does not persist it or notify sales; PostgreSQL and operational notifications are required before production use.
+`POST /quotes` accepts requests only for quote-only catalogue items and persists a received request in PostgreSQL. It does not yet notify sales; operational notifications are required before production use.
 
 Authentication, product administration, persistent carts, payments, and rate limiting arrive in later milestones. The temporary product content is illustrative and must be replaced with approved Rogontra catalogue records and licensed media before public launch.

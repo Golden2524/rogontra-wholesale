@@ -19,8 +19,8 @@ function text(value, label, { max = 200, min = 1 } = {}) {
   return value.trim();
 }
 
-export function createQuoteRequest(input) {
-  const product = findProductById(input?.productId);
+export async function createQuoteRequest(input, findProduct = findProductById) {
+  const product = await findProduct(input?.productId);
   if (!product || product.purchaseMode !== 'quote') {
     throw clientError(
       'QUOTE_PRODUCT_NOT_FOUND',

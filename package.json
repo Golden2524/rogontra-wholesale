@@ -15,6 +15,7 @@
     "db:status": "node --env-file-if-exists=.env.local backend/scripts/status.js",
     "db:seed": "node --env-file-if-exists=.env.local backend/scripts/seed-catalogue.js",
     "db:catalogue-status": "node --env-file-if-exists=.env.local backend/scripts/catalogue-status.js",
+    "db:verify-persistence": "node --env-file-if-exists=.env.local backend/scripts/verify-persistence.js",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",

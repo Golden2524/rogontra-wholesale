@@ -2,9 +2,13 @@ import { createApp } from './app.js';
 import { getPort } from './config.js';
 import { createDatabasePool } from './database.js';
 import { createDatabaseCatalogue } from './database-catalogue.js';
+import { createDatabasePersistence } from './database-persistence.js';
 
 const pool = createDatabasePool();
-const app = createApp({ catalogue: createDatabaseCatalogue(pool) });
+const app = createApp({
+  catalogue: createDatabaseCatalogue(pool),
+  persistence: createDatabasePersistence(pool)
+});
 const port = getPort();
 
 const server = app.listen(port, '0.0.0.0', () => {

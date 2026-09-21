@@ -37,7 +37,7 @@ function validateSearchQuery(query) {
   return query.trim();
 }
 
-export function createApp({ allowedOrigins = getAllowedOrigins(), catalogue } = {}) {
+export function createApp({ allowedOrigins = getAllowedOrigins(), catalogue, persistence } = {}) {
   const app = express();
   const productCatalogue = catalogue ?? { findProductById, listCategories, listProducts };
 
@@ -103,18 +103,19 @@ export function createApp({ allowedOrigins = getAllowedOrigins(), catalogue } = 
     }
   });
 
-  app.post(`${API_PREFIX}/orders`, (request, response, next) => {
+  app.post(`${API_PREFIX}/orders`, async (request, response, next) => {
     try {
-      const order = createOrderFromCart(request.body?.cart);
-      response.status(201).json({ data: order });
+      const order = await createOrderFromCart(request.body?.cart, productCatalogue.findProductById);
+      response.status(201).json({ data: persistence ? await persistence.saveOrder(order) : order });
     } catch (error) {
       next(error);
     }
   });
 
-  app.post(`${API_PREFIX}/quotes`, (request, response, next) => {
+  app.post(`${API_PREFIX}/quotes`, async (request, response, next) => {
     try {
-      response.status(201).json({ data: createQuoteRequest(request.body) });
+      const quote = await createQuoteRequest(request.body, productCatalogue.findProductById);
+      response.status(201).json({ data: persistence ? await persistence.saveQuote(quote) : quote });
     } catch (error) {
       next(error);
     }

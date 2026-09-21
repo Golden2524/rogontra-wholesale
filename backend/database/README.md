@@ -16,6 +16,8 @@ Run `npm run db:seed` after migrations to import the illustrative catalogue. It 
 
 Run `npm run db:catalogue-status` to confirm the imported product, quote-only product, and category counts without exposing database credentials.
 
+`npm run db:verify-persistence` creates one synthetic `.invalid` quote and one `awaiting_payment` test order in the development database, then confirms their persisted records. Do not run it against production.
+
 ## Before production
 
 - Run migrations through a managed deployment pipeline.

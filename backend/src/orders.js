@@ -34,7 +34,7 @@ function validateCartItem(item) {
   }
 }
 
-export function createOrderFromCart(cart) {
+export async function createOrderFromCart(cart, findProduct = findProductById) {
   if (!Array.isArray(cart) || cart.length === 0 || cart.length > MAX_CART_ITEMS) {
     throw createClientError(
       'INVALID_CART',
@@ -47,7 +47,8 @@ export function createOrderFromCart(cart) {
   let productPriceCents = 0;
   let shippingPriceCents = 0;
 
-  const products = cart.map((item) => {
+  const products = [];
+  for (const item of cart) {
     validateCartItem(item);
 
     if (productIds.has(item.productId)) {
@@ -55,7 +56,7 @@ export function createOrderFromCart(cart) {
     }
     productIds.add(item.productId);
 
-    const product = findProductById(item.productId);
+    const product = await findProduct(item.productId);
     if (!product) {
       throw createClientError('CART_PRODUCT_NOT_FOUND', 'A product in the cart no longer exists.');
     }
@@ -78,12 +79,15 @@ export function createOrderFromCart(cart) {
     productPriceCents += product.priceCents * item.quantity;
     shippingPriceCents += deliveryOption.shippingPriceCents;
 
-    return {
+    products.push({
       productId: product.id,
+      productName: product.name,
+      sku: product.sku,
+      unitPriceCents: product.priceCents,
       quantity: item.quantity,
       estimatedDeliveryTime: calculateEstimatedDeliveryTime(deliveryOption.deliveryDays, orderTime)
-    };
-  });
+    });
+  }
 
   const subtotalCents = productPriceCents + shippingPriceCents;
   const taxCents = Math.round(subtotalCents * TAX_RATE);

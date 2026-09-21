@@ -3,11 +3,17 @@ import { getPort } from './config.js';
 import { createDatabasePool } from './database.js';
 import { createDatabaseCatalogue } from './database-catalogue.js';
 import { createDatabasePersistence } from './database-persistence.js';
+import { createAuthService } from './auth.js';
+import { createDatabaseUserRepository } from './database-users.js';
 
 const pool = createDatabasePool();
 const app = createApp({
   catalogue: createDatabaseCatalogue(pool),
-  persistence: createDatabasePersistence(pool)
+  persistence: createDatabasePersistence(pool),
+  auth: createAuthService({
+    repository: createDatabaseUserRepository(pool),
+    secret: process.env.JWT_SECRET
+  })
 });
 const port = getPort();
 

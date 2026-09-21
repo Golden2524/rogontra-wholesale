@@ -37,7 +37,12 @@ function validateSearchQuery(query) {
   return query.trim();
 }
 
-export function createApp({ allowedOrigins = getAllowedOrigins(), catalogue, persistence } = {}) {
+export function createApp({
+  allowedOrigins = getAllowedOrigins(),
+  auth,
+  catalogue,
+  persistence
+} = {}) {
   const app = express();
   const productCatalogue = catalogue ?? { findProductById, listCategories, listProducts };
 
@@ -53,6 +58,40 @@ export function createApp({ allowedOrigins = getAllowedOrigins(), catalogue, per
         timestamp: new Date().toISOString()
       }
     });
+  });
+
+  app.post(`${API_PREFIX}/auth/register`, async (request, response, next) => {
+    try {
+      if (!auth) throw new Error('Authentication is not configured.');
+      response.status(201).json({ data: await auth.register(request.body) });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post(`${API_PREFIX}/auth/login`, async (request, response, next) => {
+    try {
+      if (!auth) throw new Error('Authentication is not configured.');
+      response.status(200).json({ data: await auth.login(request.body) });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get(`${API_PREFIX}/auth/me`, (request, response, next) => {
+    try {
+      if (!auth) throw new Error('Authentication is not configured.');
+      const token = request.headers.authorization?.replace(/^Bearer\s+/i, '');
+      if (!token) {
+        const error = new Error('A bearer token is required.');
+        error.code = 'AUTH_REQUIRED';
+        error.statusCode = 401;
+        throw error;
+      }
+      response.status(200).json({ data: auth.verifyToken(token) });
+    } catch (error) {
+      next(error);
+    }
   });
 
   app.get(`${API_PREFIX}/products`, async (request, response, next) => {

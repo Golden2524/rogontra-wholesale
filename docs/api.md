@@ -13,13 +13,16 @@ The API listens on `http://localhost:3000` by default. Copy `.env.example` to `.
 
 ## Endpoints
 
-| Method | Path                          | Description                                                 |
-| ------ | ----------------------------- | ----------------------------------------------------------- |
-| `GET`  | `/api/v1/health`              | Service health and timestamp                                |
-| `GET`  | `/api/v1/products`            | Local catalogue; accepts optional `q` search text           |
-| `GET`  | `/api/v1/products/:productId` | One product by ID                                           |
-| `POST` | `/api/v1/orders`              | Validates a cart and creates an awaiting-payment test order |
-| `POST` | `/api/v1/quotes`              | Validates and records a sales-assisted quote request        |
+| Method | Path                          | Description                                                   |
+| ------ | ----------------------------- | ------------------------------------------------------------- |
+| `GET`  | `/api/v1/health`              | Service health and timestamp                                  |
+| `GET`  | `/api/v1/products`            | Local catalogue; accepts optional `q` search text             |
+| `GET`  | `/api/v1/products/:productId` | One product by ID                                             |
+| `POST` | `/api/v1/orders`              | Validates a cart and creates an awaiting-payment test order   |
+| `POST` | `/api/v1/quotes`              | Validates and records a sales-assisted quote request          |
+| `POST` | `/api/v1/auth/register`       | Creates a customer account and returns a signed session token |
+| `POST` | `/api/v1/auth/login`          | Verifies credentials and returns a signed session token       |
+| `GET`  | `/api/v1/auth/me`             | Returns the current session identity; requires a bearer token |
 
 Successful responses use a `data` envelope. List responses add `meta`; errors use an `error` object with a stable code and a safe message.
 
@@ -29,4 +32,6 @@ Successful responses use a `data` envelope. List responses add `meta`; errors us
 
 `POST /quotes` accepts requests only for quote-only catalogue items and persists a received request in PostgreSQL. It does not yet notify sales; operational notifications are required before production use.
 
-Authentication, product administration, persistent carts, payments, and rate limiting arrive in later milestones. The temporary product content is illustrative and must be replaced with approved Rogontra catalogue records and licensed media before public launch.
+Authentication uses a server-configured `JWT_SECRET` and bcrypt password hashes. Browser clients must never receive a password hash or the JWT secret.
+
+Product administration, persistent carts, payments, and rate limiting arrive in later milestones. The temporary product content is illustrative and must be replaced with approved Rogontra catalogue records and licensed media before public launch.

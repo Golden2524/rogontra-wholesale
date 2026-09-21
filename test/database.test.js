@@ -12,3 +12,8 @@ test('initial migration protects Rogontra money and quote-only product invariant
   assert.match(sql, /CREATE TABLE IF NOT EXISTS payment_attempts/);
   assert.match(sql, /CREATE TABLE IF NOT EXISTS quote_requests/);
 });
+
+test('second migration gives imported catalogue products a stable external ID', async () => {
+  const sql = await readFile('backend/database/migrations/002_add_external_product_id.sql', 'utf8');
+  assert.match(sql, /ADD COLUMN IF NOT EXISTS external_id TEXT UNIQUE/);
+});

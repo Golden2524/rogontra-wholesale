@@ -10,6 +10,12 @@ Rogontra stores money in integer USD cents. Local-currency figures are display o
 
 The migration is idempotent, so it can be safely rerun. Do not use a production database to experiment with sample data.
 
+## Seed the development catalogue
+
+Run `npm run db:seed` after migrations to import the illustrative catalogue. It is safe to rerun and updates existing seed products by their `external_id`. Replace this seed data with approved products and media before launch.
+
+Run `npm run db:catalogue-status` to confirm the imported product, quote-only product, and category counts without exposing database credentials.
+
 ## Before production
 
 - Run migrations through a managed deployment pipeline.

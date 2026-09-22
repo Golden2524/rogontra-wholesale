@@ -1,14 +1,31 @@
-import { orders } from '../data/order.js';
 import { loadProductsFetch, getProduct } from '../data/products.js';
 import formatCurrency from './utils/money.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { cart } from '../data/cart-class.js';
 import setUpSearch from './utils/search.js';
+import { authenticatedFetch, getSession } from './auth-client.js';
 
 async function loadPage() {
   await loadProductsFetch();
 
+  if (!getSession()) {
+    window.location.href = 'auth.html?returnTo=orders.html';
+    return;
+  }
+
+  const response = await authenticatedFetch('/account/orders');
+  const payload = await response.json();
+  if (!response.ok) {
+    throw new Error(payload.error?.message ?? 'Unable to load your orders.');
+  }
+  const orders = payload.data;
+
   let ordersHTML = '';
+
+  if (orders.length === 0) {
+    ordersHTML =
+      '<p class="account-empty-state">No orders yet. Your submitted test orders will appear here.</p>';
+  }
 
   orders.forEach((order) => {
     const orderTimeString = dayjs(order.orderTime).format('MMMM D');
@@ -45,6 +62,7 @@ async function loadPage() {
 
     order.products.forEach((productDetails) => {
       const product = getProduct(productDetails.productId);
+      if (!product) return;
 
       productsListHTML += `
         <div class="product-image-container">
@@ -89,7 +107,7 @@ orderId=${order.id}&productId=${product.id}">
   document.querySelectorAll('.js-buy-again-button').forEach((button) => {
     button.addEventListener('click', () => {
       const productId = button.dataset.productId;
-      const quantity = Number((button.dataset.quantity = 1));
+      const quantity = Number(button.dataset.quantity);
 
       cart.addToCart(productId, quantity);
 

@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './config.js';
+import { authenticatedFetch, getSession } from './auth-client.js';
 
 const dialog = document.querySelector('.js-quote-dialog');
 const form = document.querySelector('.js-quote-form');
@@ -6,6 +6,10 @@ const status = document.querySelector('.js-quote-status');
 
 document.querySelectorAll('.js-request-quote').forEach((button) => {
   button.addEventListener('click', () => {
+    if (!getSession()) {
+      window.location.href = 'auth.html?returnTo=index.html';
+      return;
+    }
     form.productId.value = button.dataset.productId;
     document.querySelector('.js-quote-product-name').textContent = button.dataset.productName;
     status.textContent = '';
@@ -22,7 +26,7 @@ form.addEventListener('submit', async (event) => {
   status.textContent = 'Submitting request…';
 
   try {
-    const response = await fetch(`${API_BASE_URL}/quotes`, {
+    const response = await authenticatedFetch('/quotes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(Object.fromEntries(new FormData(form)))

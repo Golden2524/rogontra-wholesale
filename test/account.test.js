@@ -16,6 +16,10 @@ test('customer history endpoints require a bearer token and scope results to the
       async listQuotesForUser(userId) {
         requestedUsers.push(userId);
         return [{ id: 'quote-1' }];
+      },
+      async getOrderForUser(userId, orderId) {
+        requestedUsers.push(userId);
+        return orderId === 'order-1' ? { id: orderId } : undefined;
       }
     }
   });
@@ -32,11 +36,20 @@ test('customer history endpoints require a bearer token and scope results to the
     const quotes = await fetch(`${baseUrl}/quotes`, {
       headers: { Authorization: 'Bearer test-token' }
     });
+    const order = await fetch(`${baseUrl}/orders/order-1`, {
+      headers: { Authorization: 'Bearer test-token' }
+    });
+    const missingOrder = await fetch(`${baseUrl}/orders/not-found`, {
+      headers: { Authorization: 'Bearer test-token' }
+    });
 
     assert.equal(denied.status, 401);
     assert.deepEqual((await orders.json()).data, [{ id: 'order-1' }]);
     assert.deepEqual((await quotes.json()).data, [{ id: 'quote-1' }]);
-    assert.deepEqual(requestedUsers, ['customer-1', 'customer-1']);
+    assert.deepEqual((await order.json()).data, { id: 'order-1' });
+    assert.equal(missingOrder.status, 404);
+    assert.equal((await missingOrder.json()).error.code, 'ORDER_NOT_FOUND');
+    assert.deepEqual(requestedUsers, ['customer-1', 'customer-1', 'customer-1', 'customer-1']);
   } finally {
     await new Promise((resolve, reject) =>
       server.close((error) => (error ? reject(error) : resolve()))

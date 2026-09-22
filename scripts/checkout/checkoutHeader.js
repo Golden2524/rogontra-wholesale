@@ -1,9 +1,11 @@
 import { cart } from '../../data/cart-class.js';
+import { getSession } from '../auth-client.js';
 
 export function renderCheckoutHeader() {
   let checkoutHeaderHTML = '';
 
   const cartQuantity = cart.calculateCartQuantity();
+  const session = getSession();
 
   checkoutHeaderHTML += `
     <div class="checkout-header-left-section">
@@ -18,6 +20,9 @@ export function renderCheckoutHeader() {
     </div>
 
     <div class="checkout-header-right-section">
+      <a class="return-to-home-link" href="${session ? 'orders.html' : 'auth.html?returnTo=checkout.html'}">
+        ${session ? 'Your orders' : 'Sign in'}
+      </a>
       <img src="images/icons/rogontra-secure.svg" alt="Secure order">
     </div>
   `;

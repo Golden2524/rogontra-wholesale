@@ -46,8 +46,16 @@ try {
     persistence.listOrdersForUser(userId),
     persistence.listQuotesForUser(userId)
   ]);
+  const ownOrder = await persistence.getOrderForUser(userId, order.id);
 
-  console.info(JSON.stringify({ userId, ownOrders: orders.length, ownQuotes: quotes.length }));
+  console.info(
+    JSON.stringify({
+      userId,
+      ownOrders: orders.length,
+      ownQuotes: quotes.length,
+      ownOrderItems: ownOrder?.products.length ?? 0
+    })
+  );
 } finally {
   await pool.end();
 }

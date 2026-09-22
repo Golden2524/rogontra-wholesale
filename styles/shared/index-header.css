@@ -97,14 +97,37 @@
 }
 
 .rogontra-header-right-section {
-  width: 180px;
+  width: 265px;
   flex-shrink: 0;
   display: flex;
   justify-content: end;
+  gap: 4px;
 }
 
 .orders-link {
   color: white;
+}
+
+.account-link {
+  color: white;
+  max-width: 90px;
+  overflow: hidden;
+}
+
+.account-link .orders-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 650px) {
+  .account-link {
+    display: none;
+  }
+
+  .rogontra-header-right-section {
+    width: 180px;
+  }
 }
 
 .returns-text {

@@ -2,6 +2,7 @@ import { getOrder } from '../data/order.js';
 import { loadProductsFetch, getProduct } from '../data/products.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import setUpSearch from './utils/search.js';
+import { authenticatedFetch, getSession } from './auth-client.js';
 
 async function loadPage() {
   await loadProductsFetch();
@@ -10,8 +11,19 @@ async function loadPage() {
   const orderId = url.searchParams.get('orderId');
   const productId = url.searchParams.get('productId');
 
-  const order = getOrder(orderId);
+  let order = getOrder(orderId);
+  if (getSession()) {
+    const response = await authenticatedFetch(`/account/orders/${orderId}`);
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.error?.message ?? 'Unable to load this order.');
+    order = payload.data;
+  }
   const product = getProduct(productId);
+
+  if (!order || !product) {
+    window.location.href = 'orders.html';
+    return;
+  }
 
   let productDetails;
 
@@ -20,6 +32,11 @@ async function loadPage() {
       productDetails = details;
     }
   });
+
+  if (!productDetails) {
+    window.location.href = 'orders.html';
+    return;
+  }
 
   const today = dayjs();
   const orderTime = dayjs(order.orderTime);

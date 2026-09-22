@@ -181,6 +181,28 @@ export function createApp({
     }
   });
 
+  app.get(`${API_PREFIX}/account/orders/:orderId`, async (request, response, next) => {
+    try {
+      if (!persistence) throw new Error('Order persistence is not configured.');
+      const order = await persistence.getOrderForUser(
+        requireUser(request).id,
+        request.params.orderId
+      );
+      if (!order) {
+        response.status(404).json({
+          error: {
+            code: 'ORDER_NOT_FOUND',
+            message: 'The requested order does not exist.'
+          }
+        });
+        return;
+      }
+      response.status(200).json({ data: order });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.get(`${API_PREFIX}/account/quotes`, async (request, response, next) => {
     try {
       if (!persistence) throw new Error('Quote persistence is not configured.');

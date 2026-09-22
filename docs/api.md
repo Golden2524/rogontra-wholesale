@@ -9,7 +9,7 @@ npm ci
 npm run api:dev
 ```
 
-The API listens on `http://localhost:3000` by default. Copy `.env.example` to `.env` to configure the port and permitted storefront origin.
+The API listens on `http://localhost:3000` by default. Copy `.env.example` to `.env.local` to configure the port, database, JWT secret, and permitted storefront origin. Keep `.env.local` private.
 
 ## Endpoints
 
@@ -24,6 +24,7 @@ The API listens on `http://localhost:3000` by default. Copy `.env.example` to `.
 | `POST` | `/api/v1/auth/login`          | Verifies credentials and returns a signed session token       |
 | `GET`  | `/api/v1/auth/me`             | Returns the current session identity; requires a bearer token |
 | `GET`  | `/api/v1/account/orders`      | Returns only the signed-in customer's orders                  |
+| `GET`  | `/api/v1/account/orders/:id`  | Returns one signed-in customer's order and its item snapshots |
 | `GET`  | `/api/v1/account/quotes`      | Returns only the signed-in customer's quote requests          |
 
 Successful responses use a `data` envelope. List responses add `meta`; errors use an `error` object with a stable code and a safe message.

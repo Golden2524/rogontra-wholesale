@@ -3,7 +3,7 @@ import { getProduct } from '../../data/products.js';
 import { getDeliveryOption } from '../../data/deliveryOption.js';
 import formatCurrency from '../utils/money.js';
 import { addOrder } from '../../data/order.js';
-import { API_BASE_URL } from '../config.js';
+import { authenticatedFetch } from '../auth-client.js';
 
 export function renderPaymentSummary() {
   let productPriceCent = 0;
@@ -77,7 +77,7 @@ export function renderPaymentSummary() {
     paymentMessage.textContent = '';
 
     try {
-      const response = await fetch(`${API_BASE_URL}/orders`, {
+      const response = await authenticatedFetch('/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

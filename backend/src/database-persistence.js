@@ -83,7 +83,23 @@ export function createDatabasePersistence(pool) {
     async listOrdersForUser(userId) {
       const result = await pool.query(
         `SELECT id, status, payment_status, currency, product_price_cents, shipping_price_cents,
-                tax_cents, total_cost_cents, created_at
+                tax_cents, total_cost_cents, created_at,
+                COALESCE(
+                  (
+                    SELECT json_agg(
+                      json_build_object(
+                        'productId', p.external_id,
+                        'productName', oi.product_name,
+                        'quantity', oi.quantity,
+                        'estimatedDeliveryTime', oi.estimated_delivery_at
+                      ) ORDER BY oi.id
+                    )
+                    FROM order_items oi
+                    JOIN products p ON p.id = oi.product_id
+                    WHERE oi.order_id = orders.id
+                  ),
+                  '[]'
+                ) AS products
            FROM orders WHERE user_id = $1 ORDER BY created_at DESC`,
         [userId]
       );
@@ -96,8 +112,48 @@ export function createDatabasePersistence(pool) {
         shippingPriceCents: row.shipping_price_cents,
         taxCents: row.tax_cents,
         totalCostCents: row.total_cost_cents,
-        orderTime: row.created_at.toISOString()
+        orderTime: row.created_at.toISOString(),
+        products: row.products
       }));
+    },
+
+    async getOrderForUser(userId, orderId) {
+      const result = await pool.query(
+        `SELECT o.id, o.status, o.payment_status, o.currency, o.product_price_cents,
+                o.shipping_price_cents, o.tax_cents, o.total_cost_cents, o.created_at,
+                COALESCE(
+                  json_agg(
+                    json_build_object(
+                      'productId', p.external_id,
+                      'productName', oi.product_name,
+                      'quantity', oi.quantity,
+                      'estimatedDeliveryTime', oi.estimated_delivery_at
+                    ) ORDER BY oi.id
+                  ) FILTER (WHERE oi.id IS NOT NULL),
+                  '[]'
+                ) AS products
+           FROM orders o
+           LEFT JOIN order_items oi ON oi.order_id = o.id
+           LEFT JOIN products p ON p.id = oi.product_id
+          WHERE o.user_id = $1 AND o.id = $2
+          GROUP BY o.id`,
+        [userId, orderId]
+      );
+      const row = result.rows[0];
+      if (!row) return undefined;
+
+      return {
+        id: row.id,
+        status: row.status,
+        paymentStatus: row.payment_status,
+        currency: row.currency,
+        productPriceCents: row.product_price_cents,
+        shippingPriceCents: row.shipping_price_cents,
+        taxCents: row.tax_cents,
+        totalCostCents: row.total_cost_cents,
+        orderTime: row.created_at.toISOString(),
+        products: row.products
+      };
     },
 
     async listQuotesForUser(userId) {

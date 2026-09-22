@@ -21,6 +21,10 @@ async function loadPage() {
     ordersResponse.json(),
     quotesResponse.json()
   ]);
+  if (ordersResponse.status === 401 || quotesResponse.status === 401) {
+    window.location.href = 'auth.html?returnTo=orders.html';
+    return;
+  }
   if (!ordersResponse.ok) {
     throw new Error(ordersPayload.error?.message ?? 'Unable to load your orders.');
   }

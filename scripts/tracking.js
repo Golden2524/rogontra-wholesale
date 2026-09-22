@@ -15,6 +15,10 @@ async function loadPage() {
   if (getSession()) {
     const response = await authenticatedFetch(`/account/orders/${orderId}`);
     const payload = await response.json();
+    if (response.status === 401) {
+      window.location.href = 'auth.html?returnTo=orders.html';
+      return;
+    }
     if (!response.ok) throw new Error(payload.error?.message ?? 'Unable to load this order.');
     order = payload.data;
   }

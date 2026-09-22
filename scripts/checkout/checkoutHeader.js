@@ -1,5 +1,5 @@
 import { cart } from '../../data/cart-class.js';
-import { getSession } from '../auth-client.js';
+import { clearSession, getSession } from '../auth-client.js';
 
 export function renderCheckoutHeader() {
   let checkoutHeaderHTML = '';
@@ -23,9 +23,14 @@ export function renderCheckoutHeader() {
       <a class="return-to-home-link" href="${session ? 'orders.html' : 'auth.html?returnTo=checkout.html'}">
         ${session ? 'Your orders' : 'Sign in'}
       </a>
+      ${session ? '<button class="checkout-sign-out js-checkout-sign-out" type="button">Sign out</button>' : ''}
       <img src="images/icons/rogontra-secure.svg" alt="Secure order">
     </div>
   `;
 
   document.querySelector('.js-header-content').innerHTML = checkoutHeaderHTML;
+  document.querySelector('.js-checkout-sign-out')?.addEventListener('click', () => {
+    clearSession();
+    window.location.href = 'index.html';
+  });
 }

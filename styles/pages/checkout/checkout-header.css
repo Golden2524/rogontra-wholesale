@@ -92,8 +92,22 @@
 }
 
 .checkout-header-right-section {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 12px;
   text-align: right;
   width: 150px;
+}
+
+.checkout-sign-out {
+  border: none;
+  background: transparent;
+  color: #087f78;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  text-decoration: underline;
 }
 
 @media (max-width: 1000px) {

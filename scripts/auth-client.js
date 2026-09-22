@@ -30,5 +30,7 @@ export async function authenticatedFetch(path, options = {}) {
   if (!session) throw new Error('Please sign in to continue.');
   const headers = new Headers(options.headers);
   headers.set('Authorization', `Bearer ${session.token}`);
-  return fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+  const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+  if (response.status === 401) clearSession();
+  return response;
 }

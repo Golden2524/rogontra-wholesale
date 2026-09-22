@@ -4,7 +4,7 @@ Rogontra Wholesale is a global B2B commerce platform for sourcing consumer goods
 
 ## Current status
 
-The project is in active redevelopment. The existing interface demonstrates catalogue browsing, search, cart management, secure customer sign-up/sign-in, checkout, orders, and delivery tracking. Its former tutorial API and branding are being replaced; it must not be treated as a live store until the API, security, payment verification, and deployment milestones are complete.
+The project is in active redevelopment. The existing interface demonstrates catalogue browsing, search, cart management, secure customer sign-up/sign-in, checkout, customer order and quote history, and delivery tracking. Its former tutorial API and branding are being replaced; it must not be treated as a live store until the API, security, payment verification, and deployment milestones are complete.
 
 ## Product direction
 

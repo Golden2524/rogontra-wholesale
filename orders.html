@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Orders | Rogontra Wholesale</title>
+    <title>Account | Rogontra Wholesale</title>
 
     <!-- This code is needed for responsive design to work.
       (Responsive design = make the website look good on
@@ -63,9 +63,17 @@
     </div>
 
     <div class="main">
-      <div class="page-title">Your Orders</div>
+      <div class="page-title">Your account</div>
 
-      <div class="orders-grid js-order-grid"></div>
+      <section class="account-section" aria-labelledby="orders-title">
+        <h1 class="account-section-title" id="orders-title">Your orders</h1>
+        <div class="orders-grid js-order-grid"></div>
+      </section>
+
+      <section class="account-section" aria-labelledby="quotes-title">
+        <h2 class="account-section-title" id="quotes-title">Your quote requests</h2>
+        <div class="quote-history-grid js-quote-history-grid"></div>
+      </section>
     </div>
 
     <script type="module" src="scripts/order.js"></script>

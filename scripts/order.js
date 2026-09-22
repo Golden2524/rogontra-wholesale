@@ -13,12 +13,22 @@ async function loadPage() {
     return;
   }
 
-  const response = await authenticatedFetch('/account/orders');
-  const payload = await response.json();
-  if (!response.ok) {
-    throw new Error(payload.error?.message ?? 'Unable to load your orders.');
+  const [ordersResponse, quotesResponse] = await Promise.all([
+    authenticatedFetch('/account/orders'),
+    authenticatedFetch('/account/quotes')
+  ]);
+  const [ordersPayload, quotesPayload] = await Promise.all([
+    ordersResponse.json(),
+    quotesResponse.json()
+  ]);
+  if (!ordersResponse.ok) {
+    throw new Error(ordersPayload.error?.message ?? 'Unable to load your orders.');
   }
-  const orders = payload.data;
+  if (!quotesResponse.ok) {
+    throw new Error(quotesPayload.error?.message ?? 'Unable to load your quote requests.');
+  }
+  const orders = ordersPayload.data;
+  const quotes = quotesPayload.data;
 
   let ordersHTML = '';
 
@@ -103,6 +113,7 @@ orderId=${order.id}&productId=${product.id}">
   }
 
   document.querySelector('.js-order-grid').innerHTML = ordersHTML;
+  document.querySelector('.js-quote-history-grid').innerHTML = quotesHistoryHTML(quotes);
 
   document.querySelectorAll('.js-buy-again-button').forEach((button) => {
     button.addEventListener('click', () => {
@@ -128,6 +139,27 @@ orderId=${order.id}&productId=${product.id}">
     const cartQuantity = cart.calculateCartQuantity();
 
     document.querySelector('.js-quantity-count').innerHTML = cartQuantity;
+  }
+
+  function quotesHistoryHTML(quoteRequests) {
+    if (quoteRequests.length === 0) {
+      return '<p class="account-empty-state">No quote requests yet. Request a quote for high-value or configurable products from the catalogue.</p>';
+    }
+
+    return quoteRequests
+      .map(
+        (quote) => `
+          <article class="quote-history-card">
+            <div>
+              <p class="quote-history-meta">Submitted ${dayjs(quote.createdAt).format('MMMM D, YYYY')}</p>
+              <h3>${quote.productName}</h3>
+              <p>Quantity: ${quote.quantity} · Destination: ${quote.destinationCountry}</p>
+            </div>
+            <span class="quote-status-badge">${quote.status}</span>
+          </article>
+        `
+      )
+      .join('');
   }
 
   setUpSearch();

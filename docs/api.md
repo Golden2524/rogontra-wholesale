@@ -23,6 +23,8 @@ The API listens on `http://localhost:3000` by default. Copy `.env.example` to `.
 | `POST` | `/api/v1/auth/register`       | Creates a customer account and returns a signed session token |
 | `POST` | `/api/v1/auth/login`          | Verifies credentials and returns a signed session token       |
 | `GET`  | `/api/v1/auth/me`             | Returns the current session identity; requires a bearer token |
+| `GET`  | `/api/v1/account/orders`      | Returns only the signed-in customer's orders                  |
+| `GET`  | `/api/v1/account/quotes`      | Returns only the signed-in customer's quote requests          |
 
 Successful responses use a `data` envelope. List responses add `meta`; errors use an `error` object with a stable code and a safe message.
 
@@ -33,5 +35,7 @@ Successful responses use a `data` envelope. List responses add `meta`; errors us
 `POST /quotes` accepts requests only for quote-only catalogue items and persists a received request in PostgreSQL. It does not yet notify sales; operational notifications are required before production use.
 
 Authentication uses a server-configured `JWT_SECRET` and bcrypt password hashes. Browser clients must never receive a password hash or the JWT secret.
+
+Creating orders and quote requests requires a bearer token. New records are linked to that authenticated user; account-history endpoints never accept a user ID from the browser.
 
 Product administration, persistent carts, payments, and rate limiting arrive in later milestones. The temporary product content is illustrative and must be replaced with approved Rogontra catalogue records and licensed media before public launch.

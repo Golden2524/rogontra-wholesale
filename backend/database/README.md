@@ -20,6 +20,8 @@ Run `npm run db:catalogue-status` to confirm the imported product, quote-only pr
 
 `npm run db:verify-auth` creates one synthetic `.invalid` customer account, verifies login, and confirms its signed session token. Do not run it against production.
 
+`npm run db:verify-account-history` creates a synthetic `.invalid` user, order, and quote, then confirms that only that user's history is returned. Do not run it against production.
+
 ## Before production
 
 - Run migrations through a managed deployment pipeline.

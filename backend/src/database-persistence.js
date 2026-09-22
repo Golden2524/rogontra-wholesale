@@ -1,11 +1,11 @@
 export function createDatabasePersistence(pool) {
   return {
-    async saveQuote(quote) {
+    async saveQuote(quote, userId) {
       const result = await pool.query(
         `INSERT INTO quote_requests (
           product_id, product_name, quantity, company_name, contact_name, email,
-          destination_country, notes, status
-        ) SELECT id, $2, $3, $4, $5, $6, $7, $8, $9
+          destination_country, notes, status, user_id
+        ) SELECT id, $2, $3, $4, $5, $6, $7, $8, $9, $10
           FROM products WHERE external_id = $1
           RETURNING id, created_at`,
         [
@@ -17,7 +17,8 @@ export function createDatabasePersistence(pool) {
           quote.email,
           quote.destinationCountry,
           quote.notes,
-          quote.status
+          quote.status,
+          userId
         ]
       );
 
@@ -29,17 +30,18 @@ export function createDatabasePersistence(pool) {
       };
     },
 
-    async saveOrder(order) {
+    async saveOrder(order, userId) {
       const client = await pool.connect();
       try {
         await client.query('BEGIN');
         await client.query(
           `INSERT INTO orders (
-            id, status, payment_status, currency, product_price_cents,
+            id, user_id, status, payment_status, currency, product_price_cents,
             shipping_price_cents, tax_cents, total_cost_cents, created_at
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
           [
             order.id,
+            userId,
             order.status,
             order.paymentStatus,
             order.currency,
@@ -76,6 +78,42 @@ export function createDatabasePersistence(pool) {
       } finally {
         client.release();
       }
+    },
+
+    async listOrdersForUser(userId) {
+      const result = await pool.query(
+        `SELECT id, status, payment_status, currency, product_price_cents, shipping_price_cents,
+                tax_cents, total_cost_cents, created_at
+           FROM orders WHERE user_id = $1 ORDER BY created_at DESC`,
+        [userId]
+      );
+      return result.rows.map((row) => ({
+        id: row.id,
+        status: row.status,
+        paymentStatus: row.payment_status,
+        currency: row.currency,
+        productPriceCents: row.product_price_cents,
+        shippingPriceCents: row.shipping_price_cents,
+        taxCents: row.tax_cents,
+        totalCostCents: row.total_cost_cents,
+        orderTime: row.created_at.toISOString()
+      }));
+    },
+
+    async listQuotesForUser(userId) {
+      const result = await pool.query(
+        `SELECT id, product_name, quantity, destination_country, status, created_at
+           FROM quote_requests WHERE user_id = $1 ORDER BY created_at DESC`,
+        [userId]
+      );
+      return result.rows.map((row) => ({
+        id: row.id,
+        productName: row.product_name,
+        quantity: row.quantity,
+        destinationCountry: row.destination_country,
+        status: row.status,
+        createdAt: row.created_at.toISOString()
+      }));
     }
   };
 }

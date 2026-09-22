@@ -50,6 +50,18 @@ export function createApp({
   app.use(createCorsMiddleware(allowedOrigins));
   app.use(express.json({ limit: '100kb' }));
 
+  function requireUser(request) {
+    if (!auth) throw new Error('Authentication is not configured.');
+    const token = request.headers.authorization?.replace(/^Bearer\s+/i, '');
+    if (!token) {
+      const error = new Error('A bearer token is required.');
+      error.code = 'AUTH_REQUIRED';
+      error.statusCode = 401;
+      throw error;
+    }
+    return auth.verifyToken(token);
+  }
+
   app.get(`${API_PREFIX}/health`, (_request, response) => {
     response.status(200).json({
       data: {
@@ -80,15 +92,7 @@ export function createApp({
 
   app.get(`${API_PREFIX}/auth/me`, (request, response, next) => {
     try {
-      if (!auth) throw new Error('Authentication is not configured.');
-      const token = request.headers.authorization?.replace(/^Bearer\s+/i, '');
-      if (!token) {
-        const error = new Error('A bearer token is required.');
-        error.code = 'AUTH_REQUIRED';
-        error.statusCode = 401;
-        throw error;
-      }
-      response.status(200).json({ data: auth.verifyToken(token) });
+      response.status(200).json({ data: requireUser(request) });
     } catch (error) {
       next(error);
     }
@@ -144,8 +148,11 @@ export function createApp({
 
   app.post(`${API_PREFIX}/orders`, async (request, response, next) => {
     try {
+      const user = requireUser(request);
       const order = await createOrderFromCart(request.body?.cart, productCatalogue.findProductById);
-      response.status(201).json({ data: persistence ? await persistence.saveOrder(order) : order });
+      response.status(201).json({
+        data: persistence ? await persistence.saveOrder(order, user.id) : order
+      });
     } catch (error) {
       next(error);
     }
@@ -153,8 +160,33 @@ export function createApp({
 
   app.post(`${API_PREFIX}/quotes`, async (request, response, next) => {
     try {
+      const user = requireUser(request);
       const quote = await createQuoteRequest(request.body, productCatalogue.findProductById);
-      response.status(201).json({ data: persistence ? await persistence.saveQuote(quote) : quote });
+      response.status(201).json({
+        data: persistence ? await persistence.saveQuote(quote, user.id) : quote
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get(`${API_PREFIX}/account/orders`, async (request, response, next) => {
+    try {
+      if (!persistence) throw new Error('Order persistence is not configured.');
+      response
+        .status(200)
+        .json({ data: await persistence.listOrdersForUser(requireUser(request).id) });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get(`${API_PREFIX}/account/quotes`, async (request, response, next) => {
+    try {
+      if (!persistence) throw new Error('Quote persistence is not configured.');
+      response
+        .status(200)
+        .json({ data: await persistence.listQuotesForUser(requireUser(request).id) });
     } catch (error) {
       next(error);
     }

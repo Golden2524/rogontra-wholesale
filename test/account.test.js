@@ -1,0 +1,45 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+
+import { createApp } from '../backend/src/app.js';
+
+test('customer history endpoints require a bearer token and scope results to the session user', async () => {
+  const requestedUsers = [];
+  const app = createApp({
+    allowedOrigins: ['http://localhost:5500'],
+    auth: { verifyToken: () => ({ id: 'customer-1', email: 'buyer@example.com' }) },
+    persistence: {
+      async listOrdersForUser(userId) {
+        requestedUsers.push(userId);
+        return [{ id: 'order-1' }];
+      },
+      async listQuotesForUser(userId) {
+        requestedUsers.push(userId);
+        return [{ id: 'quote-1' }];
+      }
+    }
+  });
+  const server = app.listen(0);
+  await new Promise((resolve) => server.once('listening', resolve));
+
+  try {
+    const { port } = server.address();
+    const baseUrl = `http://127.0.0.1:${port}/api/v1/account`;
+    const denied = await fetch(`${baseUrl}/orders`);
+    const orders = await fetch(`${baseUrl}/orders`, {
+      headers: { Authorization: 'Bearer test-token' }
+    });
+    const quotes = await fetch(`${baseUrl}/quotes`, {
+      headers: { Authorization: 'Bearer test-token' }
+    });
+
+    assert.equal(denied.status, 401);
+    assert.deepEqual((await orders.json()).data, [{ id: 'order-1' }]);
+    assert.deepEqual((await quotes.json()).data, [{ id: 'quote-1' }]);
+    assert.deepEqual(requestedUsers, ['customer-1', 'customer-1']);
+  } finally {
+    await new Promise((resolve, reject) =>
+      server.close((error) => (error ? reject(error) : resolve()))
+    );
+  }
+});

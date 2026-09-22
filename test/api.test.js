@@ -4,7 +4,10 @@ import test from 'node:test';
 import { createApp } from '../backend/src/app.js';
 
 async function withApi(run) {
-  const app = createApp({ allowedOrigins: ['http://localhost:5500'] });
+  const app = createApp({
+    allowedOrigins: ['http://localhost:5500'],
+    auth: { verifyToken: () => ({ id: 'test-user-id', email: 'buyer@example.com' }) }
+  });
   const server = app.listen(0);
 
   await new Promise((resolve) => server.once('listening', resolve));
@@ -62,7 +65,7 @@ test('creates a server-priced test order from a valid cart', async () => {
   await withApi(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/api/v1/orders`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer test-token' },
       body: JSON.stringify({
         cart: [
           {
@@ -89,7 +92,7 @@ test('rejects carts containing unknown products', async () => {
   await withApi(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/api/v1/orders`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer test-token' },
       body: JSON.stringify({
         cart: [
           {
@@ -110,7 +113,7 @@ test('accepts a valid quote request for heavy equipment', async () => {
   await withApi(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/api/v1/quotes`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer test-token' },
       body: JSON.stringify({
         productId: 'rgw-excavator-001',
         quantity: 1,

@@ -7,7 +7,10 @@ const list = document.querySelector('.js-admin-product-list');
 const count = document.querySelector('.js-product-count');
 const title = document.querySelector('.js-product-form-title');
 const cancelEdit = document.querySelector('.js-cancel-edit');
+const quoteList = document.querySelector('.js-admin-quote-list');
+const quoteCount = document.querySelector('.js-quote-count');
 let products = [];
+let quotes = [];
 let editingExternalId;
 
 function escapeHtml(value) {
@@ -86,6 +89,63 @@ function renderProducts() {
   });
 }
 
+function renderQuotes() {
+  quoteCount.textContent = `${quotes.length} total`;
+  if (quotes.length === 0) {
+    quoteList.innerHTML =
+      '<p class="admin-empty-state">No quote requests have been submitted yet.</p>';
+    return;
+  }
+  quoteList.innerHTML = quotes
+    .map(
+      (quote) => `
+        <article class="admin-quote-card">
+          <h3>${escapeHtml(quote.productName)}</h3>
+          <p class="admin-quote-summary"><strong>${escapeHtml(quote.companyName)}</strong> · ${escapeHtml(quote.contactName)} · ${escapeHtml(quote.email)}</p>
+          <p class="admin-quote-summary">${quote.quantity} requested · ${escapeHtml(quote.destinationCountry)} · Submitted ${new Date(quote.createdAt).toLocaleDateString()}</p>
+          ${quote.notes ? `<p class="admin-quote-notes">${escapeHtml(quote.notes)}</p>` : ''}
+          <div class="admin-quote-footer">
+            <span class="admin-product-tag">Reference: ${escapeHtml(quote.id)}</span>
+            <label>Workflow status
+              <select class="quote-status-select" data-quote-id="${escapeHtml(quote.id)}">
+                ${['received', 'reviewing', 'quoted', 'closed', 'cancelled']
+                  .map(
+                    (status) =>
+                      `<option value="${status}" ${status === quote.status ? 'selected' : ''}>${status}</option>`
+                  )
+                  .join('')}
+              </select>
+            </label>
+          </div>
+        </article>
+      `
+    )
+    .join('');
+
+  quoteList.querySelectorAll('.quote-status-select').forEach((select) => {
+    select.addEventListener('change', async () => {
+      select.disabled = true;
+      try {
+        const response = await authenticatedFetch(`/admin/quotes/${select.dataset.quoteId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: select.value })
+        });
+        const payload = await response.json();
+        if (!response.ok)
+          throw new Error(payload.error?.message ?? 'Unable to update quote status.');
+        quotes = quotes.map((quote) => (quote.id === payload.data.id ? payload.data : quote));
+        renderQuotes();
+        showStatus('Quote status updated.');
+      } catch (error) {
+        showStatus(error instanceof Error ? error.message : 'Unable to update quote status.', true);
+      } finally {
+        select.disabled = false;
+      }
+    });
+  });
+}
+
 async function loadProducts() {
   const response = await authenticatedFetch('/admin/products');
   if (response.status === 401) {
@@ -99,11 +159,19 @@ async function loadProducts() {
   renderProducts();
 }
 
+async function loadQuotes() {
+  const response = await authenticatedFetch('/admin/quotes');
+  const payload = await response.json();
+  if (!response.ok) throw new Error(payload.error?.message ?? 'Unable to load quote requests.');
+  quotes = payload.data;
+  renderQuotes();
+}
+
 if (!session || session.user.role !== 'admin') {
   window.location.href = 'auth.html?returnTo=admin.html';
 } else {
   try {
-    await loadProducts();
+    await Promise.all([loadProducts(), loadQuotes()]);
   } catch (error) {
     showStatus(error instanceof Error ? error.message : 'Unable to load the catalogue.', true);
   }

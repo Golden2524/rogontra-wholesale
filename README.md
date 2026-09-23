@@ -57,6 +57,8 @@ The demo items in `backend/rogontra-catalogue.json` are seeded as `Demo content`
 
 Use project-relative image paths for assets you add to the repository or publicly hosted, licensed image URLs. Product records can be hidden instead of deleted, protecting historical order data.
 
+Administrators can also use the quote desk to move requests through `received`, `reviewing`, `quoted`, `closed`, or `cancelled`. These statuses are customer-visible in account history; this workflow records progress only and does not send emails or create an invoice yet.
+
 ## Portfolio notes
 
 Before public release, the project will include an original visual identity, owned/licensed catalogue imagery, tests, deployment instructions, architecture documentation, screenshots, accessibility checks, and an honest feature/status summary.

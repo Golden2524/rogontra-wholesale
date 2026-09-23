@@ -271,6 +271,36 @@ export function createApp({
     }
   });
 
+  app.get(`${API_PREFIX}/admin/quotes`, async (request, response, next) => {
+    try {
+      if (!persistence) throw new Error('Quote persistence is not configured.');
+      await requireAdmin(request);
+      response.status(200).json({ data: await persistence.listQuotesForAdmin() });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.patch(`${API_PREFIX}/admin/quotes/:quoteId`, async (request, response, next) => {
+    try {
+      if (!persistence) throw new Error('Quote persistence is not configured.');
+      await requireAdmin(request);
+      const quote = await persistence.updateQuoteStatus(
+        request.params.quoteId,
+        request.body?.status
+      );
+      if (!quote) {
+        response.status(404).json({
+          error: { code: 'QUOTE_NOT_FOUND', message: 'The requested quote does not exist.' }
+        });
+        return;
+      }
+      response.status(200).json({ data: quote });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.use((_request, response) => {
     response.status(404).json({
       error: {

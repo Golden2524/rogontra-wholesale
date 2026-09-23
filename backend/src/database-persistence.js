@@ -1,4 +1,6 @@
 export function createDatabasePersistence(pool) {
+  const quoteStatuses = new Set(['received', 'reviewing', 'quoted', 'closed', 'cancelled']);
+
   return {
     async saveQuote(quote, userId) {
       const result = await pool.query(
@@ -170,6 +172,56 @@ export function createDatabasePersistence(pool) {
         status: row.status,
         createdAt: row.created_at.toISOString()
       }));
+    },
+
+    async listQuotesForAdmin() {
+      const result = await pool.query(
+        `SELECT id, product_name, quantity, company_name, contact_name, email,
+                destination_country, notes, status, created_at
+           FROM quote_requests ORDER BY created_at DESC`
+      );
+      return result.rows.map((row) => ({
+        id: row.id,
+        productName: row.product_name,
+        quantity: row.quantity,
+        companyName: row.company_name,
+        contactName: row.contact_name,
+        email: row.email,
+        destinationCountry: row.destination_country,
+        notes: row.notes,
+        status: row.status,
+        createdAt: row.created_at.toISOString()
+      }));
+    },
+
+    async updateQuoteStatus(quoteId, status) {
+      if (!quoteStatuses.has(status)) {
+        const error = new Error('Quote status is not supported.');
+        error.code = 'INVALID_QUOTE_STATUS';
+        error.statusCode = 400;
+        throw error;
+      }
+      const result = await pool.query(
+        `UPDATE quote_requests SET status = $2 WHERE id = $1
+         RETURNING id, product_name, quantity, company_name, contact_name, email,
+                   destination_country, notes, status, created_at`,
+        [quoteId, status]
+      );
+      const row = result.rows[0];
+      return row
+        ? {
+            id: row.id,
+            productName: row.product_name,
+            quantity: row.quantity,
+            companyName: row.company_name,
+            contactName: row.contact_name,
+            email: row.email,
+            destinationCountry: row.destination_country,
+            notes: row.notes,
+            status: row.status,
+            createdAt: row.created_at.toISOString()
+          }
+        : undefined;
     }
   };
 }

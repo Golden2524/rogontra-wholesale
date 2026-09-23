@@ -33,3 +33,11 @@ test('catalogue seed keeps illustrative products visibly marked as demo content'
   assert.match(script, /VALUES \([^\n]*TRUE\)/);
   assert.match(script, /is_demo = TRUE/);
 });
+
+test('quote workflow migration limits statuses to the supported admin workflow', async () => {
+  const sql = await readFile(
+    'backend/database/migrations/005_constrain_quote_workflow_status.sql',
+    'utf8'
+  );
+  assert.match(sql, /'received', 'reviewing', 'quoted', 'closed', 'cancelled'/);
+});

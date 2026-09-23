@@ -51,6 +51,12 @@ Start the owned API with `npm run api:dev`, then serve the project root with a s
 
 The API reads its catalogue from PostgreSQL. Run `npm run db:migrate` and `npm run db:seed` before starting the API; the current catalogue and submitted test orders are not production data.
 
+## Catalogue administration
+
+The demo items in `backend/rogontra-catalogue.json` are seeded as `Demo content` and can be replaced from the protected [admin page](admin.html). To bootstrap an administrator, first register a normal account, add that email as `ADMIN_EMAIL` in your private `.env.local`, then run `npm run admin:grant`. Sign out and sign in again so the account session receives the role. Open `admin.html` after that. The API checks the current database role on every administration request; hiding the admin page in the browser is not the security control.
+
+Use project-relative image paths for assets you add to the repository or publicly hosted, licensed image URLs. Product records can be hidden instead of deleted, protecting historical order data.
+
 ## Portfolio notes
 
 Before public release, the project will include an original visual identity, owned/licensed catalogue imagery, tests, deployment instructions, architecture documentation, screenshots, accessibility checks, and an honest feature/status summary.

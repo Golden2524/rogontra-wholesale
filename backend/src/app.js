@@ -40,6 +40,7 @@ function validateSearchQuery(query) {
 export function createApp({
   allowedOrigins = getAllowedOrigins(),
   auth,
+  adminCatalogue,
   catalogue,
   persistence
 } = {}) {
@@ -60,6 +61,25 @@ export function createApp({
       throw error;
     }
     return auth.verifyToken(token);
+  }
+
+  async function requireAdmin(request) {
+    if (!auth?.verifyAdminToken) throw new Error('Administrator authentication is not configured.');
+    const token = request.headers.authorization?.replace(/^Bearer\s+/i, '');
+    if (!token) {
+      const error = new Error('A bearer token is required.');
+      error.code = 'AUTH_REQUIRED';
+      error.statusCode = 401;
+      throw error;
+    }
+    const user = await auth.verifyAdminToken(token);
+    if (user.role !== 'admin') {
+      const error = new Error('Administrator access is required.');
+      error.code = 'ADMIN_REQUIRED';
+      error.statusCode = 403;
+      throw error;
+    }
+    return user;
   }
 
   app.get(`${API_PREFIX}/health`, (_request, response) => {
@@ -209,6 +229,43 @@ export function createApp({
       response
         .status(200)
         .json({ data: await persistence.listQuotesForUser(requireUser(request).id) });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get(`${API_PREFIX}/admin/products`, async (request, response, next) => {
+    try {
+      if (!adminCatalogue) throw new Error('Administrator catalogue is not configured.');
+      await requireAdmin(request);
+      response.status(200).json({ data: await adminCatalogue.listProducts() });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post(`${API_PREFIX}/admin/products`, async (request, response, next) => {
+    try {
+      if (!adminCatalogue) throw new Error('Administrator catalogue is not configured.');
+      await requireAdmin(request);
+      response.status(201).json({ data: await adminCatalogue.createProduct(request.body) });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.put(`${API_PREFIX}/admin/products/:externalId`, async (request, response, next) => {
+    try {
+      if (!adminCatalogue) throw new Error('Administrator catalogue is not configured.');
+      await requireAdmin(request);
+      const product = await adminCatalogue.updateProduct(request.params.externalId, request.body);
+      if (!product) {
+        response.status(404).json({
+          error: { code: 'PRODUCT_NOT_FOUND', message: 'The requested product does not exist.' }
+        });
+        return;
+      }
+      response.status(200).json({ data: product });
     } catch (error) {
       next(error);
     }

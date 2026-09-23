@@ -12,7 +12,9 @@ let mode = 'register';
 
 function getReturnPath() {
   const path = new URLSearchParams(window.location.search).get('returnTo');
-  return ['index.html', 'checkout.html', 'orders.html'].includes(path) ? path : 'orders.html';
+  return ['index.html', 'checkout.html', 'orders.html', 'admin.html'].includes(path)
+    ? path
+    : 'orders.html';
 }
 
 function renderMode() {

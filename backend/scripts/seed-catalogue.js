@@ -29,8 +29,8 @@ try {
       const savedProduct = await client.query(
         `INSERT INTO products (
           external_id, sku, category_id, name, price_cents, currency, condition,
-          minimum_order_quantity, purchase_mode, stock_status, specifications
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+          minimum_order_quantity, purchase_mode, stock_status, specifications, is_demo
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, TRUE)
         ON CONFLICT (external_id) DO UPDATE SET
           sku = EXCLUDED.sku,
           category_id = EXCLUDED.category_id,
@@ -41,6 +41,7 @@ try {
           purchase_mode = EXCLUDED.purchase_mode,
           stock_status = EXCLUDED.stock_status,
           specifications = EXCLUDED.specifications,
+          is_demo = TRUE,
           updated_at = NOW()
         RETURNING id`,
         [

@@ -35,7 +35,7 @@ function validatePassword(value) {
 }
 
 function publicUser(user) {
-  return { id: user.id, email: user.email, displayName: user.displayName };
+  return { id: user.id, email: user.email, displayName: user.displayName, role: user.role };
 }
 
 export function createAuthService({ repository, secret }) {
@@ -83,6 +83,15 @@ export function createAuthService({ repository, secret }) {
       } catch {
         throw clientError('INVALID_TOKEN', 'Your session is invalid or has expired.', 401);
       }
+    },
+
+    async verifyAdminToken(token) {
+      const identity = this.verifyToken(token);
+      const user = await repository.findUserById(identity.id);
+      if (!user) {
+        throw clientError('INVALID_TOKEN', 'Your session is invalid or has expired.', 401);
+      }
+      return publicUser(user);
     }
   };
 }

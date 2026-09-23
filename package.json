@@ -18,6 +18,7 @@
     "db:verify-persistence": "node --env-file-if-exists=.env.local backend/scripts/verify-persistence.js",
     "db:verify-auth": "node --env-file-if-exists=.env.local backend/scripts/verify-auth.js",
     "db:verify-account-history": "node --env-file-if-exists=.env.local backend/scripts/verify-account-history.js",
+    "admin:grant": "node --env-file-if-exists=.env.local backend/scripts/grant-admin.js",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",

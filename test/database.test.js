@@ -17,3 +17,19 @@ test('second migration gives imported catalogue products a stable external ID', 
   const sql = await readFile('backend/database/migrations/002_add_external_product_id.sql', 'utf8');
   assert.match(sql, /ADD COLUMN IF NOT EXISTS external_id TEXT UNIQUE/);
 });
+
+test('admin migration separates catalogue controls from customer accounts', async () => {
+  const sql = await readFile(
+    'backend/database/migrations/004_add_admin_catalogue_controls.sql',
+    'utf8'
+  );
+  assert.match(sql, /role IN \('customer', 'admin'\)/);
+  assert.match(sql, /ADD COLUMN IF NOT EXISTS is_demo BOOLEAN/);
+});
+
+test('catalogue seed keeps illustrative products visibly marked as demo content', async () => {
+  const script = await readFile('backend/scripts/seed-catalogue.js', 'utf8');
+  assert.match(script, /specifications, is_demo/);
+  assert.match(script, /VALUES \([^\n]*TRUE\)/);
+  assert.match(script, /is_demo = TRUE/);
+});

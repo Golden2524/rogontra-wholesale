@@ -5,10 +5,12 @@ import { createDatabaseCatalogue } from './database-catalogue.js';
 import { createDatabasePersistence } from './database-persistence.js';
 import { createAuthService } from './auth.js';
 import { createDatabaseUserRepository } from './database-users.js';
+import { createDatabaseAdminCatalogue } from './database-admin.js';
 
 const pool = createDatabasePool();
 const app = createApp({
   catalogue: createDatabaseCatalogue(pool),
+  adminCatalogue: createDatabaseAdminCatalogue(pool),
   persistence: createDatabasePersistence(pool),
   auth: createAuthService({
     repository: createDatabaseUserRepository(pool),

@@ -12,7 +12,7 @@ function createMemoryRepository() {
         error.code = 'USER_EXISTS';
         throw error;
       }
-      const saved = { ...user, id: `user-${users.size + 1}` };
+      const saved = { ...user, id: `user-${users.size + 1}`, role: 'customer' };
       users.set(saved.email, saved);
       return saved;
     },
@@ -36,7 +36,8 @@ test('registers a user without returning a password hash and verifies its token'
   assert.deepEqual(result.user, {
     id: 'user-1',
     email: 'ada@example.com',
-    displayName: 'Ada Buyer'
+    displayName: 'Ada Buyer',
+    role: 'customer'
   });
   assert.equal(auth.verifyToken(result.token).email, 'ada@example.com');
   assert.equal(JSON.stringify(result).includes('password'), false);

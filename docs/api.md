@@ -26,6 +26,9 @@ The API listens on `http://localhost:3000` by default. Copy `.env.example` to `.
 | `GET`  | `/api/v1/account/orders`      | Returns only the signed-in customer's orders                  |
 | `GET`  | `/api/v1/account/orders/:id`  | Returns one signed-in customer's order and its item snapshots |
 | `GET`  | `/api/v1/account/quotes`      | Returns only the signed-in customer's quote requests          |
+| `GET`  | `/api/v1/admin/products`      | Lists all products for an administrator                       |
+| `POST` | `/api/v1/admin/products`      | Creates an administrator-managed real product                 |
+| `PUT`  | `/api/v1/admin/products/:id`  | Updates or hides an administrator-managed product             |
 
 Successful responses use a `data` envelope. List responses add `meta`; errors use an `error` object with a stable code and a safe message.
 
@@ -38,5 +41,7 @@ Successful responses use a `data` envelope. List responses add `meta`; errors us
 Authentication uses a server-configured `JWT_SECRET` and bcrypt password hashes. Browser clients must never receive a password hash or the JWT secret.
 
 Creating orders and quote requests requires a bearer token. New records are linked to that authenticated user; account-history endpoints never accept a user ID from the browser.
+
+Administrator routes require a bearer token whose user currently has the `admin` role in PostgreSQL. The starter catalogue is tagged as demo content; admin-created or admin-updated products are marked as non-demo.
 
 Product administration, persistent carts, payments, and rate limiting arrive in later milestones. The temporary product content is illustrative and must be replaced with approved Rogontra catalogue records and licensed media before public launch.

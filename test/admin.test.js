@@ -26,6 +26,12 @@ test('admin catalogue endpoints reject customers and accept administrators', asy
       },
       async updateQuoteStatus(quoteId, status) {
         return quoteId === 'quote-1' ? { id: quoteId, status } : undefined;
+      },
+      async listOrdersForAdmin() {
+        return [{ id: 'order-1', status: 'awaiting_payment', paymentStatus: 'not_collected' }];
+      },
+      async updateOrderStatus(orderId, status) {
+        return orderId === 'order-1' ? { id: orderId, status } : undefined;
       }
     }
   });
@@ -47,12 +53,24 @@ test('admin catalogue endpoints reject customers and accept administrators', asy
       headers: { Authorization: 'Bearer admin-token', 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: 'reviewing' })
     });
+    const orders = await fetch(`${baseUrl.replace('/products', '/orders')}`, {
+      headers: { Authorization: 'Bearer admin-token' }
+    });
+    const updatedOrder = await fetch(`${baseUrl.replace('/products', '/orders/order-1')}`, {
+      method: 'PATCH',
+      headers: { Authorization: 'Bearer admin-token', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'cancelled' })
+    });
 
     assert.equal(missing.status, 401);
     assert.equal(customer.status, 403);
     assert.deepEqual((await administrator.json()).data, [{ externalId: 'rgw-test-001' }]);
     assert.deepEqual((await quotes.json()).data, [{ id: 'quote-1', status: 'received' }]);
     assert.deepEqual((await updatedQuote.json()).data, { id: 'quote-1', status: 'reviewing' });
+    assert.deepEqual((await orders.json()).data, [
+      { id: 'order-1', status: 'awaiting_payment', paymentStatus: 'not_collected' }
+    ]);
+    assert.deepEqual((await updatedOrder.json()).data, { id: 'order-1', status: 'cancelled' });
   } finally {
     await new Promise((resolve, reject) =>
       server.close((error) => (error ? reject(error) : resolve()))

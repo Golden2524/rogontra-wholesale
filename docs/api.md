@@ -31,6 +31,8 @@ The API listens on `http://localhost:3000` by default. Copy `.env.example` to `.
 | `PUT`   | `/api/v1/admin/products/:id`  | Updates or hides an administrator-managed product             |
 | `GET`   | `/api/v1/admin/quotes`        | Lists sales-assisted quote requests for an administrator      |
 | `PATCH` | `/api/v1/admin/quotes/:id`    | Updates a quote workflow status                               |
+| `GET`   | `/api/v1/admin/orders`        | Lists orders for an administrator                             |
+| `PATCH` | `/api/v1/admin/orders/:id`    | Updates an order fulfilment status                            |
 
 Successful responses use a `data` envelope. List responses add `meta`; errors use an `error` object with a stable code and a safe message.
 
@@ -45,5 +47,7 @@ Authentication uses a server-configured `JWT_SECRET` and bcrypt password hashes.
 Creating orders and quote requests requires a bearer token. New records are linked to that authenticated user; account-history endpoints never accept a user ID from the browser.
 
 Administrator routes require a bearer token whose user currently has the `admin` role in PostgreSQL. The starter catalogue is tagged as demo content; admin-created or admin-updated products are marked as non-demo.
+
+Only an order with a future verified `paid` payment status can enter fulfilment stages. Before payment integration is added, orders use `not_collected` and may only be cancelled by the administrator.
 
 Product administration, persistent carts, payments, and rate limiting arrive in later milestones. The temporary product content is illustrative and must be replaced with approved Rogontra catalogue records and licensed media before public launch.

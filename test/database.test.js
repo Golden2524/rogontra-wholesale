@@ -41,3 +41,12 @@ test('quote workflow migration limits statuses to the supported admin workflow',
   );
   assert.match(sql, /'received', 'reviewing', 'quoted', 'closed', 'cancelled'/);
 });
+
+test('order workflow migration protects payment and fulfilment status values', async () => {
+  const sql = await readFile(
+    'backend/database/migrations/006_constrain_order_workflow_status.sql',
+    'utf8'
+  );
+  assert.match(sql, /'awaiting_payment', 'preparing', 'dispatched', 'delivered', 'cancelled'/);
+  assert.match(sql, /'not_collected', 'paid', 'failed', 'refunded'/);
+});

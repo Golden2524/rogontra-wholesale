@@ -301,6 +301,36 @@ export function createApp({
     }
   });
 
+  app.get(`${API_PREFIX}/admin/orders`, async (request, response, next) => {
+    try {
+      if (!persistence) throw new Error('Order persistence is not configured.');
+      await requireAdmin(request);
+      response.status(200).json({ data: await persistence.listOrdersForAdmin() });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.patch(`${API_PREFIX}/admin/orders/:orderId`, async (request, response, next) => {
+    try {
+      if (!persistence) throw new Error('Order persistence is not configured.');
+      await requireAdmin(request);
+      const order = await persistence.updateOrderStatus(
+        request.params.orderId,
+        request.body?.status
+      );
+      if (!order) {
+        response.status(404).json({
+          error: { code: 'ORDER_NOT_FOUND', message: 'The requested order does not exist.' }
+        });
+        return;
+      }
+      response.status(200).json({ data: order });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.use((_request, response) => {
     response.status(404).json({
       error: {

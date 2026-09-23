@@ -9,8 +9,11 @@ const title = document.querySelector('.js-product-form-title');
 const cancelEdit = document.querySelector('.js-cancel-edit');
 const quoteList = document.querySelector('.js-admin-quote-list');
 const quoteCount = document.querySelector('.js-quote-count');
+const orderList = document.querySelector('.js-admin-order-list');
+const orderCount = document.querySelector('.js-order-count');
 let products = [];
 let quotes = [];
+let orders = [];
 let editingExternalId;
 
 function escapeHtml(value) {
@@ -146,6 +149,77 @@ function renderQuotes() {
   });
 }
 
+function formatUsd(cents) {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
+}
+
+function orderOptions(order) {
+  const statuses = ['awaiting_payment', 'preparing', 'dispatched', 'delivered', 'cancelled'];
+  return statuses
+    .filter(
+      (status) =>
+        order.paymentStatus === 'paid' || status === order.status || status === 'cancelled'
+    )
+    .map(
+      (status) =>
+        `<option value="${status}" ${status === order.status ? 'selected' : ''}>${status}</option>`
+    )
+    .join('');
+}
+
+function renderOrders() {
+  orderCount.textContent = `${orders.length} total`;
+  if (orders.length === 0) {
+    orderList.innerHTML = '<p class="admin-empty-state">No orders have been submitted yet.</p>';
+    return;
+  }
+  orderList.innerHTML = orders
+    .map(
+      (order) => `
+        <article class="admin-order-card">
+          <h3>Order ${escapeHtml(order.id)}</h3>
+          <p class="admin-order-summary"><strong>${escapeHtml(order.customerName || 'Customer')}</strong> · ${escapeHtml(order.customerEmail || 'Account unavailable')}</p>
+          <p class="admin-order-summary">${formatUsd(order.totalCostCents)} USD · Submitted ${new Date(order.createdAt).toLocaleDateString()}</p>
+          <ul class="admin-order-items">${order.items.map((item) => `<li>${escapeHtml(item.productName)} × ${item.quantity}</li>`).join('')}</ul>
+          <div class="admin-order-footer">
+            <div class="admin-product-tags">
+              <span class="admin-product-tag">${escapeHtml(order.status)}</span>
+              <span class="admin-product-tag payment-tag">${escapeHtml(order.paymentStatus)}</span>
+            </div>
+            <label>Fulfilment status
+              <select class="quote-status-select" data-order-id="${escapeHtml(order.id)}">
+                ${orderOptions(order)}
+              </select>
+            </label>
+          </div>
+        </article>
+      `
+    )
+    .join('');
+
+  orderList.querySelectorAll('.quote-status-select').forEach((select) => {
+    select.addEventListener('change', async () => {
+      select.disabled = true;
+      try {
+        const response = await authenticatedFetch(`/admin/orders/${select.dataset.orderId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: select.value })
+        });
+        const payload = await response.json();
+        if (!response.ok)
+          throw new Error(payload.error?.message ?? 'Unable to update order status.');
+        await loadOrders();
+        showStatus('Order status updated.');
+      } catch (error) {
+        showStatus(error instanceof Error ? error.message : 'Unable to update order status.', true);
+      } finally {
+        select.disabled = false;
+      }
+    });
+  });
+}
+
 async function loadProducts() {
   const response = await authenticatedFetch('/admin/products');
   if (response.status === 401) {
@@ -167,11 +241,19 @@ async function loadQuotes() {
   renderQuotes();
 }
 
+async function loadOrders() {
+  const response = await authenticatedFetch('/admin/orders');
+  const payload = await response.json();
+  if (!response.ok) throw new Error(payload.error?.message ?? 'Unable to load orders.');
+  orders = payload.data;
+  renderOrders();
+}
+
 if (!session || session.user.role !== 'admin') {
   window.location.href = 'auth.html?returnTo=admin.html';
 } else {
   try {
-    await Promise.all([loadProducts(), loadQuotes()]);
+    await Promise.all([loadProducts(), loadQuotes(), loadOrders()]);
   } catch (error) {
     showStatus(error instanceof Error ? error.message : 'Unable to load the catalogue.', true);
   }

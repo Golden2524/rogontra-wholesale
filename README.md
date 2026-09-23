@@ -59,6 +59,8 @@ Use project-relative image paths for assets you add to the repository or publicl
 
 Administrators can also use the quote desk to move requests through `received`, `reviewing`, `quoted`, `closed`, or `cancelled`. These statuses are customer-visible in account history; this workflow records progress only and does not send emails or create an invoice yet.
 
+The order desk exposes the same operational safeguard: `not_collected` test orders cannot move into preparation or shipping. They can be cancelled, while fulfilment transitions will become available only when payment verification marks a future order as `paid`.
+
 ## Portfolio notes
 
 Before public release, the project will include an original visual identity, owned/licensed catalogue imagery, tests, deployment instructions, architecture documentation, screenshots, accessibility checks, and an honest feature/status summary.

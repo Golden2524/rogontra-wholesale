@@ -1,5 +1,12 @@
 export function createDatabasePersistence(pool) {
   const quoteStatuses = new Set(['received', 'reviewing', 'quoted', 'closed', 'cancelled']);
+  const orderStatuses = new Set([
+    'awaiting_payment',
+    'preparing',
+    'dispatched',
+    'delivered',
+    'cancelled'
+  ]);
 
   return {
     async saveQuote(quote, userId) {
@@ -222,6 +229,67 @@ export function createDatabasePersistence(pool) {
             createdAt: row.created_at.toISOString()
           }
         : undefined;
+    },
+
+    async listOrdersForAdmin() {
+      const result = await pool.query(
+        `SELECT o.id, o.status, o.payment_status, o.currency, o.total_cost_cents, o.created_at,
+                u.email AS customer_email, u.display_name AS customer_name,
+                COALESCE(
+                  (
+                    SELECT json_agg(json_build_object('productName', oi.product_name, 'quantity', oi.quantity) ORDER BY oi.id)
+                      FROM order_items oi WHERE oi.order_id = o.id
+                  ),
+                  '[]'
+                ) AS items
+           FROM orders o
+           LEFT JOIN users u ON u.id = o.user_id
+          ORDER BY o.created_at DESC`
+      );
+      return result.rows.map((row) => ({
+        id: row.id,
+        status: row.status,
+        paymentStatus: row.payment_status,
+        currency: row.currency,
+        totalCostCents: row.total_cost_cents,
+        customerEmail: row.customer_email,
+        customerName: row.customer_name,
+        items: row.items,
+        createdAt: row.created_at.toISOString()
+      }));
+    },
+
+    async updateOrderStatus(orderId, status) {
+      if (!orderStatuses.has(status)) {
+        const error = new Error('Order status is not supported.');
+        error.code = 'INVALID_ORDER_STATUS';
+        error.statusCode = 400;
+        throw error;
+      }
+      const current = await pool.query('SELECT payment_status FROM orders WHERE id = $1', [
+        orderId
+      ]);
+      if (!current.rows[0]) return undefined;
+      if (status !== 'cancelled' && current.rows[0].payment_status !== 'paid') {
+        const error = new Error('Only verified paid orders can enter fulfilment.');
+        error.code = 'ORDER_NOT_PAID';
+        error.statusCode = 409;
+        throw error;
+      }
+      const result = await pool.query(
+        `UPDATE orders SET status = $2 WHERE id = $1
+         RETURNING id, status, payment_status, currency, total_cost_cents, created_at`,
+        [orderId, status]
+      );
+      const row = result.rows[0];
+      return {
+        id: row.id,
+        status: row.status,
+        paymentStatus: row.payment_status,
+        currency: row.currency,
+        totalCostCents: row.total_cost_cents,
+        createdAt: row.created_at.toISOString()
+      };
     }
   };
 }

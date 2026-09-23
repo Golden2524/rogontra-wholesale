@@ -23,6 +23,7 @@
   </head>
 
   <body>
+    <a class="skip-link" href="#main-content">Skip to catalogue</a>
     <div class="rogontra-header">
       <div class="rogontra-header-left-section">
         <a href="index.html" class="header-link">
@@ -63,13 +64,13 @@
       </div>
     </div>
 
-    <div class="main">
+    <main class="main" id="main-content" tabindex="-1">
       <p class="catalogue-notice">
         Illustrative catalogue — contact Rogontra before making purchasing decisions.
       </p>
-      <p class="empty-message js-empty-message"></p>
-      <div class="products-grid js-products-grid"></div>
-    </div>
+      <p class="empty-message js-empty-message" role="status" aria-live="polite"></p>
+      <div class="products-grid js-products-grid" aria-live="polite" aria-busy="true"></div>
+    </main>
 
     <dialog class="quote-dialog js-quote-dialog" aria-labelledby="quote-title">
       <form class="quote-form js-quote-form">

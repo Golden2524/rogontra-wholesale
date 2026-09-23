@@ -23,6 +23,7 @@
   </head>
 
   <body>
+    <a class="skip-link" href="#main-content">Skip to account</a>
     <div class="rogontra-header">
       <div class="rogontra-header-left-section">
         <a href="index.html" class="header-link">
@@ -63,7 +64,7 @@
       </div>
     </div>
 
-    <div class="main">
+    <main class="main" id="main-content" tabindex="-1">
       <div class="page-title">Your account</div>
       <p class="account-message js-account-message" role="status"></p>
 
@@ -76,7 +77,7 @@
         <h2 class="account-section-title" id="quotes-title">Your quote requests</h2>
         <div class="quote-history-grid js-quote-history-grid"></div>
       </section>
-    </div>
+    </main>
 
     <script type="module" src="scripts/order.js"></script>
     <script type="module" src="scripts/account-link.js"></script>

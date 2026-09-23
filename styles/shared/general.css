@@ -16,6 +16,29 @@ button {
   cursor: pointer;
 }
 
+:focus-visible {
+  outline: 3px solid #0f9d8a;
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 2000;
+  top: 8px;
+  left: 8px;
+  transform: translateY(-150%);
+  border-radius: 5px;
+  background: white;
+  color: #102a43;
+  padding: 10px 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 select {
   cursor: pointer;
 }
@@ -95,9 +118,4 @@ select {
   font-size: 15px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
-}
-
-select:focus,
-input:focus {
-  outline: 2px solid #2dd4bf;
 }

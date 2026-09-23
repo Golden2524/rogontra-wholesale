@@ -47,7 +47,7 @@ export function renderOrderSummary() {
 
         <div class="cart-item-details-grid">
           <img class="product-image"
-            src="${matchingProduct.image}">
+            src="${matchingProduct.image}" alt="${matchingProduct.name}">
 
           <div class="cart-item-details">
             <div class="product-name">
@@ -60,21 +60,20 @@ export function renderOrderSummary() {
               <span>
                 Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
               </span>
-              <span class="update-quantity-link link-primary
+              <button type="button" class="update-quantity-link link-primary
               js-update-quantity-link"
               data-product-id="${matchingProduct.id}">
                 Update
-              </span>
-              <input class="quantity-input 
-              js-quantity-input-${matchingProduct.id}">
-              <span class="save-quantity-link link-primary
+              </button>
+              <input class="quantity-input js-quantity-input-${matchingProduct.id}" type="number" min="1" max="999" aria-label="New quantity for ${matchingProduct.name}">
+              <button type="button" class="save-quantity-link link-primary
               js-save-quantity-link"
-              data-product-id="${matchingProduct.id}">Save</span>
-              <span class="delete-quantity-link link-primary
+              data-product-id="${matchingProduct.id}">Save</button>
+              <button type="button" class="delete-quantity-link link-primary
               js-delete-quantity"
               data-product-id="${matchingProduct.id}">
                 Delete
-              </span>
+              </button>
             </div>
           </div>
 
@@ -109,6 +108,7 @@ export function renderOrderSummary() {
           <input type="radio" ${isChecked ? 'checked' : ''}
             class="delivery-option-input"
             name="delivery-option-${matchingProduct.id}"
+            aria-label="${dateString}, ${priceString} shipping"
           >
           <div>
             <div class="delivery-option-date">

@@ -232,6 +232,16 @@
   display: none;
 }
 
+.update-quantity-link,
+.save-quantity-link,
+.delete-quantity-link {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  text-decoration: underline;
+}
+
 .is-editing-quantity .quantity-label {
   display: none;
 }

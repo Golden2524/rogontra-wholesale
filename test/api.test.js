@@ -69,6 +69,14 @@ test('reports readiness separately from process health', async () => {
   }
 });
 
+test('storefront quote controls use delegated events for asynchronously loaded products', async () => {
+  const script = await import('node:fs/promises').then(({ readFile }) =>
+    readFile('scripts/quote.js', 'utf8')
+  );
+  assert.match(script, /document\.addEventListener\('click'/);
+  assert.match(script, /closest\('\.js-request-quote'\)/);
+});
+
 test('lists and searches the local Rogontra catalogue', async () => {
   await withApi(async (baseUrl) => {
     const allResponse = await fetch(`${baseUrl}/api/v1/products`);

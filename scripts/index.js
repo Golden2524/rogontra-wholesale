@@ -5,6 +5,15 @@ import setUpSearch from './utils/search.js';
 //loadProducts(renderProductsGrid);
 loadProductsFetch().then(renderProductsGrid);
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
 function renderProductsGrid() {
   const url = new URL(window.location.href);
   const search = url.searchParams.get('search');
@@ -44,15 +53,15 @@ function renderProductsGrid() {
     productsHTML += `
       <div class="product-container">
         <div class="product-image-container">
-          <img class="product-image" src="${product.image}">
+          <img class="product-image" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}">
         </div>
 
         <div class="product-name limit-text-to-2-lines">
-          ${product.name}
+          ${escapeHtml(product.name)}
         </div>
 
         <div class="product-category">
-          ${product.category} · ${product.condition}
+          ${escapeHtml(product.category)} · ${escapeHtml(product.condition)}
         </div>
 
         <div class="product-price">
@@ -60,7 +69,7 @@ function renderProductsGrid() {
         </div>
 
         <div class="product-wholesale-details">
-          <span>SKU: ${product.sku}</span>
+          <span>SKU: ${escapeHtml(product.sku)}</span>
           <span>MOQ: ${product.minimumOrderQuantity}</span>
           <span>${product.stockStatus.replaceAll('_', ' ')}</span>
         </div>
@@ -69,7 +78,8 @@ function renderProductsGrid() {
           product.purchaseMode === 'checkout'
             ? `
         <div class="product-quantity-container">
-          <select class="js-product-quantity-${product.id}">
+          <label>Quantity
+          <select class="js-product-quantity-${product.id}" aria-label="Quantity for ${escapeHtml(product.name)}">
             <option selected value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -79,8 +89,9 @@ function renderProductsGrid() {
             <option value="7">7</option>
             <option value="8">8</option>
             <option value="9">9</option>
-            <option value="10">10</option>
+          <option value="10">10</option>
           </select>
+          </label>
         </div>
         `
             : `
@@ -98,7 +109,7 @@ function renderProductsGrid() {
           product.purchaseMode === 'checkout'
             ? `
         <div class="added-to-cart js-added-to-cart-${product.id}">
-          <img src="images/icons/checkmark.png">
+          <img src="images/icons/checkmark.png" alt="">
           Added
         </div>
 
@@ -108,13 +119,14 @@ function renderProductsGrid() {
           Add to Cart
         </button>
         `
-            : `<button class="quote-button button-secondary js-request-quote" data-product-id="${product.id}" data-product-name="${product.name}">Request a quote</button>`
+            : `<button class="quote-button button-secondary js-request-quote" data-product-id="${escapeHtml(product.id)}" data-product-name="${escapeHtml(product.name)}">Request a quote</button>`
         }
       </div>
     `;
   });
 
   document.querySelector('.js-products-grid').innerHTML = productsHTML;
+  document.querySelector('.js-products-grid').setAttribute('aria-busy', 'false');
 
   function updateCartQuantity() {
     const cartQuantity = cart.calculateCartQuantity();

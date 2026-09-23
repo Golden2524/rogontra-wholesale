@@ -47,7 +47,7 @@ npm run lint
 npm test
 ```
 
-Start the owned API with `npm run api:dev`, then serve the project root with a static server at `http://localhost:5500`. The storefront uses `http://localhost:3000/api/v1` locally. Set `window.ROGONTRA_API_BASE_URL` before page scripts load when using another API deployment URL.
+Start the owned API with `npm run api:dev`, then serve the project root with a static server at `http://localhost:5500`. The API scripts load the ignored `.env.local` file automatically. The storefront uses `http://localhost:3000/api/v1` locally. Set `window.ROGONTRA_API_BASE_URL` before page scripts load when using another API deployment URL.
 
 The API reads its catalogue from PostgreSQL. Run `npm run db:migrate` and `npm run db:seed` before starting the API; the current catalogue and submitted test orders are not production data.
 

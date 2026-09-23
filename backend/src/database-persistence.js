@@ -290,6 +290,71 @@ export function createDatabasePersistence(pool) {
         totalCostCents: row.total_cost_cents,
         createdAt: row.created_at.toISOString()
       };
+    },
+
+    async createPaymentAttempt({ amountCents, currency, orderId, provider, reference }) {
+      await pool.query(
+        `INSERT INTO payment_attempts (
+          order_id, provider, provider_reference, requested_currency, requested_amount_minor, status
+        ) VALUES ($1, $2, $3, $4, $5, 'initialized')`,
+        [orderId, provider, reference, currency, amountCents]
+      );
+    },
+
+    async getPaymentAttemptForUser(userId, reference) {
+      const result = await pool.query(
+        `SELECT pa.order_id, pa.provider, pa.provider_reference, pa.requested_currency,
+                pa.requested_amount_minor, pa.status
+           FROM payment_attempts pa
+           JOIN orders o ON o.id = pa.order_id
+          WHERE o.user_id = $1 AND pa.provider_reference = $2`,
+        [userId, reference]
+      );
+      const row = result.rows[0];
+      return row
+        ? {
+            orderId: row.order_id,
+            provider: row.provider,
+            reference: row.provider_reference,
+            requestedCurrency: row.requested_currency,
+            requestedAmountCents: row.requested_amount_minor,
+            status: row.status
+          }
+        : undefined;
+    },
+
+    async recordPaymentVerification({ attempt, verifiedPayment }) {
+      const isPaid =
+        verifiedPayment.status === 'success' &&
+        verifiedPayment.providerReference === attempt.reference &&
+        verifiedPayment.currency === attempt.requestedCurrency &&
+        verifiedPayment.amountCents === attempt.requestedAmountCents;
+      const attemptStatus = isPaid
+        ? 'success'
+        : verifiedPayment.status === 'failed'
+          ? 'failed'
+          : 'pending';
+      const client = await pool.connect();
+      try {
+        await client.query('BEGIN');
+        await client.query(
+          `UPDATE payment_attempts SET status = $2, verified_at = NOW()
+            WHERE provider_reference = $1`,
+          [attempt.reference, attemptStatus]
+        );
+        if (isPaid) {
+          await client.query("UPDATE orders SET payment_status = 'paid' WHERE id = $1", [
+            attempt.orderId
+          ]);
+        }
+        await client.query('COMMIT');
+      } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
+      } finally {
+        client.release();
+      }
+      return { paid: isPaid, status: attemptStatus };
     }
   };
 }

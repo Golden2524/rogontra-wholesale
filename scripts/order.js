@@ -61,6 +61,8 @@ async function loadPage() {
           <div class="order-header-right-section">
             <div class="order-header-label">Order ID:</div>
             <div>${order.id}</div>
+            <div class="order-payment-status">Payment: ${order.paymentStatus.replaceAll('_', ' ')}</div>
+            ${order.paymentStatus === 'not_collected' && order.status !== 'cancelled' ? `<button class="pay-order-button js-pay-order" data-order-id="${order.id}">Continue to payment</button>` : ''}
           </div>
         </div>
 
@@ -118,6 +120,28 @@ orderId=${order.id}&productId=${product.id}">
 
   document.querySelector('.js-order-grid').innerHTML = ordersHTML;
   document.querySelector('.js-quote-history-grid').innerHTML = quotesHistoryHTML(quotes);
+
+  document.querySelectorAll('.js-pay-order').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const message = document.querySelector('.js-account-message');
+      button.disabled = true;
+      message.textContent = 'Starting secure payment…';
+      try {
+        const response = await authenticatedFetch(
+          `/account/orders/${button.dataset.orderId}/payment`,
+          {
+            method: 'POST'
+          }
+        );
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error?.message ?? 'Unable to start payment.');
+        window.location.href = payload.data.authorizationUrl;
+      } catch (error) {
+        message.textContent = error instanceof Error ? error.message : 'Unable to start payment.';
+        button.disabled = false;
+      }
+    });
+  });
 
   document.querySelectorAll('.js-buy-again-button').forEach((button) => {
     button.addEventListener('click', () => {

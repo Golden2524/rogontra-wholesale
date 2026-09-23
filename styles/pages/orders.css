@@ -19,6 +19,11 @@
   margin-bottom: 25px;
 }
 
+.account-message {
+  min-height: 22px;
+  color: #087f78;
+}
+
 .account-section + .account-section {
   margin-top: 56px;
 }
@@ -117,6 +122,26 @@
 
 .order-header-right-section {
   flex-shrink: 1;
+}
+
+.order-payment-status {
+  margin-top: 8px;
+  color: rgb(80, 89, 99);
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.pay-order-button {
+  margin-top: 8px;
+  border: 0;
+  border-radius: 5px;
+  background: #087f78;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 10px;
 }
 
 @media (max-width: 575px) {

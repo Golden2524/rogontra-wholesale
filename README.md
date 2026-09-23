@@ -61,6 +61,12 @@ Administrators can also use the quote desk to move requests through `received`, 
 
 The order desk exposes the same operational safeguard: `not_collected` test orders cannot move into preparation or shipping. They can be cancelled, while fulfilment transitions will become available only when payment verification marks a future order as `paid`.
 
+## Payments
+
+The payment adapter initializes and verifies Paystack transactions from the server. Add a **test** `PAYSTACK_SECRET_KEY` and an absolute `PAYMENT_CALLBACK_URL` to `.env.local` before trying it; do not put the secret in browser code. It verifies the provider's reported reference, USD currency, and minor-unit amount against the saved order before marking an order paid. Paystack uses backend initialization and server-side verification for this flow. [Paystack transaction API](https://paystack.com/docs/api/transaction/)
+
+USD remains the order source of truth. A later foreign-exchange integration must quote and lock a supported local-currency amount server-side before the provider is initialized; browser-side conversion is deliberately not treated as a payment amount.
+
 ## Portfolio notes
 
 Before public release, the project will include an original visual identity, owned/licensed catalogue imagery, tests, deployment instructions, architecture documentation, screenshots, accessibility checks, and an honest feature/status summary.

@@ -5,6 +5,7 @@ import { createDatabaseCatalogue } from './database-catalogue.js';
 import { createDatabasePersistence } from './database-persistence.js';
 import { createAuthService } from './auth.js';
 import { createDatabaseUserRepository } from './database-users.js';
+import { createPaystackPaymentService } from './payments.js';
 import { createDatabaseAdminCatalogue } from './database-admin.js';
 
 const pool = createDatabasePool();
@@ -12,6 +13,10 @@ const app = createApp({
   catalogue: createDatabaseCatalogue(pool),
   adminCatalogue: createDatabaseAdminCatalogue(pool),
   persistence: createDatabasePersistence(pool),
+  paymentService: createPaystackPaymentService({
+    callbackUrl: process.env.PAYMENT_CALLBACK_URL,
+    secretKey: process.env.PAYSTACK_SECRET_KEY
+  }),
   auth: createAuthService({
     repository: createDatabaseUserRepository(pool),
     secret: process.env.JWT_SECRET

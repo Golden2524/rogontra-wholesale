@@ -50,3 +50,12 @@ test('order workflow migration protects payment and fulfilment status values', a
   assert.match(sql, /'awaiting_payment', 'preparing', 'dispatched', 'delivered', 'cancelled'/);
   assert.match(sql, /'not_collected', 'paid', 'failed', 'refunded'/);
 });
+
+test('payment attempts track only supported payment lifecycle statuses', async () => {
+  const sql = await readFile(
+    'backend/database/migrations/007_add_payment_attempt_workflow.sql',
+    'utf8'
+  );
+  assert.match(sql, /'initialized', 'pending', 'success', 'failed'/);
+  assert.match(sql, /payment_attempts_order_id_idx/);
+});

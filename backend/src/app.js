@@ -42,6 +42,7 @@ export function createApp({
   auth,
   adminCatalogue,
   catalogue,
+  paymentService,
   persistence
 } = {}) {
   const app = express();
@@ -229,6 +230,63 @@ export function createApp({
       response
         .status(200)
         .json({ data: await persistence.listQuotesForUser(requireUser(request).id) });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post(`${API_PREFIX}/account/orders/:orderId/payment`, async (request, response, next) => {
+    try {
+      if (!persistence || !paymentService) throw new Error('Payment service is not configured.');
+      const user = requireUser(request);
+      const order = await persistence.getOrderForUser(user.id, request.params.orderId);
+      if (!order) {
+        response.status(404).json({
+          error: { code: 'ORDER_NOT_FOUND', message: 'The requested order does not exist.' }
+        });
+        return;
+      }
+      if (order.paymentStatus === 'paid' || order.status === 'cancelled') {
+        const error = new Error('This order cannot start another payment.');
+        error.code = 'ORDER_NOT_PAYABLE';
+        error.statusCode = 409;
+        throw error;
+      }
+      const payment = await paymentService.initialize({
+        amountCents: order.totalCostCents,
+        email: user.email,
+        orderId: order.id
+      });
+      await persistence.createPaymentAttempt({
+        amountCents: order.totalCostCents,
+        currency: order.currency,
+        orderId: order.id,
+        provider: 'paystack',
+        reference: payment.reference
+      });
+      response.status(201).json({ data: payment });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post(`${API_PREFIX}/account/payments/:reference/verify`, async (request, response, next) => {
+    try {
+      if (!persistence || !paymentService) throw new Error('Payment service is not configured.');
+      const user = requireUser(request);
+      const attempt = await persistence.getPaymentAttemptForUser(user.id, request.params.reference);
+      if (!attempt) {
+        response.status(404).json({
+          error: { code: 'PAYMENT_NOT_FOUND', message: 'The requested payment does not exist.' }
+        });
+        return;
+      }
+      const verification = await paymentService.verify(attempt.reference);
+      const result = await persistence.recordPaymentVerification({
+        attempt,
+        verifiedPayment: verification
+      });
+      response.status(200).json({ data: result });
     } catch (error) {
       next(error);
     }

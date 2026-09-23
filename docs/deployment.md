@@ -1,0 +1,31 @@
+# Deployment checklist
+
+This guide is host-neutral: deploy the static storefront and Node API separately, with Supabase PostgreSQL as the database. Select hosts only after confirming their current regional availability, domain support, log retention, pricing, and security requirements.
+
+## API service
+
+1. Set the service start command to `npm run api:start`.
+2. Set the health check to `GET /api/v1/health` and the readiness check to `GET /api/v1/ready`.
+3. Configure these private environment variables in the host dashboard, never in Git:
+   - `DATABASE_URL`
+   - `JWT_SECRET` (a unique high-entropy production value)
+   - `CORS_ORIGIN` (the exact deployed storefront origin; comma-separate deliberate additional origins)
+   - `PAYSTACK_SECRET_KEY` and `PAYMENT_CALLBACK_URL` only after Paystack test-to-live verification
+   - `PORT` only if the host requires it
+4. Run `npm run db:migrate` against the production database before deploying application code that needs a new migration.
+5. Confirm `/api/v1/ready` returns 200 after deployment.
+
+## Static storefront
+
+1. Deploy the project root as static files, excluding `.env.local`, `node_modules`, and backend-only configuration.
+2. Configure `window.ROGONTRA_API_BASE_URL` before page scripts load to point to the deployed API URL plus `/api/v1`.
+3. Add the exact storefront HTTPS origin to API `CORS_ORIGIN`.
+4. Update `PAYMENT_CALLBACK_URL` to the deployed HTTPS `payment-return.html` address before enabling payment tests.
+
+## Release checks
+
+Run `npm ci`, `npm run format:check`, `npm run lint`, and `npm test`. Then verify catalogue browsing, sign-up/sign-in, a quote request, an order, its account history, and administrator access using non-production test data. Do not enable real payments until a test payment has returned through the callback and has been server-verified.
+
+## Current launch blockers
+
+The seed catalogue is illustrative, payment configuration is test-only until verified, no FX quote provider has been selected for non-USD settlement, and legal, tax, shipping, refund, privacy, and terms policies still require approved business content. Treat these as launch gates, not cosmetic follow-ups.

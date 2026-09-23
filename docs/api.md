@@ -16,6 +16,7 @@ The API listens on `http://localhost:3000` by default. Copy `.env.example` to `.
 | Method  | Path                                         | Description                                                   |
 | ------- | -------------------------------------------- | ------------------------------------------------------------- |
 | `GET`   | `/api/v1/health`                             | Service health and timestamp                                  |
+| `GET`   | `/api/v1/ready`                              | Database-aware readiness for deployment checks                |
 | `GET`   | `/api/v1/products`                           | Local catalogue; accepts optional `q` search text             |
 | `GET`   | `/api/v1/products/:productId`                | One product by ID                                             |
 | `POST`  | `/api/v1/orders`                             | Validates a cart and creates an awaiting-payment test order   |

@@ -17,6 +17,9 @@ const app = createApp({
     callbackUrl: process.env.PAYMENT_CALLBACK_URL,
     secretKey: process.env.PAYSTACK_SECRET_KEY
   }),
+  readiness: async () => {
+    await pool.query('SELECT 1');
+  },
   auth: createAuthService({
     repository: createDatabaseUserRepository(pool),
     secret: process.env.JWT_SECRET

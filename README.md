@@ -36,6 +36,8 @@ The storefront will use only the Rogontra API. No browser code will depend on th
 
 Detailed scope and architecture decisions are in [`docs/product-brief.md`](docs/product-brief.md) and [`docs/architecture.md`](docs/architecture.md).
 
+Deployment instructions and launch gates are in [`docs/deployment.md`](docs/deployment.md).
+
 ## Local setup
 
 Install the project's development tooling and run the current checks:

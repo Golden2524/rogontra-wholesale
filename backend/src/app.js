@@ -43,7 +43,8 @@ export function createApp({
   adminCatalogue,
   catalogue,
   paymentService,
-  persistence
+  persistence,
+  readiness = async () => true
 } = {}) {
   const app = express();
   const productCatalogue = catalogue ?? { findProductById, listCategories, listProducts };
@@ -91,6 +92,19 @@ export function createApp({
         timestamp: new Date().toISOString()
       }
     });
+  });
+
+  app.get(`${API_PREFIX}/ready`, async (_request, response) => {
+    try {
+      await readiness();
+      response.status(200).json({
+        data: { service: 'rogontra-api', status: 'ready', timestamp: new Date().toISOString() }
+      });
+    } catch {
+      response.status(503).json({
+        error: { code: 'SERVICE_NOT_READY', message: 'The service is not ready.' }
+      });
+    }
   });
 
   app.post(`${API_PREFIX}/auth/register`, async (request, response, next) => {

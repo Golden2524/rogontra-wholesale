@@ -34,6 +34,41 @@ test('reports API health', async () => {
   });
 });
 
+test('reports readiness separately from process health', async () => {
+  const readyApp = createApp({ readiness: async () => true });
+  const unavailableApp = createApp({
+    readiness: async () => {
+      throw new Error('Database unavailable');
+    }
+  });
+  const readyServer = readyApp.listen(0);
+  const unavailableServer = unavailableApp.listen(0);
+  await Promise.all([
+    new Promise((resolve) => readyServer.once('listening', resolve)),
+    new Promise((resolve) => unavailableServer.once('listening', resolve))
+  ]);
+
+  try {
+    const ready = await fetch(`http://127.0.0.1:${readyServer.address().port}/api/v1/ready`);
+    const unavailable = await fetch(
+      `http://127.0.0.1:${unavailableServer.address().port}/api/v1/ready`
+    );
+    assert.equal(ready.status, 200);
+    assert.equal((await ready.json()).data.status, 'ready');
+    assert.equal(unavailable.status, 503);
+    assert.equal((await unavailable.json()).error.code, 'SERVICE_NOT_READY');
+  } finally {
+    await Promise.all(
+      [readyServer, unavailableServer].map(
+        (server) =>
+          new Promise((resolve, reject) =>
+            server.close((error) => (error ? reject(error) : resolve()))
+          )
+      )
+    );
+  }
+});
+
 test('lists and searches the local Rogontra catalogue', async () => {
   await withApi(async (baseUrl) => {
     const allResponse = await fetch(`${baseUrl}/api/v1/products`);

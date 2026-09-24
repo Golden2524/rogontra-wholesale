@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import { randomUUID } from 'node:crypto';
 
 import { findProductById, listCategories, listProducts } from './catalogue.js';
 import { getAllowedOrigins } from './config.js';
@@ -10,6 +11,9 @@ const API_PREFIX = '/api/v1';
 
 function createCorsMiddleware(allowedOrigins) {
   return cors({
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    maxAge: 600,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS'],
     origin(origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
@@ -21,6 +25,19 @@ function createCorsMiddleware(allowedOrigins) {
       callback(error);
     }
   });
+}
+
+function addSecurityHeaders(request, response, next) {
+  response.set({
+    'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'",
+    'Cross-Origin-Resource-Policy': 'same-site',
+    'Permissions-Policy': 'camera=(), geolocation=(), microphone=()',
+    'Referrer-Policy': 'no-referrer',
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-Request-Id': randomUUID()
+  });
+  next();
 }
 
 function validateSearchQuery(query) {
@@ -50,6 +67,7 @@ export function createApp({
   const productCatalogue = catalogue ?? { findProductById, listCategories, listProducts };
 
   app.disable('x-powered-by');
+  app.use(addSecurityHeaders);
   app.use(createCorsMiddleware(allowedOrigins));
   app.use(express.json({ limit: '100kb' }));
 
@@ -419,7 +437,8 @@ export function createApp({
     response.status(statusCode).json({
       error: {
         code: statusCode === 500 ? 'INTERNAL_SERVER_ERROR' : (error.code ?? 'BAD_REQUEST'),
-        message
+        message,
+        requestId: response.getHeader('X-Request-Id')
       }
     });
   });

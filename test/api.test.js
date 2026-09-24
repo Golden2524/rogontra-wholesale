@@ -31,6 +31,20 @@ test('reports API health', async () => {
     assert.equal(body.data.service, 'rogontra-api');
     assert.equal(body.data.status, 'ok');
     assert.ok(Date.parse(body.data.timestamp));
+    assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
+    assert.equal(response.headers.get('x-frame-options'), 'DENY');
+    assert.match(response.headers.get('x-request-id'), /^[0-9a-f-]{36}$/i);
+  });
+});
+
+test('includes a request ID on API errors without exposing server internals', async () => {
+  await withApi(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/v1/products?q=${'x'.repeat(101)}`);
+    const body = await response.json();
+
+    assert.equal(response.status, 400);
+    assert.equal(body.error.requestId, response.headers.get('x-request-id'));
+    assert.equal(body.error.message, 'Query parameter "q" must be 100 characters or fewer.');
   });
 });
 

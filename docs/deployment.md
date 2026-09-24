@@ -14,6 +14,8 @@ This guide is host-neutral: deploy the static storefront and Node API separately
    - `PORT` only if the host requires it
 4. Run `npm run db:migrate` against the production database before deploying application code that needs a new migration.
 5. Confirm `/api/v1/ready` returns 200 after deployment.
+6. Terminate TLS at the host or a managed reverse proxy, redirect HTTP to HTTPS, and enable HSTS only after the HTTPS domain is stable. The API already emits restrictive content, frame, referrer, permissions, and MIME-sniffing headers plus an `X-Request-Id` for support diagnostics.
+7. Use host-level or shared rate limiting for authentication, payment, quote, and administration endpoints. The application can run on multiple instances, so an in-memory limit would not be sufficient protection in production.
 
 ## Static storefront
 
@@ -24,7 +26,7 @@ This guide is host-neutral: deploy the static storefront and Node API separately
 
 ## Release checks
 
-Run `npm ci`, `npm run format:check`, `npm run lint`, and `npm test`. Then verify catalogue browsing, sign-up/sign-in, a quote request, an order, its account history, and administrator access using non-production test data. Do not enable real payments until a test payment has returned through the callback and has been server-verified.
+Run `npm ci`, `npm run format:check`, `npm run lint`, and `npm test`. Then verify catalogue browsing, sign-up/sign-in, a quote request, an order, its account history, and administrator access using non-production test data. Confirm API responses have security headers and retain the `X-Request-Id` when testing an error. Do not enable real payments until a test payment has returned through the callback and has been server-verified.
 
 ## Current launch blockers
 

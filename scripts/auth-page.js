@@ -12,9 +12,9 @@ let mode = 'register';
 
 function getReturnPath() {
   const path = new URLSearchParams(window.location.search).get('returnTo');
-  return ['index.html', 'checkout.html', 'orders.html', 'admin.html'].includes(path)
-    ? path
-    : 'orders.html';
+  if (['index.html', 'checkout.html', 'orders.html', 'admin.html'].includes(path)) return path;
+  if (/^product\.html\?productId=[a-z0-9][a-z0-9-]{2,99}$/i.test(path ?? '')) return path;
+  return 'orders.html';
 }
 
 function renderMode() {

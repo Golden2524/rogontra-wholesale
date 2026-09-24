@@ -10,20 +10,7 @@ class Cart {
   #loadFromStorage() {
     this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
 
-    if (!this.cartItems) {
-      this.cartItems = [
-        {
-          productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-          quantity: 2,
-          deliveryOptionId: '1'
-        },
-        {
-          productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
-          quantity: 1,
-          deliveryOptionId: '2'
-        }
-      ];
-    }
+    if (!Array.isArray(this.cartItems)) this.cartItems = [];
   }
 
   saveToStorage() {
@@ -91,6 +78,16 @@ class Cart {
       cartQuantity += cartItem.quantity;
     });
     return cartQuantity;
+  }
+
+  removeUnavailableItems(availableProductIds) {
+    const availableIds = new Set(availableProductIds);
+    const availableItems = this.cartItems.filter((item) => availableIds.has(item.productId));
+
+    if (availableItems.length !== this.cartItems.length) {
+      this.cartItems = availableItems;
+      this.saveToStorage();
+    }
   }
 
   resetCart() {

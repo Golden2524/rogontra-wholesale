@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Product details | Rogontra Wholesale</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/shared/general.css" />
+    <link rel="stylesheet" href="styles/shared/index-header.css" />
+    <link rel="stylesheet" href="styles/pages/product.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to product details</a>
+    <header class="rogontra-header">
+      <div class="rogontra-header-left-section">
+        <a href="index.html" class="header-link">
+          <img class="rogontra-logo" src="images/rogontra-logo.svg" alt="Rogontra Wholesale" />
+          <img class="rogontra-mobile-logo" src="images/rogontra-mark.svg" alt="Rogontra" />
+        </a>
+      </div>
+      <div class="rogontra-header-middle-section">
+        <input
+          class="search-bar js-search-bar"
+          type="text"
+          placeholder="Search products, equipment, and parts"
+          aria-label="Search catalogue"
+        />
+        <button class="search-button js-search-button" aria-label="Search catalogue">
+          <img class="search-icon" src="images/icons/rogontra-search.svg" alt="" />
+        </button>
+      </div>
+      <div class="rogontra-header-right-section">
+        <a class="account-link header-link js-account-link" href="auth.html"
+          ><span class="returns-text js-account-label">Account</span
+          ><span class="orders-text js-account-action">Sign in</span></a
+        >
+        <button class="sign-out-button js-sign-out" type="button" hidden>Sign out</button>
+        <a class="orders-link header-link" href="orders.html"
+          ><span class="returns-text">Procurement</span><span class="orders-text">Orders</span></a
+        >
+        <a class="cart-link header-link" href="checkout.html" aria-label="View cart"
+          ><img class="cart-icon" src="images/icons/rogontra-cart.svg" alt="" /><span
+            class="cart-quantity js-cart-quantity"
+            >0</span
+          ><span class="cart-text">Cart</span></a
+        >
+      </div>
+    </header>
+
+    <main class="product-page-main" id="main-content" tabindex="-1">
+      <p class="catalogue-notice">
+        Illustrative catalogue — contact Rogontra before making purchasing decisions.
+      </p>
+      <p class="js-product-status product-status" role="status" aria-live="polite">
+        Loading product details…
+      </p>
+      <section class="js-product-details" aria-live="polite"></section>
+    </main>
+
+    <footer class="site-footer">
+      <a href="privacy.html">Privacy</a><a href="terms.html">Terms</a
+      ><a href="shipping.html">Shipping</a><a href="refunds.html">Refunds</a>
+      <p class="site-footer-note">
+        Policy pages are pre-launch drafts pending Rogontra legal approval.
+      </p>
+    </footer>
+
+    <dialog class="quote-dialog js-quote-dialog" aria-labelledby="quote-title">
+      <form class="quote-form js-quote-form">
+        <input name="productId" type="hidden" />
+        <div class="quote-form-heading">
+          <div>
+            <p class="quote-eyebrow">Sales-assisted procurement</p>
+            <h2 id="quote-title">Request a quote</h2>
+          </div>
+          <button class="quote-close js-close-quote" type="button" aria-label="Close quote form">
+            ×
+          </button>
+        </div>
+        <p class="js-quote-product-name"></p>
+        <label>Company name<input name="companyName" required maxlength="200" /></label>
+        <label>Contact name<input name="contactName" required maxlength="200" /></label>
+        <label>Business email<input name="email" type="email" required maxlength="254" /></label>
+        <label
+          >Destination country<input name="destinationCountry" required maxlength="200"
+        /></label>
+        <label
+          >Quantity<input name="quantity" type="number" min="1" max="100" value="1" required
+        /></label>
+        <label
+          >Requirements<textarea
+            name="notes"
+            maxlength="1000"
+            rows="3"
+            placeholder="Specifications, delivery timeline, or inspection needs"
+          ></textarea>
+        </label>
+        <button class="button-primary" type="submit">Submit quote request</button>
+        <p class="quote-status js-quote-status" role="status"></p>
+      </form>
+    </dialog>
+    <script type="module" src="scripts/product.js"></script>
+    <script type="module" src="scripts/quote.js"></script>
+    <script type="module" src="scripts/account-link.js"></script>
+  </body>
+</html>

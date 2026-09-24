@@ -8,7 +8,11 @@ document.addEventListener('click', (event) => {
   const button = event.target.closest('.js-request-quote');
   if (!button) return;
   if (!getSession()) {
-    window.location.href = 'auth.html?returnTo=index.html';
+    const isProductPage = window.location.pathname.endsWith('/product.html');
+    const returnTo = isProductPage
+      ? `product.html?productId=${encodeURIComponent(button.dataset.productId)}`
+      : 'index.html';
+    window.location.href = `auth.html?returnTo=${encodeURIComponent(returnTo)}`;
     return;
   }
   form.productId.value = button.dataset.productId;

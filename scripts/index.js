@@ -3,7 +3,10 @@ import { cart } from '../data/cart-class.js';
 import setUpSearch from './utils/search.js';
 
 //loadProducts(renderProductsGrid);
-loadProductsFetch().then(renderProductsGrid);
+loadProductsFetch().then(() => {
+  cart.removeUnavailableItems(products.map((product) => product.id));
+  renderProductsGrid();
+});
 
 function escapeHtml(value) {
   return String(value)
@@ -53,11 +56,13 @@ function renderProductsGrid() {
     productsHTML += `
       <div class="product-container">
         <div class="product-image-container">
-          <img class="product-image" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}">
+          <a href="product.html?productId=${encodeURIComponent(product.id)}" class="product-detail-link">
+            <img class="product-image" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}">
+          </a>
         </div>
 
         <div class="product-name limit-text-to-2-lines">
-          ${escapeHtml(product.name)}
+          <a href="product.html?productId=${encodeURIComponent(product.id)}" class="product-detail-link">${escapeHtml(product.name)}</a>
         </div>
 
         <div class="product-category">

@@ -26,6 +26,7 @@ class Product {
   minimumOrderQuantity;
   purchaseMode;
   stockStatus;
+  specifications;
 
   constructor(productDetails) {
     this.id = productDetails.id;
@@ -40,6 +41,7 @@ class Product {
     this.minimumOrderQuantity = productDetails.minimumOrderQuantity;
     this.purchaseMode = productDetails.purchaseMode;
     this.stockStatus = productDetails.stockStatus;
+    this.specifications = productDetails.specifications ?? {};
   }
 
   getStarsURL() {

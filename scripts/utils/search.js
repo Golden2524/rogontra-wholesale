@@ -5,7 +5,12 @@ export default function setUpSearch() {
   if (!button || !input) return;
 
   function searchRedirect() {
-    window.location.href = `index.html?search=${input.value}`;
+    const url = new URL('index.html', window.location.href);
+    const search = input.value.trim();
+    const category = new URL(window.location.href).searchParams.get('category');
+    if (search) url.searchParams.set('search', search);
+    if (category) url.searchParams.set('category', category);
+    window.location.href = url.toString();
   }
 
   button.addEventListener('click', searchRedirect);

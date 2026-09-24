@@ -97,12 +97,17 @@ test('lists and searches the local Rogontra catalogue', async () => {
     const allProducts = await allResponse.json();
     const searchResponse = await fetch(`${baseUrl}/api/v1/products?q=excavator`);
     const searchProducts = await searchResponse.json();
+    const categoryResponse = await fetch(`${baseUrl}/api/v1/products?category=Industrial%20Parts`);
+    const categoryProducts = await categoryResponse.json();
 
     assert.equal(allResponse.status, 200);
     assert.ok(allProducts.meta.count > 0);
     assert.equal(searchResponse.status, 200);
     assert.ok(searchProducts.meta.count >= 1);
     assert.ok(searchProducts.data.some((product) => /excavator/i.test(product.name)));
+    assert.equal(categoryResponse.status, 200);
+    assert.equal(categoryProducts.meta.category, 'Industrial Parts');
+    assert.ok(categoryProducts.data.every((product) => product.category === 'Industrial Parts'));
   });
 });
 
@@ -110,11 +115,16 @@ test('returns consistent errors for invalid or missing resources', async () => {
   await withApi(async (baseUrl) => {
     const missingResponse = await fetch(`${baseUrl}/api/v1/products/not-a-product`);
     const invalidQueryResponse = await fetch(`${baseUrl}/api/v1/products?q=${'x'.repeat(101)}`);
+    const invalidCategoryResponse = await fetch(
+      `${baseUrl}/api/v1/products?category=${'x'.repeat(101)}`
+    );
 
     assert.equal(missingResponse.status, 404);
     assert.equal((await missingResponse.json()).error.code, 'PRODUCT_NOT_FOUND');
     assert.equal(invalidQueryResponse.status, 400);
     assert.equal((await invalidQueryResponse.json()).error.code, 'BAD_REQUEST');
+    assert.equal(invalidCategoryResponse.status, 400);
+    assert.equal((await invalidCategoryResponse.json()).error.code, 'BAD_REQUEST');
   });
 });
 

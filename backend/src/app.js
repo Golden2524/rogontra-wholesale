@@ -54,6 +54,16 @@ function validateSearchQuery(query) {
   return query.trim();
 }
 
+function validateCategory(category) {
+  if (category === undefined) return undefined;
+  if (typeof category !== 'string' || category.trim().length < 1 || category.trim().length > 100) {
+    const error = new Error('Query parameter "category" must be between 1 and 100 characters.');
+    error.statusCode = 400;
+    throw error;
+  }
+  return category.trim();
+}
+
 export function createApp({
   allowedOrigins = getAllowedOrigins(),
   auth,
@@ -154,15 +164,17 @@ export function createApp({
   app.get(`${API_PREFIX}/products`, async (request, response, next) => {
     try {
       const query = validateSearchQuery(request.query.q);
+      const category = validateCategory(request.query.category);
       const products = await productCatalogue.listProducts({
         query,
-        category: request.query.category
+        category
       });
 
       response.status(200).json({
         data: products,
         meta: {
           count: products.length,
+          category: category ?? null,
           query: query ?? null
         }
       });

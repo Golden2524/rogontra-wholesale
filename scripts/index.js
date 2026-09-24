@@ -20,6 +20,7 @@ function escapeHtml(value) {
 function renderProductsGrid() {
   const url = new URL(window.location.href);
   const search = url.searchParams.get('search');
+  const category = url.searchParams.get('category');
 
   //keep search text inside search bar
   const searchInput = document.querySelector('.js-search-bar');
@@ -27,7 +28,20 @@ function renderProductsGrid() {
     searchInput.value = search;
   }
 
-  let featuredProducts = products;
+  const categories = [...new Set(products.map((product) => product.category))].sort();
+  const categoryFilters = document.querySelector('.js-category-filters');
+  categoryFilters.innerHTML = [undefined, ...categories]
+    .map((categoryName) => {
+      const label = categoryName ?? 'All categories';
+      const filterUrl = new URL('index.html', window.location.href);
+      if (categoryName) filterUrl.searchParams.set('category', categoryName);
+      if (search) filterUrl.searchParams.set('search', search);
+      const isCurrent = category === categoryName || (!category && !categoryName);
+      return `<a class="category-filter${isCurrent ? ' is-active' : ''}" href="${escapeHtml(filterUrl.toString())}"${isCurrent ? ' aria-current="page"' : ''}>${escapeHtml(label)}</a>`;
+    })
+    .join('');
+
+  let featuredProducts = products.filter((product) => !category || product.category === category);
 
   if (search) {
     featuredProducts = products.filter((product) => {
@@ -44,8 +58,10 @@ function renderProductsGrid() {
   }
 
   const messageElement = document.querySelector('.js-empty-message');
-  if (search && featuredProducts.length === 0) {
-    messageElement.textContent = 'No products matched your search.';
+  if (featuredProducts.length === 0) {
+    messageElement.textContent = search
+      ? 'No products matched this search and category.'
+      : 'No products are available in this category.';
   } else {
     messageElement.textContent = '';
   }

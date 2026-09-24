@@ -28,4 +28,4 @@ Run `npm ci`, `npm run format:check`, `npm run lint`, and `npm test`. Then verif
 
 ## Current launch blockers
 
-The seed catalogue is illustrative, payment configuration is test-only until verified, no FX quote provider has been selected for non-USD settlement, and legal, tax, shipping, refund, privacy, and terms policies still require approved business content. Treat these as launch gates, not cosmetic follow-ups.
+The seed catalogue is illustrative, payment configuration is test-only until verified, no FX quote provider has been selected for non-USD settlement, and the included legal pages are clearly labelled pre-launch drafts that still require approved business content. Tax, shipping, refund, privacy, and terms policies are launch gates, not cosmetic follow-ups.

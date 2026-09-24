@@ -108,6 +108,27 @@ button {
   color: rgb(196, 80, 0);
 }
 
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 20px;
+  padding: 28px 20px;
+  background: #102a43;
+  color: white;
+  font-size: 14px;
+}
+
+.site-footer a {
+  color: white;
+}
+
+.site-footer-note {
+  flex-basis: 100%;
+  text-align: center;
+  color: #dbe8f1;
+}
+
 /* Styles for dropdown selectors. */
 select {
   color: rgb(33, 33, 33);

@@ -74,3 +74,5 @@ USD remains the order source of truth. A later foreign-exchange integration must
 ## Portfolio notes
 
 Before public release, the project will include an original visual identity, owned/licensed catalogue imagery, tests, deployment instructions, architecture documentation, screenshots, accessibility checks, and an honest feature/status summary.
+
+The linked privacy, terms, shipping, and refund pages are intentionally labelled as pre-launch drafts. Replace every bracketed business detail and obtain qualified legal and operational approval before publishing them as real policies.

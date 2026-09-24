@@ -5,11 +5,13 @@ import { loadProductsFetch, products } from '../data/products.js';
 import { cart } from '../data/cart-class.js';
 
 async function loadPage() {
+  const status = document.querySelector('.js-checkout-status');
   try {
     await loadProductsFetch();
     cart.removeUnavailableItems(products.map((product) => product.id));
   } catch (_error) {
-    console.error('Unexpected error. Please try again later.');
+    status.textContent = 'We could not load the catalogue for order review. Please try again.';
+    return;
   }
 
   renderOrderSummary();

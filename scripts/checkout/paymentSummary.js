@@ -3,7 +3,7 @@ import { getProduct } from '../../data/products.js';
 import { getDeliveryOption } from '../../data/deliveryOption.js';
 import formatCurrency from '../utils/money.js';
 import { addOrder } from '../../data/order.js';
-import { authenticatedFetch } from '../auth-client.js';
+import { authenticatedFetch, getSession } from '../auth-client.js';
 
 export function renderPaymentSummary() {
   let productPriceCent = 0;
@@ -34,7 +34,7 @@ export function renderPaymentSummary() {
     </div>
 
     <div class="payment-summary-row">
-      <div>Shipping &amp; handling:</div>
+      <div>Estimated delivery:</div>
       <div class="payment-summary-money">$${formatCurrency(shippingPriceCent)}</div>
     </div>
 
@@ -53,9 +53,9 @@ export function renderPaymentSummary() {
       <div class="payment-summary-money">$${formatCurrency(orderTotal)}</div>
     </div>
 
-    <button class="place-order-button button-primary
-    js-place-order">
-      Submit test order
+    <p class="payment-summary-note">The final payment is verified server-side. This development checkout uses illustrative taxes and delivery estimates.</p>
+    <button class="place-order-button button-primary js-place-order">
+      ${getSession() ? 'Submit order for payment' : 'Sign in to submit order'}
     </button>
     <p class="js-payment-message" role="status"></p>
   `;
@@ -71,6 +71,11 @@ export function renderPaymentSummary() {
   }
 
   document.querySelector('.js-place-order').addEventListener('click', async () => {
+    if (!getSession()) {
+      window.location.href = 'auth.html?returnTo=checkout.html';
+      return;
+    }
+
     const paymentMessage = document.querySelector('.js-payment-message');
     placeOrderButton.disabled = true;
     placeOrderButton.textContent = 'Submitting…';
@@ -99,7 +104,7 @@ export function renderPaymentSummary() {
       paymentMessage.textContent =
         error instanceof Error ? error.message : 'Unable to submit the test order.';
       placeOrderButton.disabled = false;
-      placeOrderButton.textContent = 'Submit test order';
+      placeOrderButton.textContent = 'Submit order for payment';
     }
   });
 }

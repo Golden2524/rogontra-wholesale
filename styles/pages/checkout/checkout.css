@@ -20,6 +20,19 @@
   margin-bottom: 18px;
 }
 
+.checkout-notice,
+.checkout-status {
+  color: #52677a;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.checkout-status {
+  min-height: 24px;
+  color: #b12704;
+  font-weight: 700;
+}
+
 .checkout-grid {
   display: grid;
   /* Here, 1fr means the first column will take
@@ -221,6 +234,13 @@
 .payment-summary .place-order-button:disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.payment-summary-note {
+  color: #52677a;
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 16px 0 0;
 }
 
 .quantity-input {

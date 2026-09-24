@@ -42,7 +42,7 @@ export function renderOrderSummary() {
     cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
         <div class="delivery-date">
-          Delivery date: ${dateString}
+          Estimated arrival: ${dateString}
         </div>
 
         <div class="cart-item-details-grid">
@@ -79,7 +79,7 @@ export function renderOrderSummary() {
 
           <div class="delivery-options">
             <div class="delivery-options-title">
-              Choose a delivery option:
+              Choose a provisional delivery estimate:
             </div>
             ${deliveryOptionsHTML(matchingProduct, cartItem)}
           </div>
@@ -102,7 +102,7 @@ export function renderOrderSummary() {
       const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
       html += `
-        <div class="delivery-option js-delivery-option"
+        <label class="delivery-option js-delivery-option"
         data-product-id="${matchingProduct.id}"
         data-delivery-option-id="${deliveryOption.id}">
           <input type="radio" ${isChecked ? 'checked' : ''}
@@ -115,10 +115,10 @@ export function renderOrderSummary() {
               ${dateString}
             </div>
             <div class="delivery-option-price">
-              ${priceString} Shipping
+              ${priceString} delivery estimate
             </div>
           </div>
-        </div>
+        </label>
       `;
     });
 

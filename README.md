@@ -38,6 +38,8 @@ Detailed scope and architecture decisions are in [`docs/product-brief.md`](docs/
 
 Deployment instructions and launch gates are in [`docs/deployment.md`](docs/deployment.md).
 
+The API also includes a production-only container package (`Dockerfile`) for a host-neutral deployment path.
+
 The ready-to-adapt LinkedIn/GitHub project narrative is in [`docs/portfolio-case-study.md`](docs/portfolio-case-study.md).
 
 ## Local setup

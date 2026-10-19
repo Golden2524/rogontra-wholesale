@@ -31,3 +31,18 @@ test('reports unsafe production deployment configuration without returning secre
   ]);
   assert.ok(!issues.join(' ').includes('sk_test_do_not_display'));
 });
+
+test('container deployment package keeps secrets and storefront assets out of the API image', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const [dockerfile, dockerignore] = await Promise.all([
+    readFile('Dockerfile', 'utf8'),
+    readFile('.dockerignore', 'utf8')
+  ]);
+
+  assert.match(dockerfile, /FROM node:22-alpine/);
+  assert.match(dockerfile, /npm ci --omit=dev/);
+  assert.match(dockerfile, /backend\/src\/server\.js/);
+  assert.match(dockerignore, /^\.env\.\*$/m);
+  assert.match(dockerignore, /^styles$/m);
+  assert.match(dockerignore, /^\*\.html$/m);
+});

@@ -17,6 +17,10 @@ This guide is host-neutral: deploy the static storefront and Node API separately
 6. Terminate TLS at the host or a managed reverse proxy, redirect HTTP to HTTPS, and enable HSTS only after the HTTPS domain is stable. The API already emits restrictive content, frame, referrer, permissions, and MIME-sniffing headers plus an `X-Request-Id` for support diagnostics.
 7. Use host-level or shared rate limiting for authentication, payment, quote, and administration endpoints. The application can run on multiple instances, so an in-memory limit would not be sufficient protection in production.
 
+### Container option
+
+The included `Dockerfile` packages only the Node API and its production dependencies. Any container-capable host can build it from the repository root, expose port `3000`, and supply the same private environment variables above. The static storefront remains a separate deployment because it needs its own public API base URL. Do not place `.env.local` inside the image or repository.
+
 ## Static storefront
 
 1. Deploy the project root as static files, excluding `.env.local`, `node_modules`, and backend-only configuration.

@@ -1,18 +1,23 @@
-import { products, loadProductsFetch } from '../data/products.js';
+import { products, loadCategoriesFetch, loadProductsFetch } from '../data/products.js';
 import { cart } from '../data/cart-class.js';
 import setUpSearch from './utils/search.js';
 
-//loadProducts(renderProductsGrid);
-loadProductsFetch()
-  .then(() => {
-    cart.removeUnavailableItems(products.map((product) => product.id));
-    renderProductsGrid();
-  })
-  .catch(() => {
+async function loadCatalogue() {
+  const url = new URL(window.location.href);
+  const search = url.searchParams.get('search');
+  const category = url.searchParams.get('category');
+  try {
+    const [, categories] = await Promise.all([
+      loadProductsFetch({ category, query: search }),
+      loadCategoriesFetch()
+    ]);
+    renderProductsGrid(categories);
+  } catch {
     document.querySelector('.js-products-grid').setAttribute('aria-busy', 'false');
     document.querySelector('.js-empty-message').textContent =
       'The catalogue is temporarily unavailable. Please try again shortly.';
-  });
+  }
+}
 
 function escapeHtml(value) {
   return String(value)
@@ -23,7 +28,7 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
-function renderProductsGrid() {
+function renderProductsGrid(categories) {
   const url = new URL(window.location.href);
   const search = url.searchParams.get('search');
   const category = url.searchParams.get('category');
@@ -34,7 +39,6 @@ function renderProductsGrid() {
     searchInput.value = search;
   }
 
-  const categories = [...new Set(products.map((product) => product.category))].sort();
   const categoryFilters = document.querySelector('.js-category-filters');
   categoryFilters.innerHTML = [undefined, ...categories]
     .map((categoryName) => {
@@ -47,21 +51,7 @@ function renderProductsGrid() {
     })
     .join('');
 
-  let featuredProducts = products.filter((product) => !category || product.category === category);
-
-  if (search) {
-    featuredProducts = featuredProducts.filter((product) => {
-      let matchingKeyword = false;
-
-      product.keywords.forEach((keyword) => {
-        if (keyword.toLowerCase().includes(search.toLowerCase())) {
-          matchingKeyword = true;
-        }
-      });
-
-      return matchingKeyword || product.name.toLowerCase().includes(search.toLowerCase());
-    });
-  }
+  const featuredProducts = products;
 
   const messageElement = document.querySelector('.js-empty-message');
   if (featuredProducts.length === 0) {
@@ -184,3 +174,5 @@ function renderProductsGrid() {
 
   return updateCartQuantity();
 }
+
+loadCatalogue();

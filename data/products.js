@@ -108,8 +108,17 @@ class Appliance extends Product {
 
 export let products = [];
 
-export async function loadProductsFetch() {
-  const response = await fetch(`${API_BASE_URL}/products`);
+function createProduct(productDetails) {
+  if (productDetails.type === 'clothing') return new Clothing(productDetails);
+  if (productDetails.type === 'appliance') return new Appliance(productDetails);
+  return new Product(productDetails);
+}
+
+export async function loadProductsFetch({ category, query } = {}) {
+  const url = new URL(`${API_BASE_URL}/products`);
+  if (category) url.searchParams.set('category', category);
+  if (query) url.searchParams.set('q', query);
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error('Unable to load the product catalogue.');
@@ -121,14 +130,15 @@ export async function loadProductsFetch() {
     throw new Error('The product catalogue response is invalid.');
   }
 
-  products = payload.data.map((productDetails) => {
-    if (productDetails.type === 'clothing') {
-      return new Clothing(productDetails);
-    } else if (productDetails.type === 'appliance') {
-      return new Appliance(productDetails);
-    }
-    return new Product(productDetails);
-  });
+  products = payload.data.map(createProduct);
+}
+
+export async function loadCategoriesFetch() {
+  const response = await fetch(`${API_BASE_URL}/categories`);
+  if (!response.ok) throw new Error('Unable to load product categories.');
+  const payload = await response.json();
+  if (!Array.isArray(payload.data)) throw new Error('The category response is invalid.');
+  return payload.data;
 }
 
 /*

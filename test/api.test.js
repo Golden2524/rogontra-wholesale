@@ -105,6 +105,8 @@ test('lists and searches the local Rogontra catalogue', async () => {
     const allProducts = await allResponse.json();
     const searchResponse = await fetch(`${baseUrl}/api/v1/products?q=excavator`);
     const searchProducts = await searchResponse.json();
+    const keywordResponse = await fetch(`${baseUrl}/api/v1/products?q=ppe`);
+    const keywordProducts = await keywordResponse.json();
     const categoryResponse = await fetch(`${baseUrl}/api/v1/products?category=Industrial%20Parts`);
     const categoryProducts = await categoryResponse.json();
 
@@ -113,6 +115,7 @@ test('lists and searches the local Rogontra catalogue', async () => {
     assert.equal(searchResponse.status, 200);
     assert.ok(searchProducts.meta.count >= 1);
     assert.ok(searchProducts.data.some((product) => /excavator/i.test(product.name)));
+    assert.ok(keywordProducts.data.some((product) => product.category === 'Safety & PPE'));
     assert.equal(categoryResponse.status, 200);
     assert.equal(categoryProducts.meta.category, 'Industrial Parts');
     assert.ok(categoryProducts.data.every((product) => product.category === 'Industrial Parts'));

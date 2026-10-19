@@ -39,7 +39,9 @@ export function createDatabaseCatalogue(pool) {
       const clauses = [];
       if (query) {
         values.push(`%${query}%`);
-        clauses.push(`(p.name ILIKE $${values.length} OR p.sku ILIKE $${values.length})`);
+        clauses.push(
+          `(p.name ILIKE $${values.length} OR p.sku ILIKE $${values.length} OR p.specifications::text ILIKE $${values.length})`
+        );
       }
       if (category) {
         values.push(category);

@@ -67,3 +67,8 @@ test('delivery snapshots preserve order fulfilment destinations', async () => {
   );
   assert.match(sql, /ADD COLUMN IF NOT EXISTS delivery_address JSONB/);
 });
+
+test('database catalogue search includes stored product keywords', async () => {
+  const source = await readFile('backend/src/database-catalogue.js', 'utf8');
+  assert.match(source, /p\.specifications::text ILIKE/);
+});

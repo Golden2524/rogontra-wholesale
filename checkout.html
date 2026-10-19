@@ -34,6 +34,64 @@
         Prices are in USD. Dispatch dates, taxes, and delivery costs are reviewed before payment.
       </p>
       <p class="checkout-status js-checkout-status" role="status" aria-live="polite"></p>
+      <form class="delivery-address-form js-delivery-address-form" id="delivery-address-form">
+        <h2>Delivery destination</h2>
+        <p>
+          Used only to review shipping and fulfil this order. Fields marked required are needed
+          before payment.
+        </p>
+        <div class="delivery-address-grid">
+          <label
+            >Recipient name<input
+              name="recipientName"
+              minlength="2"
+              maxlength="200"
+              autocomplete="name"
+              required
+          /></label>
+          <label
+            >Phone number<input
+              name="phone"
+              type="tel"
+              minlength="5"
+              maxlength="40"
+              autocomplete="tel"
+              required
+          /></label>
+          <label class="delivery-address-wide"
+            >Address line 1<input
+              name="addressLine1"
+              minlength="5"
+              maxlength="200"
+              autocomplete="address-line1"
+              required
+          /></label>
+          <label class="delivery-address-wide"
+            >Address line 2 <span>(optional)</span
+            ><input name="addressLine2" maxlength="200" autocomplete="address-line2"
+          /></label>
+          <label
+            >City<input
+              name="city"
+              minlength="2"
+              maxlength="100"
+              autocomplete="address-level2"
+              required
+          /></label>
+          <label
+            >Postal code <span>(optional where unavailable)</span
+            ><input name="postalCode" maxlength="30" autocomplete="postal-code"
+          /></label>
+          <label class="delivery-address-wide"
+            >Country<input
+              name="country"
+              minlength="2"
+              maxlength="100"
+              autocomplete="country-name"
+              required
+          /></label>
+        </div>
+      </form>
 
       <div class="checkout-grid">
         <div class="order-summary js-order-summary"></div>

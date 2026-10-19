@@ -2,6 +2,13 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { createApp } from '../backend/src/app.js';
+import { readFile } from 'node:fs/promises';
+
+test('account order rendering displays a safe delivery destination snapshot', async () => {
+  const script = await readFile('scripts/order.js', 'utf8');
+  assert.match(script, /order\.deliveryAddress/);
+  assert.match(script, /escapeHtml\(order\.deliveryAddress\.country\)/);
+});
 
 test('customer history endpoints require a bearer token and scope results to the session user', async () => {
   const requestedUsers = [];

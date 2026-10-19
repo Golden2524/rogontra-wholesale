@@ -27,6 +27,52 @@
   margin: 0 0 12px;
 }
 
+.delivery-address-form {
+  margin: 0 0 24px;
+  padding: 20px;
+  border: 1px solid #d8e0e7;
+  border-radius: 8px;
+}
+
+.delivery-address-form h2 {
+  margin: 0;
+  color: #102a43;
+  font-size: 19px;
+}
+.delivery-address-form > p {
+  margin: 8px 0 18px;
+  color: #52677a;
+  font-size: 14px;
+}
+.delivery-address-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.delivery-address-grid label {
+  display: grid;
+  gap: 6px;
+  color: #102a43;
+  font-size: 14px;
+  font-weight: 700;
+}
+.delivery-address-grid label span {
+  color: #52677a;
+  font-size: 12px;
+  font-weight: 400;
+}
+.delivery-address-grid input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #a9b8c7;
+  border-radius: 5px;
+  font: inherit;
+}
+.delivery-address-wide {
+  grid-column: 1 / -1;
+}
+
 .checkout-status {
   min-height: 24px;
   color: #b12704;
@@ -52,6 +98,15 @@
 
   .checkout-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .delivery-address-grid {
+    grid-template-columns: 1fr;
+  }
+  .delivery-address-wide {
+    grid-column: auto;
   }
 }
 

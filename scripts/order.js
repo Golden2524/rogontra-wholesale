@@ -5,6 +5,15 @@ import { cart } from '../data/cart-class.js';
 import setUpSearch from './utils/search.js';
 import { authenticatedFetch, getSession } from './auth-client.js';
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
 async function loadPage() {
   await loadProductsFetch();
 
@@ -56,6 +65,11 @@ async function loadPage() {
               <div class="order-header-label">Total:</div>
               <div>$${formatCurrency(order.totalCostCents)}</div>
             </div>
+            ${
+              order.deliveryAddress
+                ? `<div class="order-destination"><div class="order-header-label">Deliver to:</div><div>${escapeHtml(order.deliveryAddress.city)}, ${escapeHtml(order.deliveryAddress.country)}</div></div>`
+                : ''
+            }
           </div>
 
           <div class="order-header-right-section">

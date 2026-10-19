@@ -22,6 +22,14 @@ async function withApi(run) {
   }
 }
 
+const deliveryAddress = {
+  addressLine1: '1 Marina Road',
+  city: 'Lagos',
+  country: 'Nigeria',
+  phone: '+2348012345678',
+  recipientName: 'Ada Buyer'
+};
+
 test('reports API health', async () => {
   await withApi(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/api/v1/health`);
@@ -140,7 +148,8 @@ test('creates a server-priced test order from a valid cart', async () => {
             quantity: 2,
             deliveryOptionId: '2'
           }
-        ]
+        ],
+        deliveryAddress
       })
     });
     const body = await response.json();
@@ -152,6 +161,10 @@ test('creates a server-priced test order from a valid cart', async () => {
     assert.equal(body.data.shippingPriceCents, 499);
     assert.equal(body.data.taxCents, 4290);
     assert.equal(body.data.totalCostCents, 47189);
+    assert.equal(body.data.deliveryAddress.recipientName, deliveryAddress.recipientName);
+    assert.equal(body.data.deliveryAddress.country, deliveryAddress.country);
+    assert.equal(body.data.deliveryAddress.addressLine2, '');
+    assert.equal(body.data.deliveryAddress.postalCode, '');
   });
 });
 
@@ -167,12 +180,27 @@ test('rejects carts containing unknown products', async () => {
             quantity: 1,
             deliveryOptionId: '1'
           }
-        ]
+        ],
+        deliveryAddress
       })
     });
 
     assert.equal(response.status, 400);
     assert.equal((await response.json()).error.code, 'CART_PRODUCT_NOT_FOUND');
+  });
+});
+
+test('requires a complete delivery destination before creating an order', async () => {
+  await withApi(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/v1/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer test-token' },
+      body: JSON.stringify({
+        cart: [{ productId: 'rgw-cargo-straps-001', quantity: 1, deliveryOptionId: '1' }]
+      })
+    });
+    assert.equal(response.status, 400);
+    assert.equal((await response.json()).error.code, 'INVALID_DELIVERY_ADDRESS');
   });
 });
 

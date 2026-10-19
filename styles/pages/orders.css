@@ -116,7 +116,8 @@
 }
 
 .order-date,
-.order-total {
+.order-total,
+.order-destination {
   margin-right: 45px;
 }
 
@@ -161,7 +162,8 @@
   }
 
   .order-date,
-  .order-total {
+  .order-total,
+  .order-destination {
     display: grid;
     grid-template-columns: auto 1fr;
     margin-right: 0;

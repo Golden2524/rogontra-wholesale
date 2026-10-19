@@ -46,8 +46,8 @@ export function createDatabasePersistence(pool) {
         await client.query(
           `INSERT INTO orders (
             id, user_id, status, payment_status, currency, product_price_cents,
-            shipping_price_cents, tax_cents, total_cost_cents, created_at
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+            shipping_price_cents, tax_cents, total_cost_cents, delivery_address, created_at
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
           [
             order.id,
             userId,
@@ -58,6 +58,7 @@ export function createDatabasePersistence(pool) {
             order.shippingPriceCents,
             order.taxCents,
             order.totalCostCents,
+            order.deliveryAddress,
             order.orderTime
           ]
         );
@@ -92,7 +93,7 @@ export function createDatabasePersistence(pool) {
     async listOrdersForUser(userId) {
       const result = await pool.query(
         `SELECT id, status, payment_status, currency, product_price_cents, shipping_price_cents,
-                tax_cents, total_cost_cents, created_at,
+                tax_cents, total_cost_cents, delivery_address, created_at,
                 COALESCE(
                   (
                     SELECT json_agg(
@@ -121,6 +122,7 @@ export function createDatabasePersistence(pool) {
         shippingPriceCents: row.shipping_price_cents,
         taxCents: row.tax_cents,
         totalCostCents: row.total_cost_cents,
+        deliveryAddress: row.delivery_address,
         orderTime: row.created_at.toISOString(),
         products: row.products
       }));
@@ -129,7 +131,7 @@ export function createDatabasePersistence(pool) {
     async getOrderForUser(userId, orderId) {
       const result = await pool.query(
         `SELECT o.id, o.status, o.payment_status, o.currency, o.product_price_cents,
-                o.shipping_price_cents, o.tax_cents, o.total_cost_cents, o.created_at,
+                o.shipping_price_cents, o.tax_cents, o.total_cost_cents, o.delivery_address, o.created_at,
                 COALESCE(
                   json_agg(
                     json_build_object(
@@ -160,6 +162,7 @@ export function createDatabasePersistence(pool) {
         shippingPriceCents: row.shipping_price_cents,
         taxCents: row.tax_cents,
         totalCostCents: row.total_cost_cents,
+        deliveryAddress: row.delivery_address,
         orderTime: row.created_at.toISOString(),
         products: row.products
       };

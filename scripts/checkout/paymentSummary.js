@@ -77,6 +77,8 @@ export function renderPaymentSummary() {
     }
 
     const paymentMessage = document.querySelector('.js-payment-message');
+    const deliveryAddressForm = document.querySelector('.js-delivery-address-form');
+    if (!deliveryAddressForm.reportValidity()) return;
     placeOrderButton.disabled = true;
     placeOrderButton.textContent = 'Submitting…';
     paymentMessage.textContent = '';
@@ -88,7 +90,8 @@ export function renderPaymentSummary() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          cart: cart.cartItems
+          cart: cart.cartItems,
+          deliveryAddress: Object.fromEntries(new FormData(deliveryAddressForm))
         })
       });
       const payload = await response.json();

@@ -214,7 +214,11 @@ export function createApp({
   app.post(`${API_PREFIX}/orders`, async (request, response, next) => {
     try {
       const user = requireUser(request);
-      const order = await createOrderFromCart(request.body?.cart, productCatalogue.findProductById);
+      const order = await createOrderFromCart(
+        request.body?.cart,
+        request.body?.deliveryAddress,
+        productCatalogue.findProductById
+      );
       response.status(201).json({
         data: persistence ? await persistence.saveOrder(order, user.id) : order
       });

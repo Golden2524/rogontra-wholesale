@@ -34,7 +34,54 @@ function validateCartItem(item) {
   }
 }
 
-export async function createOrderFromCart(cart, findProduct = findProductById) {
+function validateDeliveryAddress(address) {
+  if (!address || typeof address !== 'object' || Array.isArray(address)) {
+    throw createClientError('INVALID_DELIVERY_ADDRESS', 'A delivery address is required.');
+  }
+
+  const requiredFields = [
+    ['recipientName', 2, 200, 'recipient name'],
+    ['addressLine1', 5, 200, 'address line'],
+    ['city', 2, 100, 'city'],
+    ['country', 2, 100, 'country'],
+    ['phone', 5, 40, 'phone number']
+  ];
+  for (const [field, minimum, maximum, label] of requiredFields) {
+    const value = address[field];
+    if (
+      typeof value !== 'string' ||
+      value.trim().length < minimum ||
+      value.trim().length > maximum
+    ) {
+      throw createClientError('INVALID_DELIVERY_ADDRESS', `A valid delivery ${label} is required.`);
+    }
+  }
+
+  if (
+    address.addressLine2 !== undefined &&
+    (typeof address.addressLine2 !== 'string' || address.addressLine2.length > 200)
+  ) {
+    throw createClientError('INVALID_DELIVERY_ADDRESS', 'Delivery address line 2 is invalid.');
+  }
+  if (
+    address.postalCode !== undefined &&
+    (typeof address.postalCode !== 'string' || address.postalCode.length > 30)
+  ) {
+    throw createClientError('INVALID_DELIVERY_ADDRESS', 'Delivery postal code is invalid.');
+  }
+
+  return {
+    recipientName: address.recipientName.trim(),
+    addressLine1: address.addressLine1.trim(),
+    addressLine2: address.addressLine2?.trim() ?? '',
+    city: address.city.trim(),
+    country: address.country.trim(),
+    postalCode: address.postalCode?.trim() ?? '',
+    phone: address.phone.trim()
+  };
+}
+
+export async function createOrderFromCart(cart, deliveryAddress, findProduct = findProductById) {
   if (!Array.isArray(cart) || cart.length === 0 || cart.length > MAX_CART_ITEMS) {
     throw createClientError(
       'INVALID_CART',
@@ -43,6 +90,7 @@ export async function createOrderFromCart(cart, findProduct = findProductById) {
   }
 
   const productIds = new Set();
+  const validatedDeliveryAddress = validateDeliveryAddress(deliveryAddress);
   const orderTime = new Date().toISOString();
   let productPriceCents = 0;
   let shippingPriceCents = 0;
@@ -98,6 +146,7 @@ export async function createOrderFromCart(cart, findProduct = findProductById) {
     status: 'awaiting_payment',
     paymentStatus: 'not_collected',
     currency: 'USD',
+    deliveryAddress: validatedDeliveryAddress,
     products,
     productPriceCents,
     shippingPriceCents,

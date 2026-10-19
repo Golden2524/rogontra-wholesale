@@ -59,3 +59,11 @@ test('payment attempts track only supported payment lifecycle statuses', async (
   assert.match(sql, /'initialized', 'pending', 'success', 'failed'/);
   assert.match(sql, /payment_attempts_order_id_idx/);
 });
+
+test('delivery snapshots preserve order fulfilment destinations', async () => {
+  const sql = await readFile(
+    'backend/database/migrations/008_add_order_delivery_snapshot.sql',
+    'utf8'
+  );
+  assert.match(sql, /ADD COLUMN IF NOT EXISTS delivery_address JSONB/);
+});

@@ -7,6 +7,7 @@ This checklist separates a portfolio demonstration release from a real commercia
 - [x] Owned brand identity, catalogue flows, account flows, quote requests, administration, and server-priced order workflow.
 - [x] PostgreSQL migrations, repeatable illustrative catalogue seed, and protected customer/admin API routes.
 - [x] Automated formatting, linting, and critical-path tests.
+- [x] Baseline HTML quality guard for document language, encoding, viewport metadata, and unique page titles.
 - [x] Health and database-readiness endpoints, production configuration preflight, and portable API container package.
 - [x] Deployment guide, architecture/API documentation, payment/currency roadmap, and LinkedIn case-study draft.
 - [ ] Complete a browser walkthrough on desktop and mobile-sized layouts.

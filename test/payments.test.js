@@ -40,6 +40,60 @@ test('Paystack adapter sends server-priced USD cents and returns provider checko
   assert.equal(result.reference, 'rgw-reference');
 });
 
+test('Paystack adapter fails safely when payments are unavailable or provider data is incomplete', async () => {
+  const unconfigured = createPaystackPaymentService({});
+  await assert.rejects(
+    () =>
+      unconfigured.initialize({ amountCents: 100, email: 'buyer@example.com', orderId: 'order-1' }),
+    (error) => error.code === 'PAYMENT_PROVIDER_NOT_CONFIGURED' && error.statusCode === 503
+  );
+
+  const incompleteResponse = createPaystackPaymentService({
+    callbackUrl: 'https://rogontra.example/payment-return.html',
+    secretKey: 'sk_test_example',
+    fetchImpl: async () => ({ ok: true, json: async () => ({ status: true, data: {} }) })
+  });
+  await assert.rejects(
+    () =>
+      incompleteResponse.initialize({
+        amountCents: 100,
+        email: 'buyer@example.com',
+        orderId: 'order-1'
+      }),
+    (error) => error.code === 'PAYMENT_PROVIDER_ERROR' && error.statusCode === 502
+  );
+});
+
+test('Paystack adapter rejects failed provider responses and returns verification details', async () => {
+  const unavailableProvider = createPaystackPaymentService({
+    callbackUrl: 'https://rogontra.example/payment-return.html',
+    secretKey: 'sk_test_example',
+    fetchImpl: async () => ({ ok: false, json: async () => ({ status: false }) })
+  });
+  await assert.rejects(
+    () => unavailableProvider.verify('payment-1'),
+    (error) => error.code === 'PAYMENT_PROVIDER_ERROR' && error.statusCode === 502
+  );
+
+  const verifiedProvider = createPaystackPaymentService({
+    callbackUrl: 'https://rogontra.example/payment-return.html',
+    secretKey: 'sk_test_example',
+    fetchImpl: async () => ({
+      ok: true,
+      json: async () => ({
+        status: true,
+        data: { amount: 47189, currency: 'USD', reference: 'payment-1', status: 'success' }
+      })
+    })
+  });
+  assert.deepEqual(await verifiedProvider.verify('payment-1'), {
+    amountCents: 47189,
+    currency: 'USD',
+    providerReference: 'payment-1',
+    status: 'success'
+  });
+});
+
 test('payment routes tie initialization and verification to the signed-in order', async () => {
   const events = [];
   const app = createApp({

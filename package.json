@@ -20,6 +20,7 @@
     "db:verify-auth": "node --env-file-if-exists=.env.local backend/scripts/verify-auth.js",
     "db:verify-account-history": "node --env-file-if-exists=.env.local backend/scripts/verify-account-history.js",
     "admin:grant": "node --env-file-if-exists=.env.local backend/scripts/grant-admin.js",
+    "deploy:check": "node --env-file-if-exists=.env.local backend/scripts/deployment-check.js",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",

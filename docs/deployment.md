@@ -26,7 +26,7 @@ This guide is host-neutral: deploy the static storefront and Node API separately
 
 ## Release checks
 
-Run `npm ci`, `npm run format:check`, `npm run lint`, and `npm test`. Then verify catalogue browsing, sign-up/sign-in, a quote request, an order, its account history, and administrator access using non-production test data. Confirm API responses have security headers and retain the `X-Request-Id` when testing an error. Do not enable real payments until a test payment has returned through the callback and has been server-verified.
+Run `npm ci`, `npm run format:check`, `npm run lint`, and `npm test`. In the deployment environment, run `npm run deploy:check`; it validates only the presence and safe shape of required production values and never prints secrets. It requires a PostgreSQL URL, a 32+ character JWT secret, exact HTTPS storefront origins, and paired HTTPS Paystack callback settings if payments are configured. Then verify catalogue browsing, sign-up/sign-in, a quote request, an order, its account history, and administrator access using non-production test data. Confirm API responses have security headers and retain the `X-Request-Id` when testing an error. Do not enable real payments until a test payment has returned through the callback and has been server-verified.
 
 ## Current launch blockers
 

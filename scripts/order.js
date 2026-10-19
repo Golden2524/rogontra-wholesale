@@ -1,6 +1,6 @@
 import { loadProductsFetch, getProduct } from '../data/products.js';
 import formatCurrency from './utils/money.js';
-import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
+import { formatMonthDay, formatMonthDayYear } from './utils/date.js';
 import { cart } from '../data/cart-class.js';
 import setUpSearch from './utils/search.js';
 import { authenticatedFetch, getSession } from './auth-client.js';
@@ -58,7 +58,7 @@ async function loadPage() {
   }
 
   orders.forEach((order) => {
-    const orderTimeString = dayjs(order.orderTime).format('MMMM D');
+    const orderTimeString = formatMonthDay(order.orderTime);
 
     ordersHTML += `
       <div class="order-container">    
@@ -113,7 +113,7 @@ async function loadPage() {
           <div class="product-name">
             ${escapeHtml(productName)}
           </div>
-          <div class="product-delivery-date">${['preparing', 'dispatched', 'delivered'].includes(order.status) ? `Estimated arrival: ${dayjs(productDetails.estimatedDeliveryTime).format('MMMM D')}` : 'Fulfilment begins after verified payment.'}</div>
+          <div class="product-delivery-date">${['preparing', 'dispatched', 'delivered'].includes(order.status) ? `Estimated arrival: ${formatMonthDay(productDetails.estimatedDeliveryTime)}` : 'Fulfilment begins after verified payment.'}</div>
           <div class="product-quantity">
             Quantity: ${productDetails.quantity}
           </div>
@@ -198,7 +198,7 @@ async function loadPage() {
         (quote) => `
           <article class="quote-history-card">
             <div>
-              <p class="quote-history-meta">Submitted ${dayjs(quote.createdAt).format('MMMM D, YYYY')}</p>
+              <p class="quote-history-meta">Submitted ${formatMonthDayYear(quote.createdAt)}</p>
               <h3>${escapeHtml(quote.productName)}</h3>
               <p>Quantity: ${escapeHtml(quote.quantity)} · Destination: ${escapeHtml(quote.destinationCountry)}</p>
             </div>

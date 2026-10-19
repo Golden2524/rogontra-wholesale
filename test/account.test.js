@@ -34,6 +34,8 @@ test('account history safely renders durable order item snapshots', async () => 
   assert.match(script, /historic-product-note/);
   assert.match(script, /escapeHtml\(productName\)/);
   assert.match(script, /escapeHtml\(order\.paymentStatus/);
+  assert.match(script, /formatMonthDay\(order\.orderTime\)/);
+  assert.doesNotMatch(script, /supersimpledev/);
 });
 
 test('account dashboard provides safe activity counts and catalogue next steps', async () => {

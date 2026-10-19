@@ -141,36 +141,7 @@ export async function loadCategoriesFetch() {
   return payload.data;
 }
 
-/*
-export function loadProducts(fun) {
-  const xhr = new XMLHttpRequest();
-
-  xhr.addEventListener('load', () => {
-    products = JSON.parse(xhr.response).map((productDetails) => {
-      if (productDetails.type === 'clothing') {
-        return new Clothing(productDetails);
-      } else if (productDetails.type === 'appliance') {
-        return new Appliance(productDetails);
-      }
-      return new Product(productDetails);
-    });
-
-    console.log('load products');
-    fun();
-  })
-
-  xhr.addEventListener('error', (catch) => {
-    console.log('Unexpected error. Please try again later.');
-  })
-
-
-  xhr.open('GET', 'https://supersimpledev.com/products');
-  xhr.send();
-}
-*/
-
-/*
-export const products = [
+/* Legacy tutorial product data retained only as inactive reference material.
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",

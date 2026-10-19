@@ -11,6 +11,9 @@ test('product page presents wholesale details and a quote path', async () => {
   assert.match(script, /js-request-quote/);
   assert.match(script, /product\.description/);
   assert.match(html, /Skip to product details/);
+  assert.match(html, /name="description"/);
+  assert.match(script, /function setProductMetadata/);
+  assert.match(script, /description\.slice\(0, 160\)/);
 });
 
 test('catalogue links products to their detail page and preserves product detail returns', async () => {

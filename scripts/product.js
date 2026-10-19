@@ -18,10 +18,19 @@ function formatLabel(value) {
     .trim();
 }
 
+function setProductMetadata(product) {
+  document.title = `${product.name} | Rogontra Wholesale`;
+  const description = product.description || `Source ${product.name} from Rogontra Wholesale.`;
+  const descriptionMeta = document.querySelector('meta[name="description"]');
+  if (descriptionMeta) {
+    descriptionMeta.content = description.slice(0, 160);
+  }
+}
+
 function renderProduct(product) {
   const details = document.querySelector('.js-product-details');
   const status = document.querySelector('.js-product-status');
-  document.title = `${product.name} | Rogontra Wholesale`;
+  setProductMetadata(product);
   status.textContent = '';
   const specifications = Object.entries(product.specifications)
     .map(

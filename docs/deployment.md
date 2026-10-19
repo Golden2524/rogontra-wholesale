@@ -31,7 +31,7 @@ The included `Dockerfile` packages only the Node API and its production dependen
 
 ## Release checks
 
-Run `npm ci`, `npm run format:check`, `npm run lint`, and `npm test`. In the deployment environment, run `npm run deploy:check`; it validates only the presence and safe shape of required production values and never prints secrets. It requires a PostgreSQL URL, a 32+ character JWT secret, exact HTTPS storefront origins, and paired HTTPS Paystack callback settings if payments are configured.
+Run `npm ci`, `npm run format:check`, `npm run lint`, `npm test`, and `npm run audit:prod`. The audit is read-only and checks known high-severity vulnerabilities in production dependencies. In the deployment environment, run `npm run deploy:check`; it validates only the presence and safe shape of required production values and never prints secrets. It requires a PostgreSQL URL, a 32+ character JWT secret, exact HTTPS storefront origins, and paired HTTPS Paystack callback settings if payments are configured.
 
 After deployment, set the public `ROGONTRA_API_BASE_URL` (ending in `/api/v1`) and `ROGONTRA_STOREFRONT_URL`, then run `npm run deploy:smoke`. This read-only check verifies HTTPS, the storefront response, API health/readiness, response headers, and a non-empty catalogue. Then manually verify catalogue browsing, sign-up/sign-in, a quote request, an order, its account history, and administrator access using non-production test data. Confirm API responses retain the `X-Request-Id` when testing an error. Do not enable real payments until a test payment has returned through the callback and has been server-verified.
 

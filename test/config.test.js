@@ -46,3 +46,10 @@ test('container deployment package keeps secrets and storefront assets out of th
   assert.match(dockerignore, /^styles$/m);
   assert.match(dockerignore, /^\*\.html$/m);
 });
+
+test('release scripts include a production dependency security audit', async () => {
+  const packageJson = JSON.parse(
+    await (await import('node:fs/promises')).readFile('package.json', 'utf8')
+  );
+  assert.equal(packageJson.scripts['audit:prod'], 'npm audit --omit=dev --audit-level=high');
+});

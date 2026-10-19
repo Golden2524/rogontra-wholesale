@@ -312,7 +312,9 @@
 }
 
 .empty-message {
-  padding-top: 10px;
-  padding-left: 10px;
+  min-height: 20px;
+  padding: 10px 24px;
+  color: #b12704;
+  font-weight: 700;
   grid-column: span 2;
 }

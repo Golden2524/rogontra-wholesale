@@ -3,10 +3,16 @@ import { cart } from '../data/cart-class.js';
 import setUpSearch from './utils/search.js';
 
 //loadProducts(renderProductsGrid);
-loadProductsFetch().then(() => {
-  cart.removeUnavailableItems(products.map((product) => product.id));
-  renderProductsGrid();
-});
+loadProductsFetch()
+  .then(() => {
+    cart.removeUnavailableItems(products.map((product) => product.id));
+    renderProductsGrid();
+  })
+  .catch(() => {
+    document.querySelector('.js-products-grid').setAttribute('aria-busy', 'false');
+    document.querySelector('.js-empty-message').textContent =
+      'The catalogue is temporarily unavailable. Please try again shortly.';
+  });
 
 function escapeHtml(value) {
   return String(value)

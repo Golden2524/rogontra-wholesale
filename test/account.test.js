@@ -22,6 +22,12 @@ test('tracking uses the authenticated order API and does not invent shipment pro
   assert.match(auth, /tracking\\\.html/);
 });
 
+test('account history has a safe API failure state', async () => {
+  const script = await readFile('scripts/order.js', 'utf8');
+  assert.match(script, /loadPage\(\)\.catch/);
+  assert.match(script, /Your orders could not be loaded/);
+});
+
 test('customer history endpoints require a bearer token and scope results to the session user', async () => {
   const requestedUsers = [];
   const app = createApp({

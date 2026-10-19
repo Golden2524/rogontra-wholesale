@@ -202,4 +202,10 @@ async function loadPage() {
   return updateOrderQuantity();
 }
 
-loadPage();
+loadPage().catch((error) => {
+  const message = error instanceof Error ? error.message : 'Unable to load your account.';
+  document.querySelector('.js-account-message').textContent = message;
+  document.querySelector('.js-order-grid').innerHTML =
+    '<p class="account-empty-state">Your orders could not be loaded. Please try again shortly.</p>';
+  document.querySelector('.js-quote-history-grid').innerHTML = '';
+});

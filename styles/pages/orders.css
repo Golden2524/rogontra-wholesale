@@ -21,7 +21,8 @@
 
 .account-message {
   min-height: 22px;
-  color: #087f78;
+  color: #b12704;
+  font-weight: 700;
 }
 
 .account-section + .account-section {

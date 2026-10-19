@@ -14,6 +14,10 @@ test('product page presents wholesale details and a quote path', async () => {
   assert.match(html, /name="description"/);
   assert.match(script, /function setProductMetadata/);
   assert.match(script, /description\.slice\(0, 160\)/);
+  assert.match(
+    html,
+    /<dialog class="quote-dialog js-quote-dialog" aria-labelledby="quote-title" aria-modal="true">/
+  );
 });
 
 test('catalogue links products to their detail page and preserves product detail returns', async () => {

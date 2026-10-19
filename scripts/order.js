@@ -173,7 +173,7 @@ async function loadPage() {
 
       setTimeout(() => {
         button.innerHTML = `
-            <img class="buy-again-icon" src="images/icons/buy-again.png">
+            <img class="buy-again-icon" src="images/icons/buy-again.png" alt="">
             <span class="buy-again-message">Buy it again</span>
           `;
       }, 1000);

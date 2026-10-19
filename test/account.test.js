@@ -48,6 +48,11 @@ test('account dashboard provides safe activity counts and catalogue next steps',
   assert.match(script, /escapeHtml\(quote\.destinationCountry\)/);
 });
 
+test('account order controls keep decorative icons hidden from screen readers after reset', async () => {
+  const script = await readFile('scripts/order.js', 'utf8');
+  assert.match(script, /buy-again\.png" alt=""/);
+});
+
 test('customer history endpoints require a bearer token and scope results to the session user', async () => {
   const requestedUsers = [];
   const app = createApp({

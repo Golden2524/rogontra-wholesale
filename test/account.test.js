@@ -28,6 +28,14 @@ test('account history has a safe API failure state', async () => {
   assert.match(script, /Your orders could not be loaded/);
 });
 
+test('account history safely renders durable order item snapshots', async () => {
+  const script = await readFile('scripts/order.js', 'utf8');
+  assert.match(script, /productDetails\.productName/);
+  assert.match(script, /historic-product-note/);
+  assert.match(script, /escapeHtml\(productName\)/);
+  assert.match(script, /escapeHtml\(order\.paymentStatus/);
+});
+
 test('customer history endpoints require a bearer token and scope results to the session user', async () => {
   const requestedUsers = [];
   const app = createApp({

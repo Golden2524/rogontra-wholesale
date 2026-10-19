@@ -213,6 +213,14 @@
   max-height: 110px;
 }
 
+.product-image-unavailable {
+  display: grid;
+  min-height: 80px;
+  place-items: center;
+  color: #52616b;
+  font-size: 13px;
+}
+
 .product-name {
   font-weight: 700;
   margin-bottom: 5px;
@@ -224,6 +232,12 @@
 
 .product-quantity {
   margin-bottom: 8px;
+}
+
+.historic-product-note {
+  color: #52616b;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .buy-again-button {

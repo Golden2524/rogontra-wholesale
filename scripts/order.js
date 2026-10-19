@@ -74,9 +74,9 @@ async function loadPage() {
 
           <div class="order-header-right-section">
             <div class="order-header-label">Order ID:</div>
-            <div>${order.id}</div>
-            <div class="order-payment-status">Payment: ${order.paymentStatus.replaceAll('_', ' ')}</div>
-            ${order.paymentStatus === 'not_collected' && order.status !== 'cancelled' ? `<button class="pay-order-button js-pay-order" data-order-id="${order.id}">Continue to payment</button>` : ''}
+            <div>${escapeHtml(order.id)}</div>
+            <div class="order-payment-status">Payment: ${escapeHtml(order.paymentStatus.replaceAll('_', ' '))}</div>
+            ${order.paymentStatus === 'not_collected' && order.status !== 'cancelled' ? `<button class="pay-order-button js-pay-order" data-order-id="${escapeHtml(order.id)}">Continue to payment</button>` : ''}
           </div>
         </div>
 
@@ -92,32 +92,37 @@ async function loadPage() {
 
     order.products.forEach((productDetails) => {
       const product = getProduct(productDetails.productId);
-      if (!product) return;
+      const productName = product?.name ?? productDetails.productName;
+      const canBuyAgain = Boolean(product && product.purchaseMode === 'checkout');
 
       productsListHTML += `
-        <div class="product-image-container">
-          <img src="${product.image}">
-        </div>
+        ${
+          product?.image
+            ? `<div class="product-image-container"><img src="${escapeHtml(product.image)}" alt="${escapeHtml(productName)}"></div>`
+            : '<div class="product-image-container product-image-unavailable" aria-hidden="true">No image</div>'
+        }
 
         <div class="product-details">
           <div class="product-name">
-            ${product.name}
+            ${escapeHtml(productName)}
           </div>
           <div class="product-delivery-date">${['preparing', 'dispatched', 'delivered'].includes(order.status) ? `Estimated arrival: ${dayjs(productDetails.estimatedDeliveryTime).format('MMMM D')}` : 'Fulfilment begins after verified payment.'}</div>
           <div class="product-quantity">
             Quantity: ${productDetails.quantity}
           </div>
-          <button class="buy-again-button button-primary
-          js-buy-again-button"
-          data-product-id="${product.id}"
-          data-quantity="${productDetails.quantity}">
-            <img class="buy-again-icon" src="images/icons/buy-again.png">
-            <span class="buy-again-message">Buy it again</span>
-          </button>
+          ${
+            canBuyAgain
+              ? `<button class="buy-again-button button-primary js-buy-again-button" data-product-id="${escapeHtml(product.id)}" data-quantity="${productDetails.quantity}"><img class="buy-again-icon" src="images/icons/buy-again.png" alt=""><span class="buy-again-message">Buy it again</span></button>`
+              : '<p class="historic-product-note">This historical product is no longer available to reorder.</p>'
+          }
         </div>
 
         <div class="product-actions">
-          ${['preparing', 'dispatched', 'delivered'].includes(order.status) ? `<a href="tracking.html?orderId=${encodeURIComponent(order.id)}&productId=${encodeURIComponent(product.id)}"><span class="track-package-button button-secondary">View fulfilment</span></a>` : '<span class="fulfilment-pending">Tracking is available after fulfilment starts.</span>'}
+          ${
+            ['preparing', 'dispatched', 'delivered'].includes(order.status)
+              ? `<a href="tracking.html?orderId=${encodeURIComponent(order.id)}&productId=${encodeURIComponent(productDetails.productId)}"><span class="track-package-button button-secondary">View fulfilment</span></a>`
+              : '<span class="fulfilment-pending">Tracking is available after fulfilment starts.</span>'
+          }
         </div>
       `;
     });
@@ -190,7 +195,7 @@ async function loadPage() {
               <h3>${quote.productName}</h3>
               <p>Quantity: ${quote.quantity} · Destination: ${quote.destinationCountry}</p>
             </div>
-            <span class="quote-status-badge">${quote.status}</span>
+            <span class="quote-status-badge">${escapeHtml(quote.status)}</span>
           </article>
         `
       )

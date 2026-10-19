@@ -66,7 +66,20 @@
 
     <main class="main" id="main-content" tabindex="-1">
       <div class="page-title">Your account</div>
+      <p class="account-intro js-account-intro"></p>
       <p class="account-message js-account-message" role="status"></p>
+
+      <section class="account-overview" aria-label="Account overview">
+        <article class="account-overview-card">
+          <span class="account-overview-label">Orders</span>
+          <strong class="account-overview-value js-order-count">0</strong>
+        </article>
+        <article class="account-overview-card">
+          <span class="account-overview-label">Quote requests</span>
+          <strong class="account-overview-value js-quote-count">0</strong>
+        </article>
+        <a class="account-overview-action" href="index.html">Browse catalogue</a>
+      </section>
 
       <section class="account-section" aria-labelledby="orders-title">
         <h1 class="account-section-title" id="orders-title">Your orders</h1>

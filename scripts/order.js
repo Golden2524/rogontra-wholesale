@@ -17,7 +17,8 @@ function escapeHtml(value) {
 async function loadPage() {
   await loadProductsFetch();
 
-  if (!getSession()) {
+  const session = getSession();
+  if (!session) {
     window.location.href = 'auth.html?returnTo=orders.html';
     return;
   }
@@ -43,11 +44,17 @@ async function loadPage() {
   const orders = ordersPayload.data;
   const quotes = quotesPayload.data;
 
+  document.querySelector('.js-account-intro').textContent = session.user.displayName
+    ? `Welcome back, ${session.user.displayName}. Review your procurement activity below.`
+    : 'Review your procurement activity below.';
+  document.querySelector('.js-order-count').textContent = String(orders.length);
+  document.querySelector('.js-quote-count').textContent = String(quotes.length);
+
   let ordersHTML = '';
 
   if (orders.length === 0) {
     ordersHTML =
-      '<p class="account-empty-state">No orders yet. Your submitted test orders will appear here.</p>';
+      '<div class="account-empty-state"><p>No orders yet. Browse the catalogue when you are ready to place a wholesale order.</p><a class="account-empty-action" href="index.html">Browse catalogue</a></div>';
   }
 
   orders.forEach((order) => {
@@ -183,7 +190,7 @@ async function loadPage() {
 
   function quotesHistoryHTML(quoteRequests) {
     if (quoteRequests.length === 0) {
-      return '<p class="account-empty-state">No quote requests yet. Request a quote for high-value or configurable products from the catalogue.</p>';
+      return '<div class="account-empty-state"><p>No quote requests yet. Request a quote for high-value or configurable products from the catalogue.</p><a class="account-empty-action" href="index.html">Explore products</a></div>';
     }
 
     return quoteRequests
@@ -192,8 +199,8 @@ async function loadPage() {
           <article class="quote-history-card">
             <div>
               <p class="quote-history-meta">Submitted ${dayjs(quote.createdAt).format('MMMM D, YYYY')}</p>
-              <h3>${quote.productName}</h3>
-              <p>Quantity: ${quote.quantity} · Destination: ${quote.destinationCountry}</p>
+              <h3>${escapeHtml(quote.productName)}</h3>
+              <p>Quantity: ${escapeHtml(quote.quantity)} · Destination: ${escapeHtml(quote.destinationCountry)}</p>
             </div>
             <span class="quote-status-badge">${escapeHtml(quote.status)}</span>
           </article>

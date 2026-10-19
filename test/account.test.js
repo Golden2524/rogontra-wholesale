@@ -36,6 +36,18 @@ test('account history safely renders durable order item snapshots', async () => 
   assert.match(script, /escapeHtml\(order\.paymentStatus/);
 });
 
+test('account dashboard provides safe activity counts and catalogue next steps', async () => {
+  const [page, script] = await Promise.all([
+    readFile('orders.html', 'utf8'),
+    readFile('scripts/order.js', 'utf8')
+  ]);
+  assert.match(page, /js-order-count/);
+  assert.match(page, /Browse catalogue/);
+  assert.match(script, /js-quote-count/);
+  assert.match(script, /escapeHtml\(quote\.productName\)/);
+  assert.match(script, /escapeHtml\(quote\.destinationCountry\)/);
+});
+
 test('customer history endpoints require a bearer token and scope results to the session user', async () => {
   const requestedUsers = [];
   const app = createApp({

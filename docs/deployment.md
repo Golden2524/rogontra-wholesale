@@ -27,6 +27,7 @@ The included `Dockerfile` packages only the Node API and its production dependen
 2. Configure `window.ROGONTRA_API_BASE_URL` before page scripts load to point to the deployed API URL plus `/api/v1`.
 3. Add the exact storefront HTTPS origin to API `CORS_ORIGIN`.
 4. Update `PAYMENT_CALLBACK_URL` to the deployed HTTPS `payment-return.html` address before enabling payment tests.
+5. Keep `robots.txt` at the static site root. It supplements the page-level `noindex` metadata for account, checkout, administration, payment, tracking, and pre-launch legal pages.
 
 ## Release checks
 

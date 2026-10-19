@@ -39,3 +39,22 @@ test('private and pre-launch pages opt out of search indexing', async () => {
     assert.match(page, /<meta name="robots" content="noindex, nofollow"/);
   });
 });
+
+test('robots policy also keeps private routes out of crawler discovery', async () => {
+  const robots = await readFile('robots.txt', 'utf8');
+  const protectedPaths = [
+    'admin.html',
+    'auth.html',
+    'checkout.html',
+    'orders.html',
+    'payment-return.html',
+    'tracking.html',
+    'privacy.html',
+    'refunds.html',
+    'shipping.html',
+    'terms.html'
+  ];
+
+  assert.match(robots, /^User-agent: \*$/m);
+  protectedPaths.forEach((path) => assert.match(robots, new RegExp(`^Disallow: /${path}$`, 'm')));
+});

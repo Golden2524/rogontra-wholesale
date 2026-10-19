@@ -10,6 +10,18 @@ test('account order rendering displays a safe delivery destination snapshot', as
   assert.match(script, /escapeHtml\(order\.deliveryAddress\.country\)/);
 });
 
+test('tracking uses the authenticated order API and does not invent shipment progress', async () => {
+  const [tracking, orders, auth] = await Promise.all([
+    readFile('scripts/tracking.js', 'utf8'),
+    readFile('scripts/order.js', 'utf8'),
+    readFile('scripts/auth-page.js', 'utf8')
+  ]);
+  assert.match(tracking, /authenticatedFetch\(`\/account\/orders\//);
+  assert.match(tracking, /Shipping progress becomes available after payment verification/);
+  assert.match(orders, /Tracking is available after fulfilment starts/);
+  assert.match(auth, /tracking\\\.html/);
+});
+
 test('customer history endpoints require a bearer token and scope results to the session user', async () => {
   const requestedUsers = [];
   const app = createApp({

@@ -103,9 +103,7 @@ async function loadPage() {
           <div class="product-name">
             ${product.name}
           </div>
-          <div class="product-delivery-date">
-            Arriving on: ${dayjs(productDetails.estimatedDeliveryTime).format('MMMM D')}
-          </div>
+          <div class="product-delivery-date">${['preparing', 'dispatched', 'delivered'].includes(order.status) ? `Estimated arrival: ${dayjs(productDetails.estimatedDeliveryTime).format('MMMM D')}` : 'Fulfilment begins after verified payment.'}</div>
           <div class="product-quantity">
             Quantity: ${productDetails.quantity}
           </div>
@@ -119,12 +117,7 @@ async function loadPage() {
         </div>
 
         <div class="product-actions">
-          <a href="tracking.html?
-orderId=${order.id}&productId=${product.id}">
-            <button class="track-package-button button-secondary">
-              Track package
-            </button>
-          </a>
+          ${['preparing', 'dispatched', 'delivered'].includes(order.status) ? `<a href="tracking.html?orderId=${encodeURIComponent(order.id)}&productId=${encodeURIComponent(product.id)}"><span class="track-package-button button-secondary">View fulfilment</span></a>` : '<span class="fulfilment-pending">Tracking is available after fulfilment starts.</span>'}
         </div>
       `;
     });

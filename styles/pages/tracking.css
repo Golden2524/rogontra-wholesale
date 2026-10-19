@@ -18,6 +18,42 @@
   margin-bottom: 30px;
 }
 
+.tracking-eyebrow {
+  margin: 0 0 8px;
+  color: #52677a;
+  font-size: 13px;
+  font-weight: 700;
+  word-break: break-all;
+}
+.order-tracking h1 {
+  margin: 0 0 10px;
+  color: #102a43;
+  font-size: clamp(25px, 4vw, 34px);
+}
+.tracking-product-meta {
+  color: #52677a;
+  line-height: 1.5;
+}
+.tracking-status {
+  margin-top: 18px;
+  padding: 24px;
+  border: 1px solid #d8e0e7;
+  border-radius: 10px;
+}
+.tracking-status h2 {
+  margin: 0;
+  color: #102a43;
+  font-size: 21px;
+}
+.tracking-status > p {
+  color: #52677a;
+  line-height: 1.5;
+}
+.tracking-error {
+  color: #b12704;
+  font-weight: 700;
+}
+
 .delivery-date {
   font-size: 25px;
   font-weight: 700;
@@ -76,7 +112,7 @@
 
 .progress-bar {
   height: 100%;
-  background-color: green;
+  background-color: #087f78;
   border-radius: 50px;
   width: 0%;
   transition: width 0.6s ease;
@@ -87,28 +123,4 @@
   font-weight: 600;
   margin-top: 12px;
   color: #c45500;
-}
-
-.truck-icon {
-  position: absolute;
-  top: -5px;
-  left: 0%;
-  font-size: 22px;
-  transform: translateX(-50%);
-  transition: left 0.6s ease;
-  animation: truckBounce 0.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes truckBounce {
-  0% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-4px);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
 }

@@ -2,6 +2,17 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { createApp } from '../backend/src/app.js';
+import { readFile } from 'node:fs/promises';
+
+test('the protected order desk renders a delivery destination only from admin order data', async () => {
+  const [persistence, admin] = await Promise.all([
+    readFile('backend/src/database-persistence.js', 'utf8'),
+    readFile('scripts/admin.js', 'utf8')
+  ]);
+  assert.match(persistence, /o\.delivery_address/);
+  assert.match(admin, /admin-delivery-address/);
+  assert.match(admin, /order\.deliveryAddress\.recipientName/);
+});
 
 test('admin catalogue endpoints reject customers and accept administrators', async () => {
   const app = createApp({

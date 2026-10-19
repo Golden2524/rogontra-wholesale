@@ -181,6 +181,7 @@ function renderOrders() {
           <p class="admin-order-summary"><strong>${escapeHtml(order.customerName || 'Customer')}</strong> · ${escapeHtml(order.customerEmail || 'Account unavailable')}</p>
           <p class="admin-order-summary">${formatUsd(order.totalCostCents)} USD · Submitted ${new Date(order.createdAt).toLocaleDateString()}</p>
           <ul class="admin-order-items">${order.items.map((item) => `<li>${escapeHtml(item.productName)} × ${item.quantity}</li>`).join('')}</ul>
+          ${order.deliveryAddress ? `<details class="admin-delivery-address"><summary>Delivery destination</summary><p>${escapeHtml(order.deliveryAddress.recipientName)}<br>${escapeHtml(order.deliveryAddress.addressLine1)}${order.deliveryAddress.addressLine2 ? `<br>${escapeHtml(order.deliveryAddress.addressLine2)}` : ''}<br>${escapeHtml(order.deliveryAddress.city)}${order.deliveryAddress.postalCode ? `, ${escapeHtml(order.deliveryAddress.postalCode)}` : ''}<br>${escapeHtml(order.deliveryAddress.country)}<br>${escapeHtml(order.deliveryAddress.phone)}</p></details>` : '<p class="admin-order-summary">No delivery destination was recorded for this legacy order.</p>'}
           <div class="admin-order-footer">
             <div class="admin-product-tags">
               <span class="admin-product-tag">${escapeHtml(order.status)}</span>

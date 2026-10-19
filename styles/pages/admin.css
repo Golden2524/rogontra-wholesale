@@ -222,6 +222,19 @@ body {
   padding-left: 20px;
   color: #334e68;
 }
+.admin-delivery-address {
+  margin-top: 14px;
+  color: #334e68;
+}
+.admin-delivery-address summary {
+  cursor: pointer;
+  color: #087f78;
+  font-weight: 700;
+}
+.admin-delivery-address p {
+  margin: 9px 0 0 !important;
+  line-height: 1.45;
+}
 .admin-order-footer {
   display: flex;
   align-items: center;

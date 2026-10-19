@@ -236,7 +236,7 @@ export function createDatabasePersistence(pool) {
 
     async listOrdersForAdmin() {
       const result = await pool.query(
-        `SELECT o.id, o.status, o.payment_status, o.currency, o.total_cost_cents, o.created_at,
+        `SELECT o.id, o.status, o.payment_status, o.currency, o.total_cost_cents, o.delivery_address, o.created_at,
                 u.email AS customer_email, u.display_name AS customer_name,
                 COALESCE(
                   (
@@ -255,6 +255,7 @@ export function createDatabasePersistence(pool) {
         paymentStatus: row.payment_status,
         currency: row.currency,
         totalCostCents: row.total_cost_cents,
+        deliveryAddress: row.delivery_address,
         customerEmail: row.customer_email,
         customerName: row.customer_name,
         items: row.items,

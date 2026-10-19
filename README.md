@@ -42,6 +42,8 @@ The API also includes a production-only container package (`Dockerfile`) for a h
 
 The ready-to-adapt LinkedIn/GitHub project narrative is in [`docs/portfolio-case-study.md`](docs/portfolio-case-study.md).
 
+The exact remaining work before a portfolio deployment or real commercial launch is tracked in [`docs/release-readiness.md`](docs/release-readiness.md).
+
 ## Local setup
 
 Install the project's development tooling and run the current checks:

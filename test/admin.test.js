@@ -14,6 +14,12 @@ test('the protected order desk renders a delivery destination only from admin or
   assert.match(admin, /order\.deliveryAddress\.recipientName/);
 });
 
+test('admin workspace is explicitly labelled as pre-launch', async () => {
+  const html = await readFile('admin.html', 'utf8');
+  assert.match(html, /Pre-launch workspace/);
+  assert.match(html, /payment settings must be replaced and verified/);
+});
+
 test('admin catalogue endpoints reject customers and accept administrators', async () => {
   const app = createApp({
     allowedOrigins: ['http://localhost:5500'],

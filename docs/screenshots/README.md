@@ -8,9 +8,10 @@ Required captures:
 2. Search result for industrial or heavy-equipment listing.
 3. Quote-request form with synthetic, non-sensitive example values only.
 4. Cart and delivery estimate.
-5. Checkout/payment confirmation in test mode.
-6. Customer order history or quote dashboard.
-7. Administrator catalogue, quote, or order desk after signing in with an admin test account.
-8. API documentation or architecture overview.
+5. Administrator workspace, including the pre-launch notice and clearly labelled demo content.
+6. Checkout/payment confirmation in test mode.
+7. Customer order history or quote dashboard.
+8. Administrator catalogue, quote, or order desk after signing in with an admin test account.
+9. API documentation or architecture overview.
 
 Use synthetic, non-sensitive customer details and indicate clearly when a payment or order is in test mode.

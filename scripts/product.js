@@ -40,7 +40,19 @@ function renderProduct(product) {
         <p class="product-sku">SKU: ${escapeHtml(product.sku)}</p>
         <p class="product-price">${product.getPrice()}</p>
         <dl class="product-commercial-details"><div><dt>Minimum order</dt><dd>${product.minimumOrderQuantity} unit${product.minimumOrderQuantity === 1 ? '' : 's'}</dd></div><div><dt>Availability</dt><dd>${escapeHtml(product.stockStatus.replaceAll('_', ' '))}</dd></div></dl>
-        ${checkoutAction ? `<div class="product-action"><label>Quantity <select class="js-product-quantity" aria-label="Quantity for ${escapeHtml(product.name)}">${Array.from({ length: 10 }, (_, index) => `<option value="${index + 1}">${index + 1}</option>`).join('')}</select></label><button class="button-primary js-add-product" type="button">Add to cart</button><p class="js-added-product action-status" role="status"></p></div>` : `<div class="product-action"><p class="quote-required-message">Sales-assisted quote required for this item.</p><button class="button-secondary quote-button js-request-quote" type="button" data-product-id="${escapeHtml(product.id)}" data-product-name="${escapeHtml(product.name)}">Request a quote</button></div>`}
+        ${
+          checkoutAction
+            ? `<div class="product-action"><label>Quantity <select class="js-product-quantity" aria-label="Quantity for ${escapeHtml(product.name)}">${Array.from(
+                { length: 10 },
+                (_, index) => {
+                  const quantity = product.minimumOrderQuantity + index;
+                  return `<option value="${quantity}">${quantity}</option>`;
+                }
+              ).join(
+                ''
+              )}</select></label><button class="button-primary js-add-product" type="button">Add to cart</button><p class="js-added-product action-status" role="status"></p></div>`
+            : `<div class="product-action"><p class="quote-required-message">Sales-assisted quote required for this item.</p><button class="button-secondary quote-button js-request-quote" type="button" data-product-id="${escapeHtml(product.id)}" data-product-name="${escapeHtml(product.name)}">Request a quote</button></div>`
+        }
       </div>
     </div>
     <section class="product-specifications" aria-labelledby="specifications-title"><h2 id="specifications-title">Specifications</h2>${specifications ? `<dl>${specifications}</dl>` : '<p>Contact sales for the complete specification sheet.</p>'}</section>`;

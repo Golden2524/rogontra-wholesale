@@ -44,7 +44,7 @@ function renderProductsGrid() {
   let featuredProducts = products.filter((product) => !category || product.category === category);
 
   if (search) {
-    featuredProducts = products.filter((product) => {
+    featuredProducts = featuredProducts.filter((product) => {
       let matchingKeyword = false;
 
       product.keywords.forEach((keyword) => {
@@ -101,16 +101,10 @@ function renderProductsGrid() {
         <div class="product-quantity-container">
           <label>Quantity
           <select class="js-product-quantity-${product.id}" aria-label="Quantity for ${escapeHtml(product.name)}">
-            <option selected value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-          <option value="10">10</option>
+            ${Array.from({ length: 10 }, (_, index) => {
+              const quantity = product.minimumOrderQuantity + index;
+              return `<option${index === 0 ? ' selected' : ''} value="${quantity}">${quantity}</option>`;
+            }).join('')}
           </select>
           </label>
         </div>

@@ -11,5 +11,7 @@ test('catalogue exposes accessible category filters that work with search', asyn
   assert.match(html, /Filter catalogue by category/);
   assert.match(script, /category-filters/);
   assert.match(script, /category-filter/);
+  assert.match(script, /featuredProducts\.filter/);
+  assert.match(script, /product\.minimumOrderQuantity \+ index/);
   assert.match(search, /searchParams\.get\('category'\)/);
 });

@@ -116,6 +116,13 @@ export async function createOrderFromCart(cart, deliveryAddress, findProduct = f
       );
     }
 
+    if (item.quantity < product.minimumOrderQuantity) {
+      throw createClientError(
+        'MINIMUM_ORDER_QUANTITY_NOT_MET',
+        `${product.name} requires a minimum order quantity of ${product.minimumOrderQuantity}.`
+      );
+    }
+
     const deliveryOption = getDeliveryOption(item.deliveryOptionId);
     if (!deliveryOption) {
       throw createClientError(

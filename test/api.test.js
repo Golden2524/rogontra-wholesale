@@ -190,6 +190,21 @@ test('rejects carts containing unknown products', async () => {
   });
 });
 
+test('enforces a product minimum order quantity on the server', async () => {
+  await withApi(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/v1/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer test-token' },
+      body: JSON.stringify({
+        cart: [{ productId: 'rgw-safety-gloves-001', quantity: 1, deliveryOptionId: '1' }],
+        deliveryAddress
+      })
+    });
+    assert.equal(response.status, 400);
+    assert.equal((await response.json()).error.code, 'MINIMUM_ORDER_QUANTITY_NOT_MET');
+  });
+});
+
 test('requires a complete delivery destination before creating an order', async () => {
   await withApi(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/api/v1/orders`, {

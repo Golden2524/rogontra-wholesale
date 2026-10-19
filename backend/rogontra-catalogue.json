@@ -8,7 +8,7 @@
     "currency": "USD",
     "category": "Safety & PPE",
     "condition": "new",
-    "minimumOrderQuantity": 1,
+    "minimumOrderQuantity": 2,
     "purchaseMode": "checkout",
     "stockStatus": "in_stock",
     "keywords": ["work gloves", "ppe", "warehouse", "safety"],

@@ -21,4 +21,5 @@ test('catalogue links products to their detail page and preserves product detail
   assert.match(catalogue, /product\.html\?productId=/);
   assert.match(auth, /product\\\.html/);
   assert.match(product, /product\.specifications/);
+  assert.match(product, /product\.minimumOrderQuantity \+ index/);
 });

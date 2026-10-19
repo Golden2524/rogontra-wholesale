@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Rogontra Wholesale</title>
+  <desc id="description">Source with confidence. Global B2B wholesale, industrial equipment, heavy machinery, and fleet sourcing.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#102a43" />
+      <stop offset="1" stop-color="#087f78" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)" />
+  <path d="M780 0h420v630H590z" fill="#0f9d8a" opacity=".22" />
+  <path d="m960 70 160 0 0 160-160 0z" fill="none" stroke="#f5b942" stroke-width="16" opacity=".9" />
+  <path d="m820 370 240 0 0 120-240 0z" fill="none" stroke="#dbe8f1" stroke-width="12" opacity=".45" />
+  <g fill="#f5b942">
+    <rect x="92" y="96" width="70" height="70" rx="14" />
+    <path d="M118 116h18v30h-18zm0 36h18v18h-18z" fill="#102a43" />
+  </g>
+  <text x="190" y="145" fill="#fff" font-family="Arial, sans-serif" font-size="44" font-weight="700" letter-spacing="2">ROGONTRA</text>
+  <text x="94" y="286" fill="#fff" font-family="Arial, sans-serif" font-size="80" font-weight="700">Wholesale, built</text>
+  <text x="94" y="378" fill="#fff" font-family="Arial, sans-serif" font-size="80" font-weight="700">for serious sourcing.</text>
+  <text x="98" y="478" fill="#dbe8f1" font-family="Arial, sans-serif" font-size="30">Consumer wholesale · Industrial equipment · Heavy machinery · Fleet</text>
+  <rect x="94" y="525" width="310" height="8" rx="4" fill="#f5b942" />
+</svg>

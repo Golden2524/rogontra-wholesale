@@ -29,7 +29,7 @@ test('admin migration separates catalogue controls from customer accounts', asyn
 
 test('catalogue seed keeps illustrative products visibly marked as demo content', async () => {
   const script = await readFile('backend/scripts/seed-catalogue.js', 'utf8');
-  assert.match(script, /specifications, is_demo/);
+  assert.match(script, /name, description, price_cents/);
   assert.match(script, /VALUES \([^\n]*TRUE\)/);
   assert.match(script, /is_demo = TRUE/);
 });

@@ -3,6 +3,7 @@ function mapProduct(row) {
     id: row.external_id,
     sku: row.sku,
     name: row.name,
+    description: row.description,
     image: row.image_url,
     priceCents: row.price_cents,
     currency: row.currency,
@@ -17,7 +18,7 @@ function mapProduct(row) {
 }
 
 const productSelect = `
-  SELECT p.external_id, p.sku, p.name, p.price_cents, p.currency, p.condition,
+  SELECT p.external_id, p.sku, p.name, p.description, p.price_cents, p.currency, p.condition,
          p.minimum_order_quantity, p.purchase_mode, p.stock_status, p.specifications,
          c.name AS category,
          COALESCE((SELECT pm.url FROM product_media pm WHERE pm.product_id = p.id ORDER BY pm.sort_order LIMIT 1), '') AS image_url

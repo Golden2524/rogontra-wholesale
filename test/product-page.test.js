@@ -9,6 +9,7 @@ test('product page presents wholesale details and a quote path', async () => {
   ]);
   assert.match(html, /Specifications/);
   assert.match(script, /js-request-quote/);
+  assert.match(script, /product\.description/);
   assert.match(html, /Skip to product details/);
 });
 

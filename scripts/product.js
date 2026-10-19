@@ -38,6 +38,7 @@ function renderProduct(product) {
         <p class="product-category">${escapeHtml(product.category)} · ${escapeHtml(product.condition)}</p>
         <h1>${escapeHtml(product.name)}</h1>
         <p class="product-sku">SKU: ${escapeHtml(product.sku)}</p>
+        ${product.description ? `<p class="product-description">${escapeHtml(product.description)}</p>` : ''}
         <p class="product-price">${product.getPrice()}</p>
         <dl class="product-commercial-details"><div><dt>Minimum order</dt><dd>${product.minimumOrderQuantity} unit${product.minimumOrderQuantity === 1 ? '' : 's'}</dd></div><div><dt>Availability</dt><dd>${escapeHtml(product.stockStatus.replaceAll('_', ' '))}</dd></div></dl>
         ${

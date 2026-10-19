@@ -17,6 +17,7 @@ class Product {
   id;
   image;
   name;
+  description;
   rating;
   priceCents;
   keywords;
@@ -32,6 +33,7 @@ class Product {
     this.id = productDetails.id;
     this.image = productDetails.image;
     this.name = productDetails.name;
+    this.description = productDetails.description ?? '';
     this.rating = productDetails.rating;
     this.priceCents = productDetails.priceCents;
     this.keywords = productDetails.keywords;

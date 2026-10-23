@@ -12,6 +12,7 @@
     "api:start": "node --env-file-if-exists=.env.local backend/src/server.js",
     "api:dev": "node --env-file-if-exists=.env.local --watch backend/src/server.js",
     "storefront:start": "node --env-file-if-exists=.env.local backend/scripts/serve-storefront.js",
+    "storefront:build": "node backend/scripts/build-storefront.js",
     "db:migrate": "node --env-file-if-exists=.env.local backend/scripts/migrate.js",
     "db:status": "node --env-file-if-exists=.env.local backend/scripts/status.js",
     "db:seed": "node --env-file-if-exists=.env.local backend/scripts/seed-catalogue.js",

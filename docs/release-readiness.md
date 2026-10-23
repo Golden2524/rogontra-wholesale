@@ -12,9 +12,9 @@ This checklist separates a portfolio demonstration release from a real commercia
 - [x] Deployment guide, architecture/API documentation, payment/currency roadmap, and LinkedIn case-study draft.
 - [ ] Complete a browser walkthrough on desktop and mobile-sized layouts.
 - [ ] Capture original screenshots of the real Rogontra interface and add them under `docs/screenshots/`.
-- [ ] Select hosting, configure a public HTTPS storefront and API, then set the production environment variables.
-- [ ] Run migrations in the chosen production database and verify the deployed `/api/v1/ready` endpoint.
-- [ ] Configure the public API and storefront URLs, then run the read-only `npm run deploy:smoke` check.
+- [x] Select hosting, configure a public HTTPS storefront and API, then set the production environment variables.
+- [x] Run migrations in the chosen production database and verify the deployed `/api/v1/ready` endpoint.
+- [x] Configure the public API and storefront URLs, then run the read-only `npm run deploy:smoke` check.
 - [ ] Replace the illustrative items with clearly licensed portfolio imagery, or retain their visible demo labels.
 - [ ] Run a deployed smoke test: catalogue search, registration/sign-in, quote request, test order, account history, and admin access.
 - [ ] Review the deployed site, README, and case-study language so it says “portfolio demo” until the commercial items below are complete.

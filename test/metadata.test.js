@@ -18,6 +18,21 @@ test('homepage includes accessible sharing metadata and an owned social preview 
   assert.match(socialCard, /Rogontra Wholesale/);
 });
 
+test('owned catalogue illustrations include intrinsic dimensions for reliable rendering', async () => {
+  const assets = await Promise.all(
+    [
+      'images/products/rogontra-fleet.svg',
+      'images/products/rogontra-heavy-equipment.svg',
+      'images/products/rogontra-parts.svg',
+      'images/products/rogontra-wholesale.svg'
+    ].map((path) => readFile(path, 'utf8'))
+  );
+
+  assets.forEach((asset) => {
+    assert.match(asset, /<svg[^>]*width="600"[^>]*height="400"/);
+  });
+});
+
 test('private and pre-launch pages opt out of search indexing', async () => {
   const privatePages = [
     'admin.html',

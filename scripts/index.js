@@ -1,6 +1,7 @@
 import { products, loadCategoriesFetch, loadProductsFetch } from '../data/products.js';
 import { cart } from '../data/cart-class.js';
 import setUpSearch from './utils/search.js';
+import { resolveStorefrontAsset } from './utils/assets.js';
 
 async function loadCatalogue() {
   const url = new URL(window.location.href);
@@ -65,11 +66,12 @@ function renderProductsGrid(categories) {
   let productsHTML = '';
 
   featuredProducts.forEach((product) => {
+    const productImageUrl = resolveStorefrontAsset(product.image);
     productsHTML += `
       <div class="product-container">
         <div class="product-image-container">
           <a href="product.html?productId=${encodeURIComponent(product.id)}" class="product-detail-link">
-            <img class="product-image" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}">
+            <img class="product-image" src="${escapeHtml(productImageUrl)}" alt="${escapeHtml(product.name)}">
           </a>
         </div>
 

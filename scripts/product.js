@@ -1,6 +1,7 @@
 import { cart } from '../data/cart-class.js';
 import { getProduct, loadProductsFetch, products } from '../data/products.js';
 import setUpSearch from './utils/search.js';
+import { resolveStorefrontAsset } from './utils/assets.js';
 
 function escapeHtml(value) {
   return String(value)
@@ -38,11 +39,12 @@ function renderProduct(product) {
     )
     .join('');
   const checkoutAction = product.purchaseMode === 'checkout';
+  const productImageUrl = resolveStorefrontAsset(product.image);
 
   details.innerHTML = `
     <p class="product-breadcrumb"><a href="index.html">Catalogue</a> / ${escapeHtml(product.category)}</p>
     <div class="product-details-layout">
-      <div class="product-media"><img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" /></div>
+      <div class="product-media"><img src="${escapeHtml(productImageUrl)}" alt="${escapeHtml(product.name)}" /></div>
       <div class="product-summary">
         <p class="product-category">${escapeHtml(product.category)} · ${escapeHtml(product.condition)}</p>
         <h1>${escapeHtml(product.name)}</h1>

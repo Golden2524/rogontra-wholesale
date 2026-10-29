@@ -63,6 +63,10 @@ The API reads its catalogue from PostgreSQL. Run `npm run db:migrate` and `npm r
 
 The demo items in `backend/rogontra-catalogue.json` are seeded as `Demo content` and can be replaced from the protected [admin page](admin.html). To bootstrap an administrator, first register a normal account, add that email as `ADMIN_EMAIL` in your private `.env.local`, then run `npm run admin:grant`. Sign out and sign in again so the account session receives the role. Open `admin.html` after that. The API checks the current database role on every administration request; hiding the admin page in the browser is not the security control.
 
+## Password recovery
+
+Password recovery uses a one-time, hashed token that expires after 30 minutes. It is disabled until all three private deployment variables are configured: `PASSWORD_RESET_URL`, `RESEND_API_KEY`, and `PASSWORD_RESET_FROM_EMAIL`. The reset URL must point to the public `reset-password.html` page. Keep the Resend API key in Render only—never in the frontend or repository.
+
 Use project-relative image paths for assets you add to the repository or publicly hosted, licensed image URLs. Product records can be hidden instead of deleted, protecting historical order data.
 
 Administrators can also use the quote desk to move requests through `received`, `reviewing`, `quoted`, `closed`, or `cancelled`. These statuses are customer-visible in account history; this workflow records progress only and does not send emails or create an invoice yet.

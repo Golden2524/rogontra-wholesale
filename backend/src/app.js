@@ -69,6 +69,7 @@ export function createApp({
   auth,
   adminCatalogue,
   catalogue,
+  passwordReset,
   paymentService,
   persistence,
   readiness = async () => true
@@ -148,6 +149,35 @@ export function createApp({
     try {
       if (!auth) throw new Error('Authentication is not configured.');
       response.status(200).json({ data: await auth.login(request.body) });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post(`${API_PREFIX}/auth/password-reset/request`, async (request, response, next) => {
+    try {
+      if (!passwordReset?.isDeliveryConfigured) {
+        const error = new Error('Password recovery is temporarily unavailable.');
+        error.code = 'PASSWORD_RESET_UNAVAILABLE';
+        error.statusCode = 503;
+        throw error;
+      }
+      await passwordReset.request(request.body);
+      response.status(202).json({
+        data: {
+          message: 'If that email belongs to an account, a password-reset link has been sent.'
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post(`${API_PREFIX}/auth/password-reset/confirm`, async (request, response, next) => {
+    try {
+      if (!passwordReset) throw new Error('Password reset is not configured.');
+      await passwordReset.reset(request.body);
+      response.status(200).json({ data: { message: 'Your password has been reset.' } });
     } catch (error) {
       next(error);
     }

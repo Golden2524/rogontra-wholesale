@@ -1,10 +1,12 @@
 User-agent: *
 Disallow: /admin.html
 Disallow: /auth.html
+Disallow: /forgot-password.html
 Disallow: /checkout.html
 Disallow: /orders.html
 Disallow: /payment-return.html
 Disallow: /tracking.html
+Disallow: /reset-password.html
 Disallow: /privacy.html
 Disallow: /refunds.html
 Disallow: /shipping.html

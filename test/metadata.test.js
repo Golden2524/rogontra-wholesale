@@ -37,6 +37,7 @@ test('private and pre-launch pages opt out of search indexing', async () => {
   const privatePages = [
     'admin.html',
     'auth.html',
+    'forgot-password.html',
     'checkout.html',
     'orders.html',
     'payment-return.html',
@@ -44,7 +45,8 @@ test('private and pre-launch pages opt out of search indexing', async () => {
     'privacy.html',
     'terms.html',
     'shipping.html',
-    'refunds.html'
+    'refunds.html',
+    'reset-password.html'
   ];
   const pages = await Promise.all(privatePages.map((page) => readFile(page, 'utf8')));
 
@@ -60,6 +62,7 @@ test('robots policy also keeps private routes out of crawler discovery', async (
   const protectedPaths = [
     'admin.html',
     'auth.html',
+    'forgot-password.html',
     'checkout.html',
     'orders.html',
     'payment-return.html',
@@ -67,7 +70,8 @@ test('robots policy also keeps private routes out of crawler discovery', async (
     'privacy.html',
     'refunds.html',
     'shipping.html',
-    'terms.html'
+    'terms.html',
+    'reset-password.html'
   ];
 
   assert.match(robots, /^User-agent: \*$/m);

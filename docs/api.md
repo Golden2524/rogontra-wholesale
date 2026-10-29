@@ -23,6 +23,8 @@ The API listens on `http://localhost:3000` by default. Copy `.env.example` to `.
 | `POST`  | `/api/v1/quotes`                             | Validates and records a sales-assisted quote request             |
 | `POST`  | `/api/v1/auth/register`                      | Creates a customer account and returns a signed session token    |
 | `POST`  | `/api/v1/auth/login`                         | Verifies credentials and returns a signed session token          |
+| `POST`  | `/api/v1/auth/password-reset/request`        | Requests a one-time password-reset email                         |
+| `POST`  | `/api/v1/auth/password-reset/confirm`        | Consumes a one-time token and saves a new password               |
 | `GET`   | `/api/v1/auth/me`                            | Returns the current session identity; requires a bearer token    |
 | `GET`   | `/api/v1/account/orders`                     | Returns only the signed-in customer's orders                     |
 | `GET`   | `/api/v1/account/orders/:id`                 | Returns one signed-in customer's order and its item snapshots    |

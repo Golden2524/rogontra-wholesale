@@ -63,6 +63,10 @@
   color: #52677a;
   font-size: 14px;
 }
+.auth-recovery {
+  margin: 18px 0 0;
+  font-size: 14px;
+}
 .auth-toggle button {
   border: 0;
   background: none;

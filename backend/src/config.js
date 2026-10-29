@@ -44,6 +44,9 @@ export function validateProductionConfiguration(environment = process.env) {
   const origins = getAllowedOrigins(environment.CORS_ORIGIN);
   const paymentSecret = environment.PAYSTACK_SECRET_KEY;
   const paymentCallbackUrl = environment.PAYMENT_CALLBACK_URL;
+  const resetUrl = environment.PASSWORD_RESET_URL;
+  const resendApiKey = environment.RESEND_API_KEY;
+  const resetFromEmail = environment.PASSWORD_RESET_FROM_EMAIL;
 
   try {
     const url = new URL(databaseUrl);
@@ -75,6 +78,16 @@ export function validateProductionConfiguration(environment = process.env) {
 
   if (paymentCallbackUrl && !isHttpsUrl(paymentCallbackUrl)) {
     issues.push('PAYMENT_CALLBACK_URL must be an HTTPS URL.');
+  }
+
+  const passwordResetValues = [resetUrl, resendApiKey, resetFromEmail];
+  if (passwordResetValues.some(Boolean) && !passwordResetValues.every(Boolean)) {
+    issues.push(
+      'PASSWORD_RESET_URL, RESEND_API_KEY, and PASSWORD_RESET_FROM_EMAIL must be configured together.'
+    );
+  }
+  if (resetUrl && !isHttpsUrl(resetUrl)) {
+    issues.push('PASSWORD_RESET_URL must be an HTTPS URL.');
   }
 
   return issues;

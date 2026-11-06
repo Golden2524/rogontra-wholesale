@@ -10,6 +10,7 @@ test('mobile navigation moves catalogue search onto a full-width second row', as
   ]);
 
   assert.match(headerCss, /@media \(max-width: 575px\)/);
+  assert.match(headerCss, /\.rogontra-header \{\s*box-sizing: border-box/);
   assert.match(headerCss, /--rogontra-header-height: 112px/);
   assert.match(headerCss, /\.rogontra-header-middle-section \{\s*order: 3;\s*flex-basis: 100%/);
   assert.match(indexCss, /margin-top: var\(--rogontra-header-height\)/);

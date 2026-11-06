@@ -3,6 +3,7 @@
 }
 
 .rogontra-header {
+  box-sizing: border-box;
   background-color: #102a43;
   color: white;
   padding-left: 15px;

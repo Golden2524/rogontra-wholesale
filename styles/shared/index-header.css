@@ -1,3 +1,7 @@
+:root {
+  --rogontra-header-height: 60px;
+}
+
 .rogontra-header {
   background-color: #102a43;
   color: white;
@@ -12,7 +16,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 60px;
+  height: var(--rogontra-header-height);
 }
 
 .rogontra-header-left-section {
@@ -147,6 +151,36 @@
 
   .rogontra-header-right-section {
     width: 180px;
+  }
+}
+
+@media (max-width: 575px) {
+  :root {
+    --rogontra-header-height: 112px;
+  }
+
+  .rogontra-header {
+    flex-wrap: wrap;
+    align-content: space-between;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .rogontra-header-left-section {
+    order: 1;
+  }
+
+  .rogontra-header-right-section {
+    order: 2;
+    width: auto;
+    margin-left: auto;
+  }
+
+  .rogontra-header-middle-section {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+    margin: 0;
   }
 }
 

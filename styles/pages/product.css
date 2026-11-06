@@ -1,5 +1,5 @@
 .product-page-main {
-  margin-top: 60px;
+  margin-top: var(--rogontra-header-height);
   min-height: calc(100vh - 180px);
 }
 .catalogue-notice {

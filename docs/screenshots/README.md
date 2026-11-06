@@ -26,6 +26,8 @@ Use this plan after the browser walkthrough succeeds. Capture the real Rogontra 
 
 Save captures beside this file using these names. The first four are the strongest choices for LinkedIn; include the admin or architecture view only if it is easy to understand at a glance.
 
+The verified mobile walkthrough is saved as `02-catalogue-mobile.jpeg` with its product-card continuation in `02-catalogue-mobile-product.jpeg`. The capture uses the deployed HTTPS storefront and contains no customer data or browser chrome.
+
 ## Capture notes
 
 - Keep demo labels visible until real catalogue data and approved product imagery are available.

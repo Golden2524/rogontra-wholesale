@@ -4,7 +4,9 @@ Rogontra Wholesale is a global B2B commerce platform for sourcing consumer goods
 
 ## Current status
 
-The project is in active redevelopment. The existing interface demonstrates catalogue browsing, search, cart management, secure customer sign-up/sign-in and sign-out, checkout, customer order and quote history, and delivery tracking. Its former tutorial API and branding are being replaced; it must not be treated as a live store until the API, security, payment verification, and deployment milestones are complete.
+Rogontra is deployed as a public portfolio demonstration: [storefront](https://rogontra-wholesale.vercel.app) and [API health check](https://rogontra-api.onrender.com/api/v1/health). It demonstrates catalogue browsing, search, cart management, secure customer sign-up/sign-in and sign-out, checkout, customer order and quote history, delivery tracking, and protected administration.
+
+It is **not a commercial store**. The catalogue is illustrative, orders are test-mode, and payments, legal policies, fulfilment, and foreign-exchange settlement require further work before public orders can be accepted.
 
 ## Product direction
 

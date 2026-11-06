@@ -31,7 +31,7 @@ Wholesale and industrial purchasing has two distinct journeys: standard, lower-v
 
 ## Current status
 
-This is a development portfolio project, not a live marketplace. The included catalogue is illustrative, orders are test-mode until Paystack is fully verified, and local-currency settlement requires a future licensed FX quote/lock service. Legal, tax, shipping, privacy, refund, and terms content must be approved before public launch.
+This is a deployed portfolio demonstration, not a commercial marketplace. The included catalogue is illustrative, orders are test-mode until Paystack is fully verified, and local-currency settlement requires a future licensed FX quote/lock service. Legal, tax, shipping, privacy, refund, and terms content must be approved before public launch. The public demonstration is available at [rogontra-wholesale.vercel.app](https://rogontra-wholesale.vercel.app).
 
 ## How to present it
 

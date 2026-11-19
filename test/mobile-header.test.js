@@ -16,3 +16,14 @@ test('mobile navigation moves catalogue search onto a full-width second row', as
   assert.match(indexCss, /margin-top: var\(--rogontra-header-height\)/);
   assert.match(productCss, /margin-top: var\(--rogontra-header-height\)/);
 });
+
+test('checkout header avoids overlapping account controls on small screens', async () => {
+  const checkoutHeaderCss = await readFile('styles/pages/checkout/checkout-header.css', 'utf8');
+
+  assert.match(checkoutHeaderCss, /grid-template-columns: auto minmax\(0, 1fr\) auto/);
+  assert.match(checkoutHeaderCss, /\.checkout-header-right-section img \{\s*display: none/);
+  assert.match(
+    checkoutHeaderCss,
+    /\.checkout-header-middle-section \{\s*margin-right: 5px;\s*min-width: 0/
+  );
+});

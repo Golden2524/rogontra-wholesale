@@ -40,6 +40,17 @@
    means when the screen width is 575px or less, different
    styles (inside the {...}) will be applied. */
 @media (max-width: 575px) {
+  .checkout-header {
+    box-sizing: border-box;
+    padding: 0 12px;
+  }
+
+  .header-content {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
   .checkout-header-left-section {
     width: auto;
   }
@@ -88,6 +99,23 @@
 @media (max-width: 575px) {
   .checkout-header-middle-section {
     margin-right: 5px;
+    min-width: 0;
+    font-size: 18px;
+    white-space: nowrap;
+  }
+
+  .checkout-header-right-section {
+    width: auto;
+    gap: 0;
+  }
+
+  .checkout-header-right-section img {
+    display: none;
+  }
+
+  .checkout-header-right-section .return-to-home-link {
+    font-size: 16px;
+    white-space: nowrap;
   }
 }
 

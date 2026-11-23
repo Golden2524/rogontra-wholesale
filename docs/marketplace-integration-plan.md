@@ -24,6 +24,18 @@ The database foundation includes connection records, per-channel listing mapping
 5. Helen Wholesale creates a secure server-side connection. Credentials are never placed in browser code, product forms, Git, screenshots, or chat.
 6. Test product and order synchronization in the provider’s supported test process before any live listing is enabled.
 
+### Client handoff checklist
+
+The client should prepare the following outside this project:
+
+- Legal business and payout information required by the target Jumia marketplace.
+- The countries in which they intend to sell, plus product-category eligibility and any restricted-product documentation.
+- A canonical spreadsheet or catalogue export containing SKU, barcode/identifier where required, title, description, price, available quantity, images, weight, dimensions, and fulfilment information.
+- Direct-fulfilment operating details: dispatch address, delivery carriers, handling time, returns address, support contact, and cancellation/refund process.
+- A named business owner who can approve listings and authorize marketplace access.
+
+Do not ask the client to send marketplace passwords, payment information, or private API secrets by email or chat. They should use the marketplace authorization process when Helen Wholesale is ready to connect.
+
 ## Amazon UK prerequisites
 
 1. The client opens an Amazon UK Professional seller account and completes verification.

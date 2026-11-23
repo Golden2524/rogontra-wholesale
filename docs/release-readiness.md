@@ -25,6 +25,10 @@ This checklist separates a portfolio demonstration release from a real commercia
 - [ ] Approve completed privacy, terms, shipping, refund, tax, and data-retention policies with qualified legal and operational advice.
 - [ ] Define who fulfils each product class, how cross-border shipping and customs work, and how customer support handles cancellations and disputes.
 - [ ] Configure production payment credentials, complete a test-to-live payment verification, and reconcile a real payment with the order workflow.
+- [ ] Obtain approved seller accounts and integration authorization for every marketplace to be connected. Jumia is the first planned channel; Amazon UK is second.
+- [ ] Approve canonical Helen Wholesale SKUs, marketplace listing mappings, product compliance data, channel pricing, and direct-fulfilment terms before publishing any live listing.
+- [ ] Test duplicate-safe order import, stock reservation, inventory export, retry handling, and reconciliation using the marketplace's supported test process before enabling live synchronization.
+- [ ] Assign an operations owner to monitor failed synchronizations, oversell risks, marketplace policy notices, dispatch status, cancellations, and returns.
 - [ ] Choose and integrate a server-side FX quote provider before accepting non-USD settlement. USD remains the accounting source of truth.
 - [ ] Add a production-grade shared rate-limit, monitoring, backups, incident contacts, and a plan for account/data requests.
 - [ ] Carry out security review and accessibility review against the final deployed site.

@@ -1,48 +1,41 @@
 .main {
-  max-width: 1100px;
-  padding-left: 30px;
-  padding-right: 30px;
-
-  margin-top: 140px;
-  margin-bottom: 100px;
-
-  /* margin-left: auto;
-     margin-right auto;
-     Is a trick for centering an element horizontally
-     without needing a container. */
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 1180px;
+  margin: 112px auto 80px;
+  padding: 0 24px;
 }
-
 .page-title {
-  font-weight: 700;
-  font-size: 22px;
-  margin-bottom: 18px;
+  margin: 0 0 8px;
+  color: #102a43;
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: -0.035em;
 }
-
 .checkout-notice,
 .checkout-status {
-  color: #52677a;
-  line-height: 1.5;
+  line-height: 1.55;
   margin: 0 0 12px;
+  color: #52677a;
 }
-
+.checkout-status {
+  min-height: 24px;
+  color: #b12704;
+  font-weight: 700;
+}
 .delivery-address-form {
-  margin: 0 0 24px;
-  padding: 20px;
+  margin: 28px 0;
+  padding: 26px;
   border: 1px solid #d8e0e7;
-  border-radius: 8px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(16, 42, 67, 0.04);
 }
-
 .delivery-address-form h2 {
   margin: 0;
   color: #102a43;
-  font-size: 19px;
+  font-size: 22px;
 }
 .delivery-address-form > p {
-  margin: 8px 0 18px;
+  margin: 8px 0 20px;
   color: #52677a;
-  font-size: 14px;
 }
 .delivery-address-grid {
   display: grid;
@@ -62,251 +55,135 @@
   font-weight: 400;
 }
 .delivery-address-grid input {
-  box-sizing: border-box;
   width: 100%;
-  padding: 9px;
+  padding: 11px;
   border: 1px solid #a9b8c7;
-  border-radius: 5px;
+  border-radius: 7px;
   font: inherit;
 }
 .delivery-address-wide {
-  grid-column: 1 / -1;
+  grid-column: 1/-1;
 }
-
-.checkout-status {
-  min-height: 24px;
-  color: #b12704;
-  font-weight: 700;
-}
-
 .checkout-grid {
   display: grid;
-  /* Here, 1fr means the first column will take
-     up the remaining space in the grid. */
-  grid-template-columns: 1fr 350px;
-  column-gap: 12px;
-
-  /* Use align-items: start; to prevent the elements
-     in the grid from stretching vertically. */
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 18px;
   align-items: start;
 }
-
-@media (max-width: 1000px) {
-  .main {
-    max-width: 500px;
-  }
-
-  .checkout-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .delivery-address-grid {
-    grid-template-columns: 1fr;
-  }
-  .delivery-address-wide {
-    grid-column: auto;
-  }
-}
-
 .cart-item-container,
 .payment-summary {
-  border: 1px solid rgb(222, 222, 222);
-  border-radius: 4px;
-  padding: 18px;
+  padding: 20px;
+  border: 1px solid #d8e0e7;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(16, 42, 67, 0.04);
 }
-
 .cart-item-container {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
-
 .payment-summary {
-  padding-bottom: 5px;
+  position: sticky;
+  top: 82px;
 }
-
-@media (max-width: 1000px) {
-  .payment-summary {
-    /* grid-row: 1 means this element will be placed into row
-      1 in the grid. (Normally, the row that an element is
-      placed in is determined by the order of the elements in
-      the HTML. grid-row overrides this default ordering). */
-    grid-row: 1;
-    margin-bottom: 12px;
-  }
-}
-
 .delivery-date {
-  color: rgb(0, 118, 0);
-  font-weight: 700;
+  margin: 5px 0 22px;
+  color: #087f78;
   font-size: 19px;
-  margin-top: 5px;
-  margin-bottom: 22px;
+  font-weight: 700;
 }
-
 .cart-item-details-grid {
   display: grid;
-  /* 100px 1fr 1fr; means the 2nd and 3rd column will
-     take up half the remaining space in the grid
-     (they will divide up the remaining space evenly). */
-  grid-template-columns: 100px 1fr 1fr;
-  column-gap: 25px;
+  grid-template-columns: 110px 1fr 1fr;
+  gap: 24px;
+  align-items: start;
 }
-
-@media (max-width: 1000px) {
-  .cart-item-details-grid {
-    grid-template-columns: 100px 1fr;
-    row-gap: 30px;
-  }
-}
-
 .product-image {
+  display: block;
   max-width: 100%;
   max-height: 120px;
-
-  /* margin-left: auto;
-     margin-right auto;
-     Is a trick for centering an element horizontally
-     without needing a container. */
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
+  mix-blend-mode: multiply;
 }
-
 .product-name {
-  font-weight: 700;
   margin-bottom: 8px;
-}
-
-.product-price {
-  color: rgb(177, 39, 4);
   font-weight: 700;
-  margin-bottom: 5px;
 }
-
+.product-price {
+  margin-bottom: 5px;
+  color: #102a43;
+  font-weight: 700;
+}
 .product-quantity .link-primary {
   margin-left: 3px;
 }
-
-@media (max-width: 1000px) {
-  .delivery-options {
-    /* grid-column: 1 means this element will be placed
-       in column 1 in the grid. (Normally, the column that
-       an element is placed in is determined by the order
-       of the elements in the HTML. grid-column overrides
-       this default ordering).
-       
-       / span 2 means this element will take up 2 columns
-       in the grid (Normally, each element takes up 1
-       column in the grid). */
-    grid-column: 1 / span 2;
-  }
-}
-
-.delivery-options-title {
+.delivery-options-title,
+.payment-summary-title {
+  margin-bottom: 12px;
+  font-size: 18px;
   font-weight: 700;
-  margin-bottom: 10px;
 }
-
 .delivery-option {
   display: grid;
   grid-template-columns: 24px 1fr;
   margin-bottom: 12px;
   cursor: pointer;
 }
-
 .delivery-option-input {
-  margin-left: 0px;
+  margin-left: 0;
   cursor: pointer;
 }
-
 .delivery-option-date {
-  color: rgb(0, 118, 0);
-  font-weight: 500;
   margin-bottom: 3px;
+  color: #087f78;
+  font-weight: 500;
 }
-
 .delivery-option-price {
-  color: rgb(120, 120, 120);
-  font-size: 15px;
+  color: #52677a;
+  font-size: 14px;
 }
-
-.payment-summary-title {
-  font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 12px;
-}
-
 .payment-summary-row {
   display: grid;
-  /* 1fr auto; means the width of the 2nd column will be
-     determined by the elements inside the column (auto).
-     The 1st column will take up the remaining space. */
   grid-template-columns: 1fr auto;
-
+  margin-bottom: 10px;
   font-size: 15px;
-  margin-bottom: 9px;
 }
-
 .payment-summary-money {
   text-align: right;
 }
-
-.subtotal-row .payment-summary-money {
-  border-top: 1px solid rgb(222, 222, 222);
-}
-
-.order-summary .view-products-link {
-  display: inline-block;
-  padding: 8px 15px;
-  text-decoration: none;
-  margin-top: 10px;
-  font-size: 16px;
-}
-
-.subtotal-row div {
-  padding-top: 9px;
-}
-
+.subtotal-row .payment-summary-money,
 .total-row {
-  color: rgb(177, 39, 4);
-  font-weight: 700;
-  font-size: 18px;
-
-  border-top: 1px solid rgb(222, 222, 222);
-  padding-top: 18px;
+  border-top: 1px solid #d8e0e7;
 }
-
+.subtotal-row div {
+  padding-top: 10px;
+}
+.total-row {
+  padding-top: 18px;
+  color: #102a43;
+  font-size: 19px;
+  font-weight: 700;
+}
 .place-order-button {
   width: 100%;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  margin: 16px 0 8px;
+  padding: 13px;
   border-radius: 8px;
-
-  margin-top: 11px;
-  margin-bottom: 15px;
+  font-weight: 700;
 }
-
 .payment-summary .place-order-button:disabled {
   opacity: 0.5;
   pointer-events: none;
 }
-
 .payment-summary-note {
+  margin: 14px 0 0;
   color: #52677a;
   font-size: 13px;
   line-height: 1.45;
-  margin: 16px 0 0;
 }
-
-.quantity-input {
-  width: 30px;
-  display: none;
-}
-
+.quantity-input,
 .save-quantity-link {
   display: none;
 }
-
 .update-quantity-link,
 .save-quantity-link,
 .delete-quantity-link {
@@ -314,21 +191,53 @@
   background: transparent;
   padding: 0;
   font: inherit;
+  color: #087f78;
   text-decoration: underline;
 }
-
-.is-editing-quantity .quantity-label {
+.is-editing-quantity .quantity-label,
+.is-editing-quantity .update-quantity-link {
   display: none;
 }
-
-.is-editing-quantity .quantity-input {
-  display: initial;
-}
-
+.is-editing-quantity .quantity-input,
 .is-editing-quantity .save-quantity-link {
   display: initial;
 }
-
-.is-editing-quantity .update-quantity-link {
-  display: none;
+@media (max-width: 1000px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+  }
+  .payment-summary {
+    position: static;
+    grid-row: 1;
+  }
+  .cart-item-details-grid {
+    grid-template-columns: 100px 1fr;
+    row-gap: 22px;
+  }
+  .delivery-options {
+    grid-column: 1 / span 2;
+  }
+}
+@media (max-width: 600px) {
+  .main {
+    margin-top: 88px;
+    padding: 0 16px;
+  }
+  .delivery-address-form {
+    padding: 20px;
+  }
+  .delivery-address-grid {
+    grid-template-columns: 1fr;
+  }
+  .delivery-address-wide {
+    grid-column: auto;
+  }
+}
+@media (max-width: 450px) {
+  .cart-item-details-grid {
+    grid-template-columns: 1fr;
+  }
+  .delivery-options {
+    grid-column: auto;
+  }
 }

@@ -1,6 +1,8 @@
 .main {
   max-width: 1440px;
-  margin: var(--rogontra-header-height) auto 0;
+  margin-top: var(--rogontra-header-height);
+  margin-right: auto;
+  margin-left: auto;
 }
 .catalogue-notice {
   margin: 0;

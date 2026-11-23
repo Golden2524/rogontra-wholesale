@@ -36,7 +36,7 @@ test('reports API health', async () => {
     const body = await response.json();
 
     assert.equal(response.status, 200);
-    assert.equal(body.data.service, 'rogontra-api');
+    assert.equal(body.data.service, 'helen-wholesale-api');
     assert.equal(body.data.status, 'ok');
     assert.ok(Date.parse(body.data.timestamp));
     assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
@@ -99,7 +99,7 @@ test('storefront quote controls use delegated events for asynchronously loaded p
   assert.match(script, /closest\('\.js-request-quote'\)/);
 });
 
-test('lists and searches the local Rogontra catalogue', async () => {
+test('lists and searches the local Helen Wholesale catalogue', async () => {
   await withApi(async (baseUrl) => {
     const allResponse = await fetch(`${baseUrl}/api/v1/products`);
     const allProducts = await allResponse.json();

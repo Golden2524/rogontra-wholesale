@@ -1,4 +1,4 @@
-# Rogontra API (initial contract)
+# Helen Wholesale API (initial contract)
 
 The owned API is versioned under `/api/v1`. In normal server operation, its catalogue is read from PostgreSQL. `backend/rogontra-catalogue.json` is only an idempotent illustrative seed source for development.
 
@@ -57,4 +57,4 @@ Only an order with a future verified `paid` payment status can enter fulfilment 
 
 Payment initialization uses the order's server-calculated USD cents, never a browser-submitted amount. The server stores the provider reference and verifies the provider-reported reference, currency, and amount before changing an order to `paid`.
 
-Server-side persistent carts, external/shared rate limiting, and operational notifications remain later milestones. The temporary product content is illustrative and must be replaced with approved Rogontra catalogue records and licensed media before public launch.
+Server-side persistent carts, external/shared rate limiting, and operational notifications remain later milestones. The temporary product content is illustrative and must be replaced with approved Helen Wholesale catalogue records and licensed media before public launch.

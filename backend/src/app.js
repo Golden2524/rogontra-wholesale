@@ -116,7 +116,7 @@ export function createApp({
   app.get(`${API_PREFIX}/health`, (_request, response) => {
     response.status(200).json({
       data: {
-        service: 'rogontra-api',
+        service: 'helen-wholesale-api',
         status: 'ok',
         timestamp: new Date().toISOString()
       }
@@ -127,7 +127,11 @@ export function createApp({
     try {
       await readiness();
       response.status(200).json({
-        data: { service: 'rogontra-api', status: 'ready', timestamp: new Date().toISOString() }
+        data: {
+          service: 'helen-wholesale-api',
+          status: 'ready',
+          timestamp: new Date().toISOString()
+        }
       });
     } catch {
       response.status(503).json({

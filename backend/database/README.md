@@ -1,6 +1,6 @@
 # PostgreSQL database
 
-Rogontra stores money in integer USD cents. Local-currency figures are display or provider-payment values; they are never the source of truth for an order total.
+Helen Wholesale stores money in integer USD cents. Local-currency figures are display or provider-payment values; they are never the source of truth for an order total.
 
 ## Apply the initial schema
 

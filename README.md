@@ -19,13 +19,13 @@ It is **not a commercial store**. The catalogue is illustrative, orders are test
 ## Target architecture
 
 ```
-Browser storefront  ->  Rogontra API  ->  PostgreSQL
+Browser storefront  ->  Helen Wholesale API  ->  PostgreSQL
                             |                |
                             v                v
                     Payment provider     Product images
 ```
 
-The storefront will use only the Rogontra API. No browser code will depend on the previous tutorial backend.
+The storefront will use only the Helen Wholesale API. No browser code will depend on the previous tutorial backend.
 
 ## Development roadmap
 

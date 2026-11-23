@@ -34,7 +34,7 @@ const server = createServer((request, response) => {
 });
 
 server.listen(port, '127.0.0.1', () => {
-  console.info(`Rogontra storefront is available at http://127.0.0.1:${port}.`);
+  console.info(`Helen Wholesale storefront is available at http://127.0.0.1:${port}.`);
 });
 
 function closeServer() {

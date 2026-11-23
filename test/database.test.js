@@ -3,7 +3,7 @@ import test from 'node:test';
 
 import { readFile } from 'node:fs/promises';
 
-test('initial migration protects Rogontra money and quote-only product invariants', async () => {
+test('initial migration protects Helen Wholesale money and quote-only product invariants', async () => {
   const sql = await readFile('backend/database/migrations/001_initial_schema.sql', 'utf8');
 
   assert.match(sql, /currency CHAR\(3\) NOT NULL DEFAULT 'USD' CHECK \(currency = 'USD'\)/);

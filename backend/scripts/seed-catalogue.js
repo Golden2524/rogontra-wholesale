@@ -70,7 +70,7 @@ try {
     }
 
     await client.query('COMMIT');
-    console.info(`Seeded ${catalogue.length} illustrative Rogontra products.`);
+    console.info(`Seeded ${catalogue.length} illustrative Helen Wholesale products.`);
   } catch (error) {
     await client.query('ROLLBACK');
     throw error;

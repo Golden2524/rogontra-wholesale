@@ -37,7 +37,7 @@ const app = createApp({
 const port = getPort();
 
 const server = app.listen(port, '0.0.0.0', () => {
-  console.info(`Rogontra API is listening on port ${port}.`);
+  console.info(`Helen Wholesale API is listening on port ${port}.`);
 });
 
 async function closeServer() {

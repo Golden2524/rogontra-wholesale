@@ -25,3 +25,11 @@ Record only operational details: dispatch location, carrier/delivery partner, ha
 ## Handoff
 
 When the client has a verified Jumia seller account and approved integration access, return the completed CSV files. Helen Wholesale will validate the data, map approved SKUs to marketplace listings, then test inventory and order synchronization before any live channel is enabled.
+
+Project maintainers can run the same preflight check before import:
+
+```sh
+npm run marketplace:validate -- helen-wholesale-catalogue-template.csv helen-wholesale-fulfilment-template.csv
+```
+
+The check only reads the CSV files. It does not call a marketplace, save credentials, publish listings, or change inventory.

@@ -72,3 +72,18 @@ test('database catalogue search includes stored product keywords', async () => {
   const source = await readFile('backend/src/database-catalogue.js', 'utf8');
   assert.match(source, /p\.specifications::text ILIKE/);
 });
+
+test('marketplace foundation keeps credentials out of mappings and records idempotent sync references', async () => {
+  const sql = await readFile(
+    'backend/database/migrations/010_add_marketplace_sync_foundation.sql',
+    'utf8'
+  );
+  assert.match(sql, /CREATE TABLE IF NOT EXISTS marketplace_connections/);
+  assert.match(sql, /provider IN \('jumia', 'amazon', 'other'\)/);
+  assert.match(sql, /CREATE TABLE IF NOT EXISTS marketplace_listings/);
+  assert.match(sql, /UNIQUE \(connection_id, product_id\)/);
+  assert.match(sql, /CREATE TABLE IF NOT EXISTS marketplace_orders/);
+  assert.match(sql, /UNIQUE \(connection_id, marketplace_order_id\)/);
+  assert.match(sql, /CREATE TABLE IF NOT EXISTS marketplace_sync_events/);
+  assert.doesNotMatch(sql, /api_key|password|refresh_token/i);
+});

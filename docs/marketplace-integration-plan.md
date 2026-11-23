@@ -13,6 +13,8 @@ Helen Wholesale will become the client’s central catalogue and shared-stock sy
 
 Helen Wholesale should own a canonical product SKU and available quantity. Each marketplace listing must map to exactly one Helen Wholesale SKU. A confirmed sale on any connected channel must reduce the shared available quantity before an updated quantity is sent to the other connected channels. The implementation must include idempotent order imports, audit logs, retry handling, stock-reservation rules, and a manual reconciliation process. Until that work is finished, staff must not represent stock as synchronised.
 
+The database foundation includes connection records, per-channel listing mappings, idempotent marketplace-order references, and sync-event audit records. It deliberately stores only a reference to protected server-side credentials—not credentials themselves. This schema change does not activate any marketplace connection or perform synchronization.
+
 ## Jumia-first prerequisites
 
 1. The client creates and completes verification for the appropriate Jumia seller account.

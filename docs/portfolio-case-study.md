@@ -1,8 +1,8 @@
-# Rogontra Wholesale — portfolio case study
+# Helen Wholesale — portfolio case study
 
 ## Overview
 
-Rogontra Wholesale is an original full-stack B2B marketplace concept for wholesale supplies, industrial parts, heavy equipment, commercial trucks, and trailers. I rebuilt a learning storefront into a production-minded application with owned branding, an owned API, PostgreSQL persistence, customer accounts, administration tools, and payment safety controls.
+Helen Wholesale is an original full-stack B2B marketplace concept for wholesale supplies, industrial parts, heavy equipment, commercial trucks, and trailers. I rebuilt a learning storefront into a production-minded application with owned branding, an owned API, PostgreSQL persistence, customer accounts, administration tools, and payment safety controls.
 
 ## Problem
 

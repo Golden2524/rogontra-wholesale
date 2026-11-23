@@ -1,10 +1,10 @@
-# Rogontra Wholesale
+# Helen Wholesale
 
-Rogontra Wholesale is a global B2B commerce platform for sourcing consumer goods, industrial equipment, heavy-duty machinery, trucks, trailers, and related parts. It is being rebuilt from a learning storefront into an original, production-minded full-stack application.
+Helen Wholesale is a global B2B commerce platform for sourcing consumer goods, industrial equipment, heavy-duty machinery, trucks, trailers, and related parts. It is being rebuilt from a learning storefront into an original, production-minded full-stack application.
 
 ## Current status
 
-Rogontra is deployed as a public portfolio demonstration: [storefront](https://rogontra-wholesale.vercel.app) and [API health check](https://rogontra-api.onrender.com/api/v1/health). It demonstrates catalogue browsing, search, cart management, secure customer sign-up/sign-in and sign-out, checkout, customer order and quote history, delivery tracking, and protected administration.
+Helen Wholesale is currently deployed as a public demonstration at [rogontra-wholesale.vercel.app](https://rogontra-wholesale.vercel.app). It demonstrates catalogue browsing, search, cart management, secure customer sign-up/sign-in and sign-out, checkout, customer order and quote history, delivery tracking, and protected administration. Marketplace synchronization is not yet configured.
 
 It is **not a commercial store**. The catalogue is illustrative, orders are test-mode, and payments, legal policies, fulfilment, and foreign-exchange settlement require further work before public orders can be accepted.
 

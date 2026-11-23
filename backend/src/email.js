@@ -21,9 +21,9 @@ export function createResendEmailService({ apiKey, fromEmail, fetchImpl = fetch 
         body: JSON.stringify({
           from: fromEmail,
           to: [email],
-          subject: 'Reset your Rogontra Wholesale password',
-          text: `Use this one-time link to reset your Rogontra Wholesale password. It expires in 30 minutes: ${resetUrl}`,
-          html: `<p>Use this one-time link to reset your Rogontra Wholesale password. It expires in 30 minutes.</p><p><a href="${escapeHtml(resetUrl)}">Reset password</a></p>`
+          subject: 'Reset your Helen Wholesale password',
+          text: `Use this one-time link to reset your Helen Wholesale password. It expires in 30 minutes: ${resetUrl}`,
+          html: `<p>Use this one-time link to reset your Helen Wholesale password. It expires in 30 minutes.</p><p><a href="${escapeHtml(resetUrl)}">Reset password</a></p>`
         })
       });
       if (!response.ok) {

@@ -1,4 +1,4 @@
-# Rogontra release readiness
+# Helen Wholesale release readiness
 
 This checklist separates a portfolio demonstration release from a real commercial launch. A deployed portfolio demo must be honest about demo inventory and test payments. A public commercial store has additional legal, operational, and financial obligations.
 
@@ -11,7 +11,7 @@ This checklist separates a portfolio demonstration release from a real commercia
 - [x] Health and database-readiness endpoints, production configuration preflight, and portable API container package.
 - [x] Deployment guide, architecture/API documentation, payment/currency roadmap, and LinkedIn case-study draft.
 - [x] Complete a browser walkthrough on desktop and mobile-sized layouts.
-- [ ] Capture original screenshots of the real Rogontra interface and add them under `docs/screenshots/`.
+- [ ] Capture original screenshots of the real Helen Wholesale interface and add them under `docs/screenshots/`.
 - [x] Select hosting, configure a public HTTPS storefront and API, then set the production environment variables.
 - [x] Run migrations in the chosen production database and verify the deployed `/api/v1/ready` endpoint.
 - [x] Configure the public API and storefront URLs, then run the read-only `npm run deploy:smoke` check.
@@ -31,4 +31,4 @@ This checklist separates a portfolio demonstration release from a real commercia
 
 ## Decision rule
 
-Rogontra is ready to be posted on LinkedIn only when every portfolio checklist item is complete and the live link is verified. It is ready to accept public commercial orders only when every commercial launch item is also complete.
+Helen Wholesale is ready to be posted on LinkedIn only when every portfolio checklist item is complete and the live link is verified. It is ready to accept public commercial orders only when every commercial launch item is also complete.

@@ -36,7 +36,7 @@ function renderTracking(order, item) {
     ${product?.image ? `<img class="product-image" src="${escapeHtml(product.image)}" alt="${escapeHtml(item.productName)}" />` : ''}
     <section class="tracking-status" aria-labelledby="tracking-status-title">
       <h2 id="tracking-status-title">${escapeHtml(state.label)}</h2>
-      <p>${shipmentStarted ? 'This status is updated by Rogontra operations. Delivery dates remain estimates until dispatch.' : 'Shipping progress becomes available after payment verification and fulfilment preparation.'}</p>
+      <p>${shipmentStarted ? 'This status is updated by Helen Wholesale operations. Delivery dates remain estimates until dispatch.' : 'Shipping progress becomes available after payment verification and fulfilment preparation.'}</p>
       <div class="progress-labels-container" aria-hidden="true"><span class="${state.progress >= 33 ? 'current-status' : ''}">Preparing</span><span class="${state.progress >= 66 ? 'current-status' : ''}">Dispatched</span><span class="${state.progress === 100 ? 'current-status' : ''}">Delivered</span></div>
       <div class="progress-bar-container" role="progressbar" aria-label="Order fulfilment progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${state.progress}"><div class="progress-bar" style="width: ${state.progress}%"></div></div>
     </section>`;

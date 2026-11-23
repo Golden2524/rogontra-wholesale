@@ -20,8 +20,8 @@ function formatLabel(value) {
 }
 
 function setProductMetadata(product) {
-  document.title = `${product.name} | Rogontra Wholesale`;
-  const description = product.description || `Source ${product.name} from Rogontra Wholesale.`;
+  document.title = `${product.name} | Helen Wholesale`;
+  const description = product.description || `Source ${product.name} from Helen Wholesale.`;
   const descriptionMeta = document.querySelector('meta[name="description"]');
   if (descriptionMeta) {
     descriptionMeta.content = description.slice(0, 160);

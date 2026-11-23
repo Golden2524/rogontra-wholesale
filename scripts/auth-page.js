@@ -29,7 +29,7 @@ function renderMode() {
   displayNameField.querySelector('input').required = !signingIn;
   password.autocomplete = signingIn ? 'current-password' : 'new-password';
   document.querySelector('.js-auth-submit').textContent = signingIn ? 'Sign in' : 'Create account';
-  question.textContent = signingIn ? 'New to Rogontra?' : 'Already have an account?';
+  question.textContent = signingIn ? 'New to Helen Wholesale?' : 'Already have an account?';
   toggle.textContent = signingIn ? 'Create an account' : 'Sign in';
   status.textContent = '';
 }

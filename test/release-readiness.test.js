@@ -12,7 +12,7 @@ test('release readiness keeps portfolio deployment separate from commercial laun
   assert.match(readiness, /## Commercial launch checklist/);
   assert.match(
     readiness,
-    /Rogontra is ready to be posted on LinkedIn only when every portfolio checklist item is complete/
+    /Helen Wholesale is ready to be posted on LinkedIn only when every portfolio checklist item is complete/
   );
   assert.match(readiness, /server-side FX quote provider/);
   assert.match(screenshots, /01-catalogue-desktop\.png/);

@@ -1,8 +1,8 @@
-# Rogontra Wholesale product brief
+# Helen Wholesale product brief
 
 ## Purpose
 
-Rogontra Wholesale helps business buyers discover, compare, request quotes for, and purchase wholesale and industrial products internationally.
+Helen Wholesale helps business buyers discover, compare, request quotes for, and purchase wholesale and industrial products internationally.
 
 ## Product catalogue model
 
@@ -31,7 +31,7 @@ The first public release will deliver a usable catalogue, search and filtering, 
 
 ## Non-negotiable quality requirements
 
-- Original Rogontra branding, copy, UI, and assets with documented licences.
+- Original Helen Wholesale branding, copy, UI, and assets with documented licences.
 - Responsive keyboard-accessible user interface.
 - Server-side validation, rate limiting, secure password storage, and protected secrets.
 - Automated tests for pricing, cart validation, authentication, payment verification, and the core browse-to-order journey.

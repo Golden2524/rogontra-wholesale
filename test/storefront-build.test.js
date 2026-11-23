@@ -27,7 +27,7 @@ test('storefront build creates a public API runtime configuration', async () => 
     await readFile(join(outputDirectory, 'runtime-config.js'), 'utf8'),
     'window.ROGONTRA_API_BASE_URL = "https://api.example.com/api/v1";\n'
   );
-  assert.match(await readFile(join(outputDirectory, 'index.html'), 'utf8'), /Rogontra Wholesale/);
+  assert.match(await readFile(join(outputDirectory, 'index.html'), 'utf8'), /Helen Wholesale/);
 
   await rm(outputDirectory, { recursive: true, force: true });
 });

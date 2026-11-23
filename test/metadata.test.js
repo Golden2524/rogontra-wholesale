@@ -15,7 +15,7 @@ test('homepage includes accessible sharing metadata and an owned social preview 
   assert.match(homepage, /property="og:image" content="images\/rogontra-social-card\.svg"/);
   assert.match(homepage, /name="twitter:card" content="summary_large_image"/);
   assert.match(socialCard, /width="1200" height="630"/);
-  assert.match(socialCard, /Rogontra Wholesale/);
+  assert.match(socialCard, /Helen Wholesale/);
 });
 
 test('owned catalogue illustrations include intrinsic dimensions for reliable rendering', async () => {

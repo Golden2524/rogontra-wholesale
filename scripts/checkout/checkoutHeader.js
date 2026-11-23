@@ -10,8 +10,8 @@ export function renderCheckoutHeader() {
   checkoutHeaderHTML += `
     <div class="checkout-header-left-section">
       <a href="index.html">
-        <img class="rogontra-logo" src="images/rogontra-logo-dark.svg" alt="Rogontra Wholesale">
-        <img class="rogontra-mobile-logo" src="images/rogontra-mark.svg" alt="Rogontra">
+        <img class="rogontra-logo" src="images/rogontra-logo-dark.svg" alt="Helen Wholesale">
+        <img class="rogontra-mobile-logo" src="images/rogontra-mark.svg" alt="Helen Wholesale">
       </a>
     </div>
 

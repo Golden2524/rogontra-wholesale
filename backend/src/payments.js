@@ -38,7 +38,7 @@ export function createPaystackPaymentService({ callbackUrl, fetchImpl = fetch, s
       if (!secretKey) {
         throw paymentError(
           'PAYMENT_PROVIDER_NOT_CONFIGURED',
-          'Payments are not configured yet. Contact Rogontra for assistance.',
+          'Payments are not configured yet. Contact Helen Wholesale for assistance.',
           503
         );
       }

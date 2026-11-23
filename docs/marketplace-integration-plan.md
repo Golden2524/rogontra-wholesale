@@ -34,6 +34,8 @@ The client should prepare the following outside this project:
 - Direct-fulfilment operating details: dispatch address, delivery carriers, handling time, returns address, support contact, and cancellation/refund process.
 - A named business owner who can approve listings and authorize marketplace access.
 
+Editable CSV handoff templates are available in [`docs/templates/`](templates/). They open in Excel or Google Sheets and must be validated before a marketplace listing is created.
+
 Do not ask the client to send marketplace passwords, payment information, or private API secrets by email or chat. They should use the marketplace authorization process when Helen Wholesale is ready to connect.
 
 ## Amazon UK prerequisites

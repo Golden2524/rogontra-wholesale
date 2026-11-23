@@ -484,6 +484,14 @@ export function createApp({
     const statusCode = error.statusCode ?? 500;
     const message = statusCode >= 500 ? 'An unexpected server error occurred.' : error.message;
 
+    if (statusCode >= 500) {
+      console.error('Helen Wholesale API request failed', {
+        requestId: response.getHeader('X-Request-Id'),
+        errorCode: typeof error.code === 'string' ? error.code : 'UNCLASSIFIED_ERROR',
+        errorName: error.name
+      });
+    }
+
     response.status(statusCode).json({
       error: {
         code: statusCode === 500 ? 'INTERNAL_SERVER_ERROR' : (error.code ?? 'BAD_REQUEST'),

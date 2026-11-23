@@ -87,3 +87,12 @@ test('marketplace foundation keeps credentials out of mappings and records idemp
   assert.match(sql, /CREATE TABLE IF NOT EXISTS marketplace_sync_events/);
   assert.doesNotMatch(sql, /api_key|password|refresh_token/i);
 });
+
+test('demo product media can be refreshed without changing real product media', async () => {
+  const sql = await readFile(
+    'backend/database/migrations/011_refresh_demo_product_media.sql',
+    'utf8'
+  );
+  assert.match(sql, /helen-excavator\.svg/);
+  assert.match(sql, /p\.is_demo = TRUE/);
+});

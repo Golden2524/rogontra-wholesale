@@ -5,10 +5,10 @@ import { resolveStorefrontAsset } from '../scripts/utils/assets.js';
 test('resolves approved catalogue assets from the storefront origin', () => {
   assert.equal(
     resolveStorefrontAsset(
-      'images/products/rogontra-heavy-equipment.svg',
+      'images/products/helen-excavator.svg',
       'https://rogontra-wholesale.vercel.app/index.html'
     ),
-    'https://rogontra-wholesale.vercel.app/images/products/rogontra-heavy-equipment.svg'
+    'https://rogontra-wholesale.vercel.app/images/products/helen-excavator.svg'
   );
 });
 

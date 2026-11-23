@@ -38,6 +38,48 @@
       </aside>
       <p class="admin-status js-admin-status" role="status"></p>
 
+      <section class="admin-panel marketplace-panel" aria-labelledby="marketplace-title">
+        <div class="admin-panel-heading">
+          <div>
+            <h2 id="marketplace-title">Marketplace connections</h2>
+            <p class="admin-panel-description">
+              Helen Wholesale will use one shared inventory record before synchronising listings and
+              orders with approved sales channels.
+            </p>
+          </div>
+          <span class="marketplace-stage">Setup phase</span>
+        </div>
+        <div class="marketplace-list">
+          <article class="marketplace-card">
+            <h3>Jumia</h3>
+            <p><strong>First connection:</strong> planned</p>
+            <p>
+              Create and verify the client&apos;s Jumia seller account before enabling product,
+              stock, and order synchronisation.
+            </p>
+          </article>
+          <article class="marketplace-card">
+            <h3>Amazon UK</h3>
+            <p><strong>Next connection:</strong> planned</p>
+            <p>
+              Connect only after the client has an active Professional seller account and grants API
+              authorization.
+            </p>
+          </article>
+          <article class="marketplace-card">
+            <h3>Other channels</h3>
+            <p><strong>Status:</strong> not configured</p>
+            <p>
+              Each additional marketplace needs its own approved seller access, product mapping, and
+              fulfilment rules.
+            </p>
+          </article>
+        </div>
+        <p class="marketplace-note">
+          Never paste marketplace passwords or private API keys into product fields or this page.
+        </p>
+      </section>
+
       <section class="admin-panel" aria-labelledby="product-form-title">
         <div class="admin-panel-heading">
           <h2 id="product-form-title" class="js-product-form-title">Add a product</h2>

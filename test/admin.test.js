@@ -20,6 +20,13 @@ test('admin workspace is explicitly labelled as pre-launch', async () => {
   assert.match(html, /payment settings must be replaced and verified/);
 });
 
+test('admin workspace makes marketplace setup status explicit without requesting credentials', async () => {
+  const html = await readFile('admin.html', 'utf8');
+  assert.match(html, /Marketplace connections/);
+  assert.match(html, /Jumia/);
+  assert.match(html, /Never paste marketplace passwords or private API keys/);
+});
+
 test('admin catalogue endpoints reject customers and accept administrators', async () => {
   const app = createApp({
     allowedOrigins: ['http://localhost:5500'],
